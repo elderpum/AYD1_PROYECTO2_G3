@@ -6,15 +6,15 @@ import {
   MdHomeFilled,
   MdLogout,
   MdOutlineEventAvailable,
-  MdForum,
+  MdOutlineSettingsBackupRestore,
   MdContentPasteSearch,
 } from "react-icons/md";
 
-import { HiDocumentDuplicate } from "react-icons/hi";
+//import { HiDocumentDuplicate } from "react-icons/hi";
 import { Link, useNavigate } from "react-router-dom";
 import "./Sidebar.css";
 
-export function Sidebar({ isOrganizador, opcionActiva }) {
+export function Sidebar() {
   const navigate = useNavigate();
 
   const cerrarSesion = () => {
@@ -29,79 +29,28 @@ export function Sidebar({ isOrganizador, opcionActiva }) {
           <img src={Logo} alt="soundstream" />
         </div>
             <ul className='ul_sidebar'>
-            <Link to="/main" style={{ color: 'inherit', textDecoration: 'none' }}>
-                <li className={`option d-flex align-items-center ${opcionActiva === "inicio" ? "activo" : " "}`}>
+            <Link to="/inicio" style={{ color: 'inherit', textDecoration: 'none' }}>
+                <li className={`option d-flex align-items-center`}>
                 <MdHomeFilled />
                 <span>Inicio</span>
                 </li>
             </Link>
-            <Link to={`${isOrganizador ? "/org/buscarEvento" : "/buscarEvento"}`} style={{ color: 'inherit', textDecoration: 'none' }}>
-                <li className={`option d-flex align-items-center ${opcionActiva === "buscar" ? "activo" : " "}`}>
-                <MdContentPasteSearch />
-                <span>Buscar Eventos</span>
+            <Link to="/inicio"  style={{ color: 'inherit', textDecoration: 'none' }}>
+                <li className={`option d-flex align-items-center`}>
+                    <MdContentPasteSearch />
+                    <span>Solicitudes de Reserva</span>
                 </li>
             </Link>
-            {isOrganizador ? (
-                <Link to="/agregarMaterial" style={{ color: 'inherit', textDecoration: 'none' }}>
-                <li className={`option d-flex align-items-center ${opcionActiva === "agregarmaterial" ? "activo" : " "}`}>
-                    <HiDocumentDuplicate />
-                    <span>Crear Material Educativo</span>
-                </li>
-                </Link>
-            ) : (
-                <Link
-                to={`/ver-material`}
-                style={{ color: "inherit", textDecoration: "none" }}
-                >
-                <li
-                    className={`option d-flex align-items-center ${opcionActiva === "vermaterial" ? "activo" : " "
-                    }`}
-                >
-                    <HiDocumentDuplicate />
-                    <span>Ver Material Educativo</span>
-                </li>
-                </Link>
-            )}
-            <Link to={`${isOrganizador ? "/org/foro" : "/foro"}`} style={{ color: 'inherit', textDecoration: 'none' }}>
-                <li className={`option d-flex align-items-center ${opcionActiva === "foro" ? "activo" : " "}`}>
-                <MdForum />
-                <span>Foros de Discusión</span>
+            <Link to="/inicio"  style={{ color: 'inherit', textDecoration: 'none' }}>
+                <li className={`option d-flex align-items-center`}>
+                    <MdOutlineSettingsBackupRestore />
+                    <span>Devolución</span>
                 </li>
             </Link>
-            {isOrganizador && (
-                <Link to="/misEventos" style={{ color: 'inherit', textDecoration: 'none' }}>
-                <li className={`option d-flex align-items-center ${opcionActiva === "miseventos" ? "activo" : " "}`}>
-                    <MdOutlineEventAvailable />
-                    <span>Mis Eventos</span>
-                </li>
-                </Link>
-            )}
-            {isOrganizador && (
-                <Link
-                to="/crear-evento"
-                style={{ color: "inherit", textDecoration: "none" }}
-                >
-                <li
-                    className={`option d-flex align-items-center ${opcionActiva === "crear-evento" ? "activo" : " "
-                    }`}
-                >
-                    <MdOutlineEventAvailable />
-                    <span>Crear evento</span>
-                </li>
-                </Link>
-            )}
-            <Link
-                to="/historial-eventos"
-                style={{ color: "inherit", textDecoration: "none" }}
-            >
-                <li
-                className={`option d-flex align-items-center ${opcionActiva === "historial" ? "activo" : " "
-                    }`}
-                >
+            <li className={`option d-flex align-items-center`}>
                 <MdOutlineEventAvailable />
-                <span>Historial de Eventos</span>
-                </li>
-            </Link>
+                <span>Historial de Alquileres</span>
+            </li>
             <li className="option d-flex align-items-center cerrar" onClick={cerrarSesion}>
                 <MdLogout />
                 <span>Cerrar Sesión</span>

@@ -1,0 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Arimo:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Jost:wght@600&display=swap');
+
+.heads {
+    /*font-family: 'Arimo', sans-serif;*/
+    font-family: 'Jost', sans-serif;
+    margin: 0;
+}
+
+.s_descripcion {
+    font-size: 15px;
+    text-align: left;
+}
+
+.align_l {
+    text-align: left;
+}
+
+.content {
+    height: 100%;
+}
