@@ -11,30 +11,24 @@ import { Autocomplete, Button, CardActionArea, TextField } from "@mui/material";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 
-export default function Inventario() {
+export default function Inventario(props) {
+  const { user } = props;
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [categoria, setCategoria] = useState([
-    "Sedan",
-    "Bus",
-    "Camioneta",
-    "Pickup",
-    "Panel",
-    "Camion",
-  ]);
+  const categoria = ["Sedan", "Bus", "Camioneta", "Pickup", "Panel", "Camion"];
   const [selecCategoria, setSelecCategoria] = useState("");
   const [marca, setMarca] = useState([]);
   const [selecMarca, setSelecMarca] = useState("");
   const [inventario, setInventario] = useState([]);
 
-  const ip = "https://zd8mw8xl-3001.use.devtunnels.ms"//`http://localhost:3001`;
+  const ip = "https://zd8mw8xl-3001.use.devtunnels.ms"; //`http://localhost:3001`;
 
   useEffect(() => {
     const url = `${ip}/api/inventario/get`;
     const token = localStorage.getItem("auth");
-    const data = { categoria: "", marca: "", page: 1};
-    console.log(data)
+    const data = { categoria: "", marca: "", page: 1 };
+    console.log(data);
     const fetchData = async () => {
       fetch(url, {
         method: "POST",
@@ -63,7 +57,7 @@ export default function Inventario() {
     const url = `${ip}/api/inventario/get`;
     const token = localStorage.getItem("auth");
     const data = { categoria: selecCategoria, marca: selecMarca, page: value };
-    console.log(data)
+    console.log(data);
     const fetchData = async () => {
       fetch(url, {
         method: "POST",
@@ -93,7 +87,7 @@ export default function Inventario() {
     const url = `${ip}/api/inventario/get`;
     const token = localStorage.getItem("auth");
     const data = { categoria: selecCategoria, marca: selecMarca, page: 1 };
-    console.log(data)
+    console.log(data);
     const fetchData = async () => {
       fetch(url, {
         method: "POST",
@@ -117,6 +111,28 @@ export default function Inventario() {
         .catch((error) => console.error("Error:", error));
     };
     fetchData();
+  };
+
+  const alquiler = () => {
+    console.log("alquilando ", user);
+    if (user === 0 || user === 2) {
+      navigate(`/alquiler/1`);
+    } else {
+      alert(
+        "La funcion de alquilar solo esta disponible para clientes y administradores"
+      );
+    }
+  };
+
+  const gestionar = () => {
+    console.log("gestionando costo ", user);
+    if (user === 0 || user === 1) {
+      navigate(`/gestionarCosto/1`);
+    } else {
+      alert(
+        "La funcion de gestionar el costo solo esta disponible para empleados y administradores"
+      );
+    }
   };
 
   return (
@@ -184,12 +200,10 @@ export default function Inventario() {
           >
             {inventario.map((vehiculo) => (
               <Grid item xs={2} sm={4} md={4}>
-                <Card
-                  sx={{ maxWidth: 250, maxHeight: 170 }}
-                  onClick={navigate("/alquiler/vehiculo.id")}
-                >
+                <Card sx={{ maxWidth: 250, maxHeight: 170 }}>
                   <CardActionArea>
                     <CardMedia
+                      onClick={alquiler}
                       component="img"
                       height="80"
                       image={vehiculo.imagen}
@@ -200,16 +214,67 @@ export default function Inventario() {
                         {vehiculo.nombre}
                       </Typography>
                       <Typography variant="body2" color="text.secondary">
-                        Q {vehiculo.cuota} por dia.
+                        {vehiculo.disponibilidad !== "" ? (
+                          vehiculo.disponibilidad
+                        ) : (
+                          <div>Q {vehiculo.cuota} por dia.</div>
+                        )}
                       </Typography>
                       <Typography variant="body2" color="text.secondary">
-                        { vehiculo.disponibilidad ? vehiculo.disponibilidad : "" }
+                        {user === 2 ? (
+                          <div></div>
+                        ) : (
+                          <Button
+                            variant="contained"
+                            size="small"
+                            color="info"
+                            onClick={gestionar}
+                          >
+                            Gestionar Costo
+                          </Button>
+                        )}
                       </Typography>
                     </CardContent>
                   </CardActionArea>
                 </Card>
               </Grid>
             ))}
+
+            {/* <Grid item xs={2} sm={4} md={4}>
+              <Card sx={{ maxWidth: 250, maxHeight: 170 }}>
+                <CardActionArea sx={{ padding: 0 }}>
+                  <CardMedia
+                    onClick={alquiler}
+                    component="img"
+                    height="80"
+                    image="https://www.dodge.com/content/dam/cross-regional/nafta/dodge/es_mx/Blog/2020/muscle-cars/dodge-charger-rt-1970-el-favorito-de-toretto/desktop/dodge-noticias-dodge-charger-1970-el-auto-favorito-de-toretto-cuerpo-1-dk.jpg.img.1440.jpg"
+                    alt="..."
+                  />
+                  <CardContent>
+                    <Typography gutterBottom variant="h7" component="div">
+                      Carro de Toretto
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      ocupado - Gerson Quiroa
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      {user === 2 ? (
+                        <div></div>
+                      ) : (
+                        <Button
+                          variant="contained"
+                          size="small"
+                          color="info"
+                          onClick={gestionar}
+                        >
+                          Gestionar Costo
+                        </Button>
+                      )}
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
+              </Card>
+            </Grid> */}
           </Grid>
           <Pagination
             count={totalPages}
