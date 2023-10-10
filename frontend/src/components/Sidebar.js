@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import Logo from "../assets/logo1.png";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
+
 
 import {
   MdHomeFilled,
@@ -10,57 +12,99 @@ import {
   MdContentPasteSearch,
 } from "react-icons/md";
 
-//import { HiDocumentDuplicate } from "react-icons/hi";
-import { Link, useNavigate } from "react-router-dom";
 import "./Sidebar.css";
 
-export function Sidebar() {
+
+
+// ---- BARRA LATERAL IZQUIERDA. ---- //
+export const Sidebar = () => {
+
+  // hook para saber que opcion esta seleccionada.
+  const [index, setIndex] = useState(1);
+
+
+  // hook para redireccionar a otra pagina.
   const navigate = useNavigate();
 
+
+  // Metodo para cerrar sesion.
   const cerrarSesion = () => {
+
     localStorage.removeItem("auth");
-    navigate("/");
+
+    navigate('/', {
+      replace: true, //No dejar que la persona regrese a la pagina anterior.
+    });
+
   };
-  
+
+
   return (
-    <Container>
-      <div className="menu_options">
-        <div className="logo">
-          <img src={Logo} alt="soundstream" />
-        </div>
-            <ul className='ul_sidebar'>
-            <Link to="/inicio" style={{ color: 'inherit', textDecoration: 'none' }}>
-                <li className={`option d-flex align-items-center`}>
-                <MdHomeFilled />
-                <span>Inicio</span>
-                </li>
-            </Link>
-            <Link to="/inicio"  style={{ color: 'inherit', textDecoration: 'none' }}>
-                <li className={`option d-flex align-items-center`}>
-                    <MdContentPasteSearch />
-                    <span>Solicitudes de Reserva</span>
-                </li>
-            </Link>
-            <Link to="/inicio"  style={{ color: 'inherit', textDecoration: 'none' }}>
-                <li className={`option d-flex align-items-center`}>
-                    <MdOutlineSettingsBackupRestore />
-                    <span>Devolución</span>
-                </li>
-            </Link>
-            <li className={`option d-flex align-items-center`}>
-                <MdOutlineEventAvailable />
-                <span>Historial de Alquileres</span>
+
+    <ContainerVista>
+
+      <Container>
+
+        <div className="menu_options">
+
+          <div className="logo">
+
+            <img src={Logo} alt="soundstream" />
+
+          </div>
+
+          <ul className='ul_sidebar'>
+
+
+            <li className={`option d-flex align-items-center`} onClick={() => setIndex(1)}>
+              <MdHomeFilled />
+              <span>Inicio</span>
             </li>
+
+
+            <li className={`option d-flex align-items-center`} onClick={() => setIndex(2)}>
+              <MdContentPasteSearch />
+              <span>Solicitudes de Reserva</span>
+            </li>
+
+
+            <li className={`option d-flex align-items-center`} onClick={() => setIndex(3)}>
+              <MdOutlineSettingsBackupRestore />
+              <span>Devolución</span>
+            </li>
+
+
+            <li className={`option d-flex align-items-center`} onClick={() => setIndex(4)}>
+              <MdOutlineEventAvailable />
+              <span>Historial de Alquileres</span>
+            </li>
+
+
             <li className="option d-flex align-items-center cerrar" onClick={cerrarSesion}>
-                <MdLogout />
-                <span>Cerrar Sesión</span>
+              <MdLogout />
+              <span>Cerrar Sesión</span>
             </li>
-        </ul>
-      </div>
-    </Container>
+
+          </ul>
+
+        </div>
+
+      </Container>
+
+      {/* Aqui van los componentes de las vistas */}
+
+      {/* {index === 1 && <COMPONENTE-DESEADO />} */}
+      {/* {index === 2 && <COMPONENTE-DESEADO />} */}
+      {/* {index === 3 && <COMPONENTE-DESEADO />} */}
+      {/* {index === 4 && <COMPONENTE-DESEADO />} */}
+
+    </ContainerVista>
+
   );
 }
 
+
+// Estilos Sidebar Container
 const Container = styled.div`
   position: sticky;
   top: 0;
@@ -76,3 +120,9 @@ const Container = styled.div`
   text-size-adjust: none;
   text-size-adjust: none;
 `;
+
+
+// Estilo Container Vista
+const ContainerVista = styled.div`
+display: flex;
+`
