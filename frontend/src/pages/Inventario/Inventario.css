@@ -1,0 +1,42 @@
+.containerContent-inventario {
+  display: flex;
+  justify-content: center;
+  height: 95%;
+  min-height: 95%;
+  width: 85%;
+  min-width: 85%;
+  background: white;
+  margin-top: 1rem;
+  border-radius: 0.5rem;
+}
+
+.container-inventario {
+  display: flex;
+  justify-content: center;
+  height: 100vh;
+  min-height: 100%;
+  width: 100vh;
+  min-width: 100%;
+  background: rgb(0, 0, 0);
+  background: linear-gradient(
+    30deg,
+    rgb(0, 255, 13) 0%,
+    rgb(51, 192, 161) 43%,
+    rgb(77, 180, 82) 45%,
+    rgb(149, 216, 152) 52%,
+    rgb(173, 201, 174) 100%
+  );
+}
+
+.stack-inventario {
+  margin-top: 15px;
+  margin-left: 90px;
+}
+
+.pag-inventario {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
