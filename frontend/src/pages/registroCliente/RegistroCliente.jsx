@@ -7,6 +7,7 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { useForm } from '../hooks/useForm'; // Custom hook.
 import { setCliente } from './helpers/setCliente';
+import { useNavigate } from 'react-router-dom';
 
 import './registroCliente.css'; // Stylesheet.
 import logo1 from '../../assets/logo1.png'; // Image.
@@ -27,6 +28,10 @@ export const RegistroCliente = () => {
     });
 
 
+    // Hook para navegar entre paginas.
+    const navigate = useNavigate();
+
+
     // Estado de la fecha de nacimiento.
     const [dateSelect, setDate] = useState(null);
 
@@ -34,6 +39,16 @@ export const RegistroCliente = () => {
     // Cambio de estado de la fecha.
     const handleDateChange = (date) => {
         setDate(date);
+    }
+
+
+    // Metodo para redireccionar a otra pagina.
+    const handleNavigateTo = () => {
+        // Navegar a la pagina de inicio.
+        navigate('/', {
+            replace: true,
+        });
+
     }
 
 
@@ -109,7 +124,7 @@ export const RegistroCliente = () => {
                 <div className="content-form-register-client">
 
                     <div className="title-form-client">
-                        <h1> REGISTRO CLIENTE </h1>
+                        <h1> Hazte cliente ahora </h1>
                     </div>
 
 
@@ -226,7 +241,7 @@ export const RegistroCliente = () => {
                                     Registrarse
                                 </Button>
 
-                                <Button variant="contained" color="error" sx={{ m: 1, width: 155, height: 45 }}>
+                                <Button variant="contained" onClick={handleNavigateTo} color="error" sx={{ m: 1, width: 155, height: 45 }}>
                                     Atras
                                 </Button>
 

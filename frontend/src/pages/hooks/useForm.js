@@ -59,6 +59,7 @@ export const useForm = (initialForm = {}) => {
         handlePhoneChange,
         handleLicenseChange,
         handleReset,
+        setForm
     }
 
 }
