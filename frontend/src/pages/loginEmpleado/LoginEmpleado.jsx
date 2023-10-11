@@ -6,7 +6,7 @@ import LockIcon from '@mui/icons-material/Lock';
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import { Button } from '@mui/material';
 import { useForm } from '../hooks/useForm'; // Custom hook.
 
@@ -29,7 +29,7 @@ export const LoginEmpleado = () => {
 
 
     // Hook para navegar entre paginas.
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
 
     // Metodo para el checkbox.
@@ -45,14 +45,14 @@ export const LoginEmpleado = () => {
     };
 
 
-    // Metodo para redireccionar a otra pagina.
-    const handleNavigateTo = () => {
-        // Navegar a la pagina de inicio.
-        navigate('/', {
-            replace: true,
-        });
+    // // Metodo para redireccionar a otra pagina.
+    // const handleNavigateTo = () => {
+    //     // Navegar a la pagina de inicio.
+    //     navigate('/', {
+    //         replace: true,
+    //     });
 
-    }
+    // }
 
 
     // Metodo para redireccionar a otra pagina.
