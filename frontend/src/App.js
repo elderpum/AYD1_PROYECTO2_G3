@@ -14,7 +14,7 @@ function App() {
           <Route path="/" element={<RegistroCliente />} />
           {/* <Route path="/registroCliente" element={<RegistroCliente />} /> */}
           <Route path="/registroEmpleado" element={<RegistroEmpleado />} />
-          <Route path="/*" element={<AlquimovilRouter />} /> {/* RUTAS HACIA NAVBAR */}
+          <Route path="/alquimovil" element={<AlquimovilRouter />} /> {/* RUTAS HACIA NAVBAR */}
 
         </Routes>
       </BrowserRouter>

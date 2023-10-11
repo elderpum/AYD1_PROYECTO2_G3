@@ -18,10 +18,11 @@ export function Alquilar() {
     /* useEffect -> getVehiculo */
     
     const regresar = () => {
-        //navigate('/playlists');
+        navigate('/inicio');
     };
 
     const configFechaInicio = (fecha) => {
+        console.log(fechaInicio)
         try {
             const mont = (parseInt(fecha.$M) + 1).toString();
             var fecha_ = fecha.$y + "-" + mont + "-" + fecha.$D;
@@ -29,10 +30,12 @@ export function Alquilar() {
         } catch (error) {
             setFechaInicio('');
         }
+        
     };
     
     const configFechaFinal = (fecha) => {
         try {
+            console.log(fechaFinal)
             const mont = (parseInt(fecha.$M) + 1).toString();
             var fecha_ = fecha.$y + "-" + mont + "-" + fecha.$D;
             setFechaFinal(fecha_);
@@ -102,7 +105,7 @@ export function Alquilar() {
                                     />
                                 </LocalizationProvider>
                                 <p></p>
-                                <Button variant="outlined" size="small" color="success">
+                                <Button variant="outlined" size="small" sx={{ color: '#3DF28B', borderColor: '#3DF28B' }}>
                                     Alquilar
                                 </Button>
                             </Grid>
@@ -139,22 +142,6 @@ font-family: 'Jost', sans-serif;
 margin-bottom: 25px;
 `
 
-const Container2 = styled.div`
-position: sticky;
-top: 0;
-flex: 0.2;
-height: 100%;
-min-height: 100vh;
-background-color: #181818;
-color: #b3b3b3;
-min-width: 240px;
--webkit-box-shadow: 4px 5px 20px -7px rgba(0, 0, 0, 0.65);
--moz-box-shadow: 4px 5px 20px -7px rgba(0, 0, 0, 0.65);
-box-shadow: 4px 5px 20px -7px rgba(0, 0, 0, 0.65);
-text-size-adjust: none;
-text-size-adjust: none;
-`
-
 const Info = styled.div`
 display: flex;
 padding: 35px 25px;
@@ -173,6 +160,24 @@ padding-left: 75px;
 padding-right: 75px;
 `
 
+/*
+const Container2 = styled.div`
+position: sticky;
+top: 0;
+flex: 0.2;
+height: 100%;
+min-height: 100vh;
+background-color: #181818;
+color: #b3b3b3;
+min-width: 240px;
+-webkit-box-shadow: 4px 5px 20px -7px rgba(0, 0, 0, 0.65);
+-moz-box-shadow: 4px 5px 20px -7px rgba(0, 0, 0, 0.65);
+box-shadow: 4px 5px 20px -7px rgba(0, 0, 0, 0.65);
+text-size-adjust: none;
+text-size-adjust: none;
+`
+
 const Container = styled.div`
 display: flex;
 `
+*/

@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import Logo from "../assets/logo1.png";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
-
+import "./Sidebar.css";
 
 import {
   MdHomeFilled,
@@ -12,9 +11,11 @@ import {
   MdContentPasteSearch,
 } from "react-icons/md";
 
-import "./Sidebar.css";
-
-
+import { FaCarAlt } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import { CrudVehiculos } from "../pages/CrudVehiculos/CrudVehiculos";
+import { Alquilar } from "../pages/Alquilar/Alquilar";
+import { GestionarCosto } from "../pages/GestionarCosto/GestionarCosto";
 
 // ---- BARRA LATERAL IZQUIERDA. ---- //
 export const Sidebar = () => {
@@ -80,6 +81,11 @@ export const Sidebar = () => {
             </li>
 
 
+            <li className={`option d-flex align-items-center`} onClick={() => setIndex(8)}>
+              <FaCarAlt />
+              <span>Administrar Vehiculos</span>
+            </li>
+
             <li className="option d-flex align-items-center cerrar" onClick={cerrarSesion}>
               <MdLogout />
               <span>Cerrar Sesión</span>
@@ -91,12 +97,16 @@ export const Sidebar = () => {
 
       </Container>
 
-      {/* Aqui van los componentes de las vistas */}
+      { /* Aqui van los componentes de las vistas */ }
 
-      {/* {index === 1 && <COMPONENTE-DESEADO />} */}
-      {/* {index === 2 && <COMPONENTE-DESEADO />} */}
-      {/* {index === 3 && <COMPONENTE-DESEADO />} */}
-      {/* {index === 4 && <COMPONENTE-DESEADO />} */}
+      { /* {index === 1 && <COMPONENTE-DESEADO />} */ }
+      { /* {index === 2 && <COMPONENTE-DESEADO />} */ }
+      { /* {index === 3 && <COMPONENTE-DESEADO />} */ }
+      { /* {index === 4 && <COMPONENTE-DESEADO />} */ }
+      { /* {index === 5 && <COMPONENTE-DESEADO />} */ }
+      { index === 6 && <GestionarCosto/> }
+      { index === 7 && <Alquilar/> }
+      { index === 8 && <CrudVehiculos/> }
 
     </ContainerVista>
 

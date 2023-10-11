@@ -11,7 +11,7 @@ export function GestionarCosto() {
     const navigate = useNavigate();
 
     const regresar = () => {
-        //navigate('/playlists');
+        navigate('/inicio');
     };
 
     let theme = createTheme({});
@@ -62,7 +62,7 @@ export function GestionarCosto() {
                                     />
                                 </FormControl>
                                 <p></p>
-                                <Button variant="outlined" size="small" color="success">
+                                <Button variant="outlined" size="small" sx={{ color: '#3DF28B', borderColor: '#3DF28B' }}>
                                     Modificar
                                 </Button>
                             </Grid>
@@ -113,7 +113,7 @@ bottom: 0;
 padding-left: 75px;
 padding-right: 75px;
 `
-
+/*
 const Container = styled.div`
 display: flex;
 `
@@ -133,3 +133,4 @@ box-shadow: 4px 5px 20px -7px rgba(0, 0, 0, 0.65);
 text-size-adjust: none;
 text-size-adjust: none;
 `
+*/

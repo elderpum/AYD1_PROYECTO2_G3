@@ -14,7 +14,7 @@ export function Titulo(props) {
 const Container = styled.div`
 display: flex;
 color: #3DF28B;
-justify-content: space-between;
+justify-content: start;
 margin-top: 50px;
 margin-bottom: 40px;
 `
