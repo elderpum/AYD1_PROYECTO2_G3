@@ -3,7 +3,10 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { RegistroCliente } from './pages/registroCliente/RegistroCliente';
 import { RegistroEmpleado } from './pages/registroEmpleado/RegistroEmpleado';
 import { AlquimovilRouter } from './router/AlquimovilRouter';
-
+import { LoginCliente } from './pages/loginCliente/LoginCliente';
+import { LoginAdmin } from './pages/loginAdmin/LoginAdmin';
+import { LoginEmpleado } from './pages/loginEmpleado/LoginEmpleado';
+import { Codigo } from './pages/codigoAcceso/Codigo';
 
 function App() {
   return (
@@ -11,9 +14,12 @@ function App() {
       <BrowserRouter>
         <Routes>
 
-          <Route path="/" element={<RegistroCliente />} />
-          {/* <Route path="/registroCliente" element={<RegistroCliente />} /> */}
+          <Route path="/" element={<LoginCliente />} />
+          <Route path="/loginAdmin" element={<LoginAdmin />} />
+          <Route path="/loginEmpleado" element={<LoginEmpleado />} />
+          <Route path="/registroCliente" element={<RegistroCliente />} />
           <Route path="/registroEmpleado" element={<RegistroEmpleado />} />
+          <Route path="/codigoAcceso" element={<Codigo />} />
           <Route path="/*" element={<AlquimovilRouter />} /> {/* RUTAS HACIA NAVBAR */}
 
         </Routes>

@@ -3,6 +3,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { useForm } from '../hooks/useForm'; // Custom hook.
 import { setEmpleado } from './helpers/setEmpleado';
+import { useNavigate } from 'react-router-dom';
 
 import './registroEmpleado.css'; // Stylesheet.
 import logo1 from '../../assets/logo1.png'; // Image.
@@ -19,6 +20,20 @@ export const RegistroEmpleado = () => {
         usuario: '',
         contrasena: ''
     });
+
+
+    // Hook para navegar entre paginas.
+    const navigate = useNavigate();
+
+
+    // Metodo para redireccionar a otra pagina.
+    const handleNavigateTo = () => {
+        // Navegar a la pagina de inicio.
+        navigate('/', {
+            replace: true,
+        });
+
+    }
 
 
     // Extraer los valores del formulario.
@@ -160,7 +175,7 @@ export const RegistroEmpleado = () => {
                                     Registrarse
                                 </Button>
 
-                                <Button variant="contained" color="error" sx={{ m: 1, width: 155, height: 45 }}>
+                                <Button variant="contained" onClick={handleNavigateTo} color="error" sx={{ m: 1, width: 155, height: 45 }}>
                                     Atras
                                 </Button>
 
