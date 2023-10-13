@@ -10,8 +10,9 @@ import Typography from "@mui/material/Typography";
 import { Autocomplete, Button, CardActionArea, TextField } from "@mui/material";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
+import styled from 'styled-components';
 
-export default function Inventario(props) {
+export function Inventario(props) {
   const { user } = props;
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
@@ -136,7 +137,8 @@ export default function Inventario(props) {
   };
 
   return (
-    <main className="container-inventario">
+    <BodyContent>
+      <main className="container-inventario">
       <div className="containerContent-inventario">
         <Stack
           spacing={2}
@@ -286,5 +288,11 @@ export default function Inventario(props) {
         </Stack>
       </div>
     </main>
+    </BodyContent>
   );
 }
+
+const BodyContent = styled.div`
+flex: 0.8;
+bottom: 0;
+`

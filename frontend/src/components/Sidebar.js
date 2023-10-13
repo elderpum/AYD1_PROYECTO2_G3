@@ -16,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 import { CrudVehiculos } from "../pages/CrudVehiculos/CrudVehiculos";
 import { Alquilar } from "../pages/Alquilar/Alquilar";
 import { GestionarCosto } from "../pages/GestionarCosto/GestionarCosto";
+import { Inventario } from "../pages/Inventario/Inventario";
 
 // ---- BARRA LATERAL IZQUIERDA. ---- //
 export const Sidebar = () => {
@@ -99,7 +100,7 @@ export const Sidebar = () => {
 
       { /* Aqui van los componentes de las vistas */ }
 
-      { /* {index === 1 && <COMPONENTE-DESEADO />} */ }
+      { index === 1 && <Inventario/> }
       { /* {index === 2 && <COMPONENTE-DESEADO />} */ }
       { /* {index === 3 && <COMPONENTE-DESEADO />} */ }
       { /* {index === 4 && <COMPONENTE-DESEADO />} */ }
