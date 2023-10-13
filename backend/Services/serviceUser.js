@@ -45,3 +45,25 @@ exports.newClient = async (data) => {
         return {error:true, message: error.message};
     }
 }
+
+exports.auth= async (user, passw, type) => {
+    try{
+        const [result] = await db.execute('SELECT * FROM User u WHERE (u.email = ? OR u.userName = ?) AND u.type = ?;', [user, user, type])
+
+        if(result.length === 0){
+            return {authExitoso: false, message:"El usuario no existe"}
+        }
+
+        console.log(result[0].passw)
+        console.log(passw)
+        const authenticated = await bcrypt.compare(passw, result[0].passw)
+
+        if(authenticated){
+            return {authExitoso:true, user: result[0], message:"Bienvenido!"}
+        }
+
+        return {authExitoso:false, message:"Contraseña incorrecta"}
+    }catch (error){
+        return {authExitoso: false, message: error.message}    
+    }
+}
