@@ -1,60 +1,290 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import Grid from '@mui/material/Grid';
-import Button from '@mui/material/Button';
+import React, { useEffect, useState } from "react";
+import "./Inventario.css";
+import { useNavigate } from "react-router-dom";
+// ui components
+import Grid from "@mui/material/Grid";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
+import Typography from "@mui/material/Typography";
+import { Autocomplete, Button, CardActionArea, TextField } from "@mui/material";
+import Pagination from "@mui/material/Pagination";
+import Stack from "@mui/material/Stack";
 
-import './Inventario.css'
+export default function Inventario(props) {
+  const { user } = props;
+  const navigate = useNavigate();
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const categoria = ["Sedan", "Bus", "Camioneta", "Pickup", "Panel", "Camion"];
+  const [selecCategoria, setSelecCategoria] = useState("");
+  const [marca, setMarca] = useState([]);
+  const [selecMarca, setSelecMarca] = useState("");
+  const [inventario, setInventario] = useState([]);
 
-import { Link } from "react-router-dom"; // import de la libreria para el ruteo de la pagina
+  const ip = "https://zd8mw8xl-3001.use.devtunnels.ms"; //`http://localhost:3001`;
 
-export default function Inventario() {
-    const [eventos, setListaEventos] = useState([]);
+  useEffect(() => {
+    const url = `${ip}/api/inventario/get`;
     const token = localStorage.getItem("auth");
-    const url = `http://localhost:3001/api/organizador/getAllEvents`;
-    React.useEffect(() => {
-        async function getInfo() {
-            fetch(url, {
-                method: "POST",
-                body: JSON.stringify({idOrga: '1'}),
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `${token}`,
-                },
-            })
-            .then((res) => res.json())
-            .catch((error) => console.error("Error:", error))
-            .then((res) => {
-                setListaEventos(res.data)
-            });
-        }
-        getInfo();
-    }, [token, url]);
+    const data = { categoria: "", marca: "", page: 1 };
+    console.log(data);
+    const fetchData = async () => {
+      fetch(url, {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `${token}`,
+        },
+      })
+        .then((res) => {
+          return res.json();
+        })
+        .then((res) => {
+          console.log(res);
+          setMarca(res.data.marcas);
+          setInventario(res.data.inventario);
+          setTotalPages(res.data.totalPages);
+        })
+        .catch((error) => console.error("Error:", error));
+    };
+    fetchData();
+  }, [ip]);
 
-    return (
-        <Container>
-            {/* <Sidebar isOrganizador={true} opcionActiva={'miseventos'}/> */}
-            <BodyContent>
-                <h1> Inventario </h1>
-                <Grid container rowSpacing={7} columns={12} sx={{ width: 1 }}>
-                    {/* {eventos.map((evento) => (
-                        <Grid item xs={12} key={Math.random()}>
-                            <CardEvento evento={evento}/>
-                        </Grid>
-                    ))} */}
-                </Grid>
-            </BodyContent>
-        </Container>
-    )
+  const nextPage = (event, value) => {
+    setPage(value);
+    const url = `${ip}/api/inventario/get`;
+    const token = localStorage.getItem("auth");
+    const data = { categoria: selecCategoria, marca: selecMarca, page: value };
+    console.log(data);
+    const fetchData = async () => {
+      fetch(url, {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `${token}`,
+        },
+      })
+        .then((res) => {
+          return res.json();
+        })
+        .then((res) => {
+          console.log(res);
+          setInventario(res.data.inventario);
+        })
+        .catch((error) => console.error("Error:", error));
+    };
+    fetchData();
+  };
+
+  const filtrar = () => {
+    console.log("filtrando");
+    console.log(selecCategoria);
+    console.log(selecMarca);
+
+    const url = `${ip}/api/inventario/get`;
+    const token = localStorage.getItem("auth");
+    const data = { categoria: selecCategoria, marca: selecMarca, page: 1 };
+    console.log(data);
+    const fetchData = async () => {
+      fetch(url, {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `${token}`,
+        },
+      })
+        .then((res) => {
+          return res.json();
+        })
+        .then((res) => {
+          console.log(res);
+          setInventario(res.data.inventario);
+          setTotalPages(res.data.totalPages);
+          if (res.data.totalPages === 0) {
+            alert("No se encontraron resultados con los filtros seleccionados");
+          }
+        })
+        .catch((error) => console.error("Error:", error));
+    };
+    fetchData();
+  };
+
+  const alquiler = () => {
+    console.log("alquilando ", user);
+    if (user === 0 || user === 2) {
+      navigate(`/alquiler/1`);
+    } else {
+      alert(
+        "La funcion de alquilar solo esta disponible para clientes y administradores"
+      );
+    }
+  };
+
+  const gestionar = () => {
+    console.log("gestionando costo ", user);
+    if (user === 0 || user === 1) {
+      navigate(`/gestionarCosto/1`);
+    } else {
+      alert(
+        "La funcion de gestionar el costo solo esta disponible para empleados y administradores"
+      );
+    }
+  };
+
+  return (
+    <main className="container-inventario">
+      <div className="containerContent-inventario">
+        <Stack
+          spacing={2}
+          justifyContent="space-around"
+          className="stack-inventario"
+        >
+          <Grid
+            container
+            direction="row"
+            justifyContent="center"
+            alignItems="flex-start"
+          >
+            <Grid
+              container
+              direction="row"
+              justifyContent="center"
+              alignItems="flex-start"
+            >
+              <Grid item>
+                <Autocomplete
+                  id="free-solo-demo"
+                  size="small"
+                  sx={{ width: 300 }}
+                  options={categoria}
+                  onChange={(event, newValue) => setSelecCategoria(newValue)}
+                  renderInput={(params) => (
+                    <TextField {...params} label="Categoria" />
+                  )}
+                />
+              </Grid>
+              <Grid item>
+                <Autocomplete
+                  id="free-solo-demo"
+                  size="small"
+                  sx={{ width: 300 }}
+                  options={marca}
+                  onChange={(event, newValue) => setSelecMarca(newValue)}
+                  renderInput={(params) => (
+                    <TextField {...params} label="Marca" />
+                  )}
+                />
+              </Grid>
+              <Grid item>
+                <Button className="busc" variant="text" onClick={filtrar}>
+                  <img
+                    src="https://cdn-icons-png.flaticon.com/512/3031/3031293.png"
+                    alt=""
+                    width="30"
+                    height="30"
+                  />
+                </Button>
+              </Grid>
+            </Grid>
+          </Grid>
+
+          <Grid
+            container
+            direction="row"
+            justifyContent="center"
+            alignItems="flex-start"
+          >
+            {inventario.map((vehiculo) => (
+              <Grid item xs={2} sm={4} md={4}>
+                <Card sx={{ maxWidth: 250, maxHeight: 170 }}>
+                  <CardActionArea>
+                    <CardMedia
+                      onClick={alquiler}
+                      component="img"
+                      height="80"
+                      image={vehiculo.imagen}
+                      alt="..."
+                    />
+                    <CardContent>
+                      <Typography gutterBottom variant="h7" component="div">
+                        {vehiculo.nombre}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        {vehiculo.disponibilidad !== "" ? (
+                          vehiculo.disponibilidad
+                        ) : (
+                          <div>Q {vehiculo.cuota} por dia.</div>
+                        )}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        {user === 2 ? (
+                          <div></div>
+                        ) : (
+                          <Button
+                            variant="contained"
+                            size="small"
+                            color="info"
+                            onClick={gestionar}
+                          >
+                            Gestionar Costo
+                          </Button>
+                        )}
+                      </Typography>
+                    </CardContent>
+                  </CardActionArea>
+                </Card>
+              </Grid>
+            ))}
+
+            {/* <Grid item xs={2} sm={4} md={4}>
+              <Card sx={{ maxWidth: 250, maxHeight: 170 }}>
+                <CardActionArea sx={{ padding: 0 }}>
+                  <CardMedia
+                    onClick={alquiler}
+                    component="img"
+                    height="80"
+                    image="https://www.dodge.com/content/dam/cross-regional/nafta/dodge/es_mx/Blog/2020/muscle-cars/dodge-charger-rt-1970-el-favorito-de-toretto/desktop/dodge-noticias-dodge-charger-1970-el-auto-favorito-de-toretto-cuerpo-1-dk.jpg.img.1440.jpg"
+                    alt="..."
+                  />
+                  <CardContent>
+                    <Typography gutterBottom variant="h7" component="div">
+                      Carro de Toretto
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      ocupado - Gerson Quiroa
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      {user === 2 ? (
+                        <div></div>
+                      ) : (
+                        <Button
+                          variant="contained"
+                          size="small"
+                          color="info"
+                          onClick={gestionar}
+                        >
+                          Gestionar Costo
+                        </Button>
+                      )}
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
+              </Card>
+            </Grid> */}
+          </Grid>
+          <Pagination
+            count={totalPages}
+            page={page}
+            color="success"
+            onChange={nextPage}
+            className="pag-inventario"
+          />
+        </Stack>
+      </div>
+    </main>
+  );
 }
-
-const BodyContent = styled.div`
-flex: 0.8;
-bottom: 0;
-padding-left: 75px;
-padding-right: 75px;
-padding-bottom: 150px;
-`
-
-const Container = styled.div`
-display: flex;
-`
