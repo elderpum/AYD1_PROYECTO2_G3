@@ -17,7 +17,7 @@ export function Inventario(props) {
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const categoria = ["Sedan", "Bus", "Camioneta", "Pickup", "Panel", "Camion"];
+  const categoria = ["Sedan", "Bus", "Van", "Pickup", "Panel", "Truck"];
   const [selecCategoria, setSelecCategoria] = useState("");
   const [marca, setMarca] = useState([]);
   const [selecMarca, setSelecMarca] = useState("");
@@ -150,6 +150,7 @@ export function Inventario(props) {
             direction="row"
             justifyContent="center"
             alignItems="flex-start"
+            className="grid-inventario"
           >
             <Grid
               container
@@ -202,7 +203,7 @@ export function Inventario(props) {
           >
             {inventario.map((vehiculo) => (
               <Grid item xs={2} sm={4} md={4}>
-                <Card sx={{ maxWidth: 250, maxHeight: 170 }}>
+                <Card sx={{ maxWidth: 250, maxHeight: 190 }} className="card-inventario">
                   <CardActionArea>
                     <CardMedia
                       onClick={alquiler}
@@ -243,7 +244,287 @@ export function Inventario(props) {
             ))}
 
             {/* <Grid item xs={2} sm={4} md={4}>
-              <Card sx={{ maxWidth: 250, maxHeight: 170 }}>
+              <Card sx={{ maxWidth: 250, maxHeight: 180 }}>
+                <CardActionArea sx={{ padding: 0 }}>
+                  <CardMedia
+                    onClick={alquiler}
+                    component="img"
+                    height="80"
+                    image="https://www.dodge.com/content/dam/cross-regional/nafta/dodge/es_mx/Blog/2020/muscle-cars/dodge-charger-rt-1970-el-favorito-de-toretto/desktop/dodge-noticias-dodge-charger-1970-el-auto-favorito-de-toretto-cuerpo-1-dk.jpg.img.1440.jpg"
+                    alt="..."
+                  />
+                  <CardContent>
+                    <Typography gutterBottom variant="h7" component="div">
+                      Carro de Toretto
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      ocupado - Gerson Quiroa
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      {user === 2 ? (
+                        <div></div>
+                      ) : (
+                        <Button
+                          variant="contained"
+                          size="small"
+                          color="info"
+                          onClick={gestionar}
+                        >
+                          Gestionar Costo
+                        </Button>
+                      )}
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
+              </Card>
+            </Grid>
+            <Grid item xs={2} sm={4} md={4}>
+              <Card sx={{ maxWidth: 250, maxHeight: 180 }}>
+                <CardActionArea sx={{ padding: 0 }}>
+                  <CardMedia
+                    onClick={alquiler}
+                    component="img"
+                    height="80"
+                    image="https://www.dodge.com/content/dam/cross-regional/nafta/dodge/es_mx/Blog/2020/muscle-cars/dodge-charger-rt-1970-el-favorito-de-toretto/desktop/dodge-noticias-dodge-charger-1970-el-auto-favorito-de-toretto-cuerpo-1-dk.jpg.img.1440.jpg"
+                    alt="..."
+                  />
+                  <CardContent>
+                    <Typography gutterBottom variant="h7" component="div">
+                      Carro de Toretto
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      ocupado - Gerson Quiroa
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      {user === 2 ? (
+                        <div></div>
+                      ) : (
+                        <Button
+                          variant="contained"
+                          size="small"
+                          color="info"
+                          onClick={gestionar}
+                        >
+                          Gestionar Costo
+                        </Button>
+                      )}
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
+              </Card>
+            </Grid>
+            <Grid item xs={2} sm={4} md={4}>
+              <Card sx={{ maxWidth: 250, maxHeight: 180 }}>
+                <CardActionArea sx={{ padding: 0 }}>
+                  <CardMedia
+                    onClick={alquiler}
+                    component="img"
+                    height="80"
+                    image="https://www.dodge.com/content/dam/cross-regional/nafta/dodge/es_mx/Blog/2020/muscle-cars/dodge-charger-rt-1970-el-favorito-de-toretto/desktop/dodge-noticias-dodge-charger-1970-el-auto-favorito-de-toretto-cuerpo-1-dk.jpg.img.1440.jpg"
+                    alt="..."
+                  />
+                  <CardContent>
+                    <Typography gutterBottom variant="h7" component="div">
+                      Carro de Toretto
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      ocupado - Gerson Quiroa
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      {user === 2 ? (
+                        <div></div>
+                      ) : (
+                        <Button
+                          variant="contained"
+                          size="small"
+                          color="info"
+                          onClick={gestionar}
+                        >
+                          Gestionar Costo
+                        </Button>
+                      )}
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
+              </Card>
+            </Grid>
+            <Grid item xs={2} sm={4} md={4}>
+              <Card sx={{ maxWidth: 250, maxHeight: 180 }}>
+                <CardActionArea sx={{ padding: 0 }}>
+                  <CardMedia
+                    onClick={alquiler}
+                    component="img"
+                    height="80"
+                    image="https://www.dodge.com/content/dam/cross-regional/nafta/dodge/es_mx/Blog/2020/muscle-cars/dodge-charger-rt-1970-el-favorito-de-toretto/desktop/dodge-noticias-dodge-charger-1970-el-auto-favorito-de-toretto-cuerpo-1-dk.jpg.img.1440.jpg"
+                    alt="..."
+                  />
+                  <CardContent>
+                    <Typography gutterBottom variant="h7" component="div">
+                      Carro de Toretto
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      ocupado - Gerson Quiroa
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      {user === 2 ? (
+                        <div></div>
+                      ) : (
+                        <Button
+                          variant="contained"
+                          size="small"
+                          color="info"
+                          onClick={gestionar}
+                        >
+                          Gestionar Costo
+                        </Button>
+                      )}
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
+              </Card>
+            </Grid>
+            <Grid item xs={2} sm={4} md={4}>
+              <Card sx={{ maxWidth: 250, maxHeight: 180 }}>
+                <CardActionArea sx={{ padding: 0 }}>
+                  <CardMedia
+                    onClick={alquiler}
+                    component="img"
+                    height="80"
+                    image="https://www.dodge.com/content/dam/cross-regional/nafta/dodge/es_mx/Blog/2020/muscle-cars/dodge-charger-rt-1970-el-favorito-de-toretto/desktop/dodge-noticias-dodge-charger-1970-el-auto-favorito-de-toretto-cuerpo-1-dk.jpg.img.1440.jpg"
+                    alt="..."
+                  />
+                  <CardContent>
+                    <Typography gutterBottom variant="h7" component="div">
+                      Carro de Toretto
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      ocupado - Gerson Quiroa
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      {user === 2 ? (
+                        <div></div>
+                      ) : (
+                        <Button
+                          variant="contained"
+                          size="small"
+                          color="info"
+                          onClick={gestionar}
+                        >
+                          Gestionar Costo
+                        </Button>
+                      )}
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
+              </Card>
+            </Grid>
+            <Grid item xs={2} sm={4} md={4}>
+              <Card sx={{ maxWidth: 250, maxHeight: 180 }}>
+                <CardActionArea sx={{ padding: 0 }}>
+                  <CardMedia
+                    onClick={alquiler}
+                    component="img"
+                    height="80"
+                    image="https://www.dodge.com/content/dam/cross-regional/nafta/dodge/es_mx/Blog/2020/muscle-cars/dodge-charger-rt-1970-el-favorito-de-toretto/desktop/dodge-noticias-dodge-charger-1970-el-auto-favorito-de-toretto-cuerpo-1-dk.jpg.img.1440.jpg"
+                    alt="..."
+                  />
+                  <CardContent>
+                    <Typography gutterBottom variant="h7" component="div">
+                      Carro de Toretto
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      ocupado - Gerson Quiroa
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      {user === 2 ? (
+                        <div></div>
+                      ) : (
+                        <Button
+                          variant="contained"
+                          size="small"
+                          color="info"
+                          onClick={gestionar}
+                        >
+                          Gestionar Costo
+                        </Button>
+                      )}
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
+              </Card>
+            </Grid>
+            <Grid item xs={2} sm={4} md={4}>
+              <Card sx={{ maxWidth: 250, maxHeight: 180 }}>
+                <CardActionArea sx={{ padding: 0 }}>
+                  <CardMedia
+                    onClick={alquiler}
+                    component="img"
+                    height="80"
+                    image="https://www.dodge.com/content/dam/cross-regional/nafta/dodge/es_mx/Blog/2020/muscle-cars/dodge-charger-rt-1970-el-favorito-de-toretto/desktop/dodge-noticias-dodge-charger-1970-el-auto-favorito-de-toretto-cuerpo-1-dk.jpg.img.1440.jpg"
+                    alt="..."
+                  />
+                  <CardContent>
+                    <Typography gutterBottom variant="h7" component="div">
+                      Carro de Toretto
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      ocupado - Gerson Quiroa
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      {user === 2 ? (
+                        <div></div>
+                      ) : (
+                        <Button
+                          variant="contained"
+                          size="small"
+                          color="info"
+                          onClick={gestionar}
+                        >
+                          Gestionar Costo
+                        </Button>
+                      )}
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
+              </Card>
+            </Grid>
+            <Grid item xs={2} sm={4} md={4}>
+              <Card sx={{ maxWidth: 250, maxHeight: 180 }}>
+                <CardActionArea sx={{ padding: 0 }}>
+                  <CardMedia
+                    onClick={alquiler}
+                    component="img"
+                    height="80"
+                    image="https://www.dodge.com/content/dam/cross-regional/nafta/dodge/es_mx/Blog/2020/muscle-cars/dodge-charger-rt-1970-el-favorito-de-toretto/desktop/dodge-noticias-dodge-charger-1970-el-auto-favorito-de-toretto-cuerpo-1-dk.jpg.img.1440.jpg"
+                    alt="..."
+                  />
+                  <CardContent>
+                    <Typography gutterBottom variant="h7" component="div">
+                      Carro de Toretto
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      ocupado - Gerson Quiroa
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      {user === 2 ? (
+                        <div></div>
+                      ) : (
+                        <Button
+                          variant="contained"
+                          size="small"
+                          color="info"
+                          onClick={gestionar}
+                        >
+                          Gestionar Costo
+                        </Button>
+                      )}
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
+              </Card>
+            </Grid>
+            <Grid item xs={2} sm={4} md={4}>
+              <Card sx={{ maxWidth: 250, maxHeight: 180 }}>
                 <CardActionArea sx={{ padding: 0 }}>
                   <CardMedia
                     onClick={alquiler}
@@ -277,6 +558,7 @@ export function Inventario(props) {
                 </CardActionArea>
               </Card>
             </Grid> */}
+            
           </Grid>
           <Pagination
             count={totalPages}
