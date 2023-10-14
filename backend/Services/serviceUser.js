@@ -1,4 +1,5 @@
 const db = require('../Config/databaseConfig');
+const mailer = require('../Config/mailerConfig')
 const bcrypt = require('bcrypt');
 
 //Create client
@@ -64,6 +65,55 @@ exports.auth= async (user, passw, type) => {
 
         return {authExitoso:false, message:"Contraseña incorrecta"}
     }catch (error){
-        return {authExitoso: false, message: error.message}    
+        return {authExitoso: false, message: error.message}  
+    }
+}
+  
+exports.newEmployee = async (data) => {
+    try{
+        const hash = await bcrypt.hash(data.passw, 10);
+
+        const query = 'INSERT INTO User (email, name, lastName, birthday, license, address, phone, userName, passw, type) VALUES (?,?,?,?,?,?,?,?,?,?)';
+
+        const values =[
+            data.email, 
+            data.name, 
+            data.lastName, 
+            '2000/01/01', 
+            '', 
+            data.address, 
+            data.phone, 
+            data.userName, 
+            hash, 
+            'employee'
+        ];
+
+        const result = await db.execute(query, values);
+
+        if(!result){
+            return {err: true, message: 'Error al registrar al usuario'}
+        }
+
+        const emailBody = `
+            <p>¡Bienvenido, ${data.name + data.lastName}!</p>
+            <p>Aquí están tus credenciales de inicio de sesión:</p>
+            <ul>
+            <li><strong>Nombre de usuario:</strong> ${data.userName}</li>
+            <li><strong>Contraseña:</strong> ${data.passw}</li>
+            </ul>
+            <p>Para iniciar sesión, simplemente haz clic en el siguiente enlace:</p>
+            <a href="${'http://localhost:3001/'}">Iniciar sesión</a>
+            <p>¡Gracias por unirte a nuestra plataforma!</p>
+        `;
+        
+        const mail = await mailer.sendEmail(data.email, 'Bienvenido a RentCar', emailBody)
+        if(mail.error){
+            console.log(mail.message);
+            return {error: true, message: mail.message};
+        }
+
+        return {error: false, message: "Has sido registrado exitosamente"};
+    }catch(error){
+        return {error:true, message: error.message};
     }
 }

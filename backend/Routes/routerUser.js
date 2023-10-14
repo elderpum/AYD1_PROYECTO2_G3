@@ -6,4 +6,7 @@ const controller = require('../Controllers/controllerUser');
 router.post('/registrarCliente', controller.createClient);
 router.post('/login', controller.login);
 
+//New Employee
+router.post('/registrarEmpleado', controller.createEmployee);
+
 module.exports = router;
