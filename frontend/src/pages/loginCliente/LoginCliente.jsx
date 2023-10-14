@@ -57,6 +57,16 @@ export const LoginCliente = () => {
     }
 
 
+    // Metodo para ingresar al cliente.
+    const handleNavigatetoHome = () => {
+        // Navegar a la pagina de registro.
+        navigate('/alquimovil', {
+            replace: true,
+        });
+
+    }
+
+
     // Metodo para redireccionar a otra pagina.
     const handleNavigateEmployee = () => {
         // Navegar a la pagina de registro.
@@ -92,7 +102,7 @@ export const LoginCliente = () => {
 
         e.preventDefault();
 
-        setLoginCliente(form); // Metodo para iniciar sesion.
+        setLoginCliente(form, handleNavigatetoHome); // Metodo para iniciar sesion.
 
         handleReset();
     }

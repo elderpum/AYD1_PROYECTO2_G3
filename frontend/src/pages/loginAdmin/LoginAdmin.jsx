@@ -10,6 +10,7 @@ import Link from '@mui/material/Link';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@mui/material';
 import { useForm } from '../hooks/useForm'; // Custom hook.
+import { setAdmin } from './helpers/setAdmin';
 
 
 import './loginAdmin.css'; // Stylesheet.
@@ -66,10 +67,22 @@ export const LoginAdmin = () => {
     }
 
 
+    // Metodo para ingresar al cliente.
+    const handleNavigatetoHome = () => {
+        // Navegar a la pagina de registro.
+        navigate('/alquimovil', {
+            replace: true,
+        });
+
+    }
+
+
     // Extraer los valores del formulario.
     const habdleSubmit = (e) => {
 
         e.preventDefault();
+
+        setAdmin(form, handleNavigatetoHome)
 
         handleReset();
     }

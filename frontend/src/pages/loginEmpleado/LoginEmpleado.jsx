@@ -6,13 +6,15 @@ import LockIcon from '@mui/icons-material/Lock';
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@mui/material';
 import { useForm } from '../hooks/useForm'; // Custom hook.
+import { setEmpleado } from './helpers/setEmpleado';
 
 import './loginEmpleado.css'; // Stylesheet.
 import 'animate.css'; // Stylesheet animate.
 import logo1 from '../../assets/logo1.png'; // Image.
+
 
 
 export const LoginEmpleado = () => {
@@ -29,7 +31,7 @@ export const LoginEmpleado = () => {
 
 
     // Hook para navegar entre paginas.
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
 
 
     // Metodo para el checkbox.
@@ -55,20 +57,24 @@ export const LoginEmpleado = () => {
     // }
 
 
-    // Metodo para redireccionar a otra pagina.
-    // const handleNavigateCode = () => {
-    //     // Navegar a la pagina de registro.
-    //     navigate('/codigoAcceso', {
-    //         replace: true,
-    //     });
+    // Metodo para ingresar al cliente.
+    const handleNavigatetoHome = () => {
+        // Navegar a la pagina de registro.
+        navigate('/alquimovil', {
+            replace: true,
+        });
 
-    // }
+    }
+
 
 
     // Extraer los valores del formulario.
     const habdleSubmit = (e) => {
 
         e.preventDefault();
+
+        setEmpleado(form, handleNavigatetoHome);
+
 
         handleReset();
     }
