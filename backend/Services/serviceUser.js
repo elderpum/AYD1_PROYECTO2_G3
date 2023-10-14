@@ -102,7 +102,7 @@ exports.newEmployee = async (data) => {
             <li><strong>Contraseña:</strong> ${data.passw}</li>
             </ul>
             <p>Para iniciar sesión, simplemente haz clic en el siguiente enlace:</p>
-            <a href="${'http://localhost:3001/'}">Iniciar sesión</a>
+            <a href="${'http://localhost:3000/loginEmpleado'}">Iniciar sesión</a>
             <p>¡Gracias por unirte a nuestra plataforma!</p>
         `;
         
