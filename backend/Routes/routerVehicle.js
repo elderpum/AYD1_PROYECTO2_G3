@@ -8,4 +8,7 @@ router.post('/registrarVehiculo', controller.createVehicle);
 //Get all Vehicles
 router.get('/obtenerVehiculos', controller.getAllVehicles);
 
+//Delete Vehicle
+router.delete('/eliminarVehiculo', controller.deleteVehicle);
+
 module.exports = router;

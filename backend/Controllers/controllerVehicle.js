@@ -17,3 +17,12 @@ exports.getAllVehicles = async (req, res) => {
     }
     return res.status(200).json(result);
 }
+
+exports.deleteVehicle = async (req, res) => {
+    const result = await service.deleteVehicle(req.body.licensePlate);
+    if(result.error){
+        console.log(result.message);
+        return res.status(400).json(result);
+    }
+    return res.status(200).json(result);
+}

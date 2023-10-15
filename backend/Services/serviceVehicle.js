@@ -40,3 +40,18 @@ exports.getAllVehicles = async () => {
         return {error: true, message: error.message};
     }
 }
+
+// Delete Vehicle by licensePlate in req.body
+exports.deleteVehicle = async (licensePlate) => {
+    try{
+        const query = 'DELETE FROM Vehicle WHERE licensePlate = ?';
+        const result = await db.execute(query, [licensePlate]);
+        if(!result){
+            return {err: true, message: 'Error al eliminar el vehiculo'}
+        }
+
+        return {error: false, message: "Vehiculo eliminado exitosamente"};
+    } catch(error){
+        return {error: true, message: error.message};
+    }
+}
