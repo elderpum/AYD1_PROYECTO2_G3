@@ -55,3 +55,32 @@ exports.deleteVehicle = async (licensePlate) => {
         return {error: true, message: error.message};
     }
 }
+
+// Update Vehicle by licensePlate in req.body
+exports.updateVehicle = async (data) => {
+    try {
+        const query = 'UPDATE Vehicle SET model = ?, Series_idSeries = ?, transmission = ?, seatings = ?, fuelType = ?, rentalFee = ?, state = ?, category = ? WHERE licensePlate = ?';
+
+        const values = [
+            data.model,
+            data.Series_idSeries,
+            data.transmission,
+            data.seatings,
+            data.fuelType,
+            data.rentalFee,
+            data.state,
+            data.category,
+            data.licensePlate
+        ]
+
+        const result = await db.execute(query, values);
+
+        if(!result){
+            return {err: true, message: 'Error al actualizar el vehiculo'}
+        }
+
+        return {error: false, message: "Vehiculo actualizado exitosamente"};
+    } catch (error) {
+        return {error: true, message: error.message};
+    }
+}

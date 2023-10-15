@@ -11,4 +11,7 @@ router.get('/obtenerVehiculos', controller.getAllVehicles);
 //Delete Vehicle
 router.delete('/eliminarVehiculo', controller.deleteVehicle);
 
+//Update Vehicle
+router.put('/actualizarVehiculo', controller.updateVehicle);
+
 module.exports = router;
