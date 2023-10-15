@@ -29,3 +29,14 @@ exports.newVehicle = async (data) => {
         return {error:true, message: error.message};
     }
 }
+
+// Get all Vehicles
+exports.getAllVehicles = async () => {
+    try{
+        const query = 'SELECT * FROM Vehicle';
+        const [result] = await db.execute(query);
+        return result;
+    } catch(error){
+        return {error: true, message: error.message};
+    }
+}
