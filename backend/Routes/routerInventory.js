@@ -12,6 +12,6 @@ router.get("/ejemplo", controllerAutomovil.ejemplo);
 
 
 //POST
-router.post("/get", controllerAccess.isAClient ,controllerAutomovil.getInventory);
+router.post("/get", controllerAccess.anyRole ,controllerAutomovil.getInventory);
 
 module.exports = router;
