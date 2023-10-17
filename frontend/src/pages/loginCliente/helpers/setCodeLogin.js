@@ -1,12 +1,14 @@
 const Swal = require('sweetalert2');
 
-export const setCodigo = async (form) => {
+export const setCodeLogin = async (form, handleNavigatetoHome) => {
 
     const newCode = {
-        email: form.email,
+        email: form.user,
+        code: parseInt(form.password),
     }
 
-    const url = 'http://localhost:3001/api/usuario/generarCodigoAcceso';
+    const url = 'http://localhost:3001/api/usuario/verificarCodigoAcceso';
+
 
     // Peticion al backend.
     const rep = await fetch(url, {
@@ -17,27 +19,25 @@ export const setCodigo = async (form) => {
         body: JSON.stringify(newCode)
     });
 
+
     const data = await rep.json();
 
-    if (!data.error) {
 
-        Swal.fire({
-            title: 'Exito.',
-            text: `${data.message}`,
-            icon: 'success',
-            confirmButtonText: 'Ok'
-        });
+    if (data.authExitoso) {
 
+        const token = data.tokenAuth;
+        localStorage.setItem("auth", token); // Guardar token en localstorage.
+
+        handleNavigatetoHome();
 
     } else {
 
         Swal.fire({
             title: 'Error!',
-            text: `${data.message}`,
+            text: 'Verificar codigo de acceso',
             icon: 'error',
             confirmButtonText: 'Ok'
         });
 
     }
-
 }

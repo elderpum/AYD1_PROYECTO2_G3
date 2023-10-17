@@ -6,10 +6,12 @@ import LockIcon from '@mui/icons-material/Lock';
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
+import Link from '@mui/material/Link';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@mui/material';
 import { useForm } from '../hooks/useForm'; // Custom hook.
 import { setEmpleado } from './helpers/setEmpleado';
+import { setCodeAuth } from '../helpers/setCodeAuth';
 
 import './loginEmpleado.css'; // Stylesheet.
 import 'animate.css'; // Stylesheet animate.
@@ -17,7 +19,7 @@ import logo1 from '../../assets/logo1.png'; // Image.
 
 
 
-export const LoginEmpleado = () => {
+export const LoginEmpleado = ({ setIsAuth }) => {
 
     // Custom hook para el formulario.
     const { form, handleChange, handleReset, setForm } = useForm({
@@ -47,16 +49,6 @@ export const LoginEmpleado = () => {
     };
 
 
-    // // Metodo para redireccionar a otra pagina.
-    // const handleNavigateTo = () => {
-    //     // Navegar a la pagina de inicio.
-    //     navigate('/', {
-    //         replace: true,
-    //     });
-
-    // }
-
-
     // Metodo para ingresar al cliente.
     const handleNavigatetoHome = () => {
         // Navegar a la pagina de registro.
@@ -67,13 +59,32 @@ export const LoginEmpleado = () => {
     }
 
 
+    // Metodo para redireccionar a otra pagina.
+    const handleNavigateCode = () => {
+
+        setIsAuth(true);
+
+        // Navegar a la pagina de registro.
+        navigate('/codigoAcceso', {
+            replace: true,
+        });
+
+    }
+
 
     // Extraer los valores del formulario.
     const habdleSubmit = (e) => {
 
         e.preventDefault();
 
-        setEmpleado(form, handleNavigatetoHome);
+        if (checked) {
+
+            setCodeAuth(form, handleNavigatetoHome); //Metodo para iniciar sesion con codigo de acceso.
+
+        } else {
+
+            setEmpleado(form, handleNavigatetoHome); //Metodo para iniciar sesion con contraseña.
+        }
 
 
         handleReset();
@@ -140,7 +151,6 @@ export const LoginEmpleado = () => {
                                     value={form.password}
                                     onChange={handleChange}
                                 />
-
                             </div>
 
 
@@ -153,14 +163,20 @@ export const LoginEmpleado = () => {
 
 
                             <div className='animate__animated animate__backInUp animate__delay-0.5s' style={{ display: 'flex', justifyContent: 'center', marginTop: 10 }}>
-
                                 <Button variant="contained" type="submi" color="success" sx={{ m: 1, width: 155, height: 45 }}>
                                     Ingresar
                                 </Button>
+                            </div>
 
-                                {/* <Button variant="contained" onClick={handleNavigateTo} color="error" sx={{ m: 1, width: 155, height: 45 }}>
-                                    Regresar
-                                </Button> */}
+
+                            <div className='animate__animated animate__backInUp animate__delay-0.5s' style={{ marginTop: 5 }}>
+                                <Link
+                                    component="button"
+                                    variant="body2"
+                                    onClick={handleNavigateCode}
+                                >
+                                    Enviar código de acceso
+                                </Link>
 
                             </div>
 

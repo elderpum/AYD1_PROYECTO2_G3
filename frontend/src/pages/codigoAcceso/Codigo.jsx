@@ -10,7 +10,7 @@ import { setCodigo } from './helpers/setCodigo';
 import './codigo.css';
 import logo1_black from '../../assets/logo1_black.png'; // Image.
 
-export const Codigo = () => {
+export const Codigo = ({ isAuth }) => {
 
     // Custom hook para el formulario.
     const { form, handleChange, handleReset } = useForm({
@@ -25,7 +25,7 @@ export const Codigo = () => {
     // Metodo para redireccionar a otra pagina.
     const handleNavigateTo = () => {
         // Navegar a la pagina de inicio.
-        navigate('/', {
+        navigate(isAuth ? '/loginEmpleado' : '/', {
             replace: true,
         });
 
