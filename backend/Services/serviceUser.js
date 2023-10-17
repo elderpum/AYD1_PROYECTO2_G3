@@ -117,3 +117,31 @@ exports.newEmployee = async (data) => {
         return {error:true, message: error.message};
     }
 }
+
+exports.existUser = async (user) => {
+    try{
+        const [result] = await db.execute('SELECT * FROM User u WHERE u.email = ?;', [user])
+
+        if(result.length === 0){
+            return {error: true, message:"No hay ningun usuario registrado con ese correo"}
+        }
+
+        return {error: false, message:"El usuario existe"}
+    }catch (error){
+        return {error: true, message: error.message}  
+    }
+}
+
+exports.getUserInfo = async (user) => {
+    try{
+        const [result] = await db.execute('SELECT * FROM User u WHERE u.email = ?;', [user])
+
+        if(result.length === 0){
+            return {error: true, message:"No hay ningun usuario registrado con ese correo"}
+        }
+
+        return {error: false, message:"El usuario existe", data: result[0]}
+    }catch (error){
+        return {error: true, message: error.message}  
+    }
+}
