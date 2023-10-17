@@ -1,31 +1,25 @@
-import './App.css';
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { RegistroCliente } from './pages/registroCliente/RegistroCliente';
-import { RegistroEmpleado } from './pages/registroEmpleado/RegistroEmpleado';
+import React from 'react';
+import { BrowserRouter } from "react-router-dom";
 import { AlquimovilRouter } from './router/AlquimovilRouter';
-import { LoginCliente } from './pages/loginCliente/LoginCliente';
-import { LoginAdmin } from './pages/loginAdmin/LoginAdmin';
-import { LoginEmpleado } from './pages/loginEmpleado/LoginEmpleado';
-import { Codigo } from './pages/codigoAcceso/Codigo';
+
+import './App.css';
 
 function App() {
+
   return (
-    <div className="App">
-      <BrowserRouter>
-        <Routes>
+    <div>
+      <React.StrictMode>
 
-          <Route path="/" element={<LoginCliente />} />
-          <Route path="/loginAdmin" element={<LoginAdmin />} />
-          <Route path="/loginEmpleado" element={<LoginEmpleado />} />
-          <Route path="/registroCliente" element={<RegistroCliente />} />
-          <Route path="/registroEmpleado" element={<RegistroEmpleado />} />
-          <Route path="/codigoAcceso" element={<Codigo />} />
-          <Route path="/alquimovil" element={<AlquimovilRouter />} /> {/* RUTAS HACIA NAVBAR */}
+        <BrowserRouter>
 
-        </Routes>
-      </BrowserRouter>
+          <AlquimovilRouter />
+
+        </BrowserRouter>
+
+      </React.StrictMode>
     </div>
   );
+  
 }
 
 export default App;

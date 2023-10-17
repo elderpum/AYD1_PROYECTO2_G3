@@ -1,12 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
 import AccountCircle from '@mui/icons-material/AccountCircle';
-import LockIcon from '@mui/icons-material/Lock';
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@mui/material';
 import { useForm } from '../hooks/useForm'; // Custom hook.
@@ -17,50 +13,24 @@ import './loginAdmin.css'; // Stylesheet.
 import 'animate.css'; // Stylesheet animate.
 import logo1 from '../../assets/logo1.png'; // Image.
 
+
 export const LoginAdmin = () => {
 
     // Custom hook para el formulario.
-    const { form, handleChange, handleReset, setForm } = useForm({
+    const { form, handleChange, handleReset } = useForm({
         user: '',
         password: ''
     });
-
-
-    // Hook para el checkbox.
-    const [checked, setChecked] = useState(false);
 
 
     // Hook para navegar entre paginas.
     const navigate = useNavigate();
 
 
-    // Metodo para el checkbox.
-    const handleCheckedChange = (event) => {
-
-        setChecked(event.target.checked);
-
-        setForm({
-            ...form,
-            password: ''
-        });
-
-    };
-
-
     // Metodo para redireccionar a otra pagina.
     const handleNavigateTo = () => {
         // Navegar a la pagina de inicio.
         navigate('/', {
-            replace: true,
-        });
-
-    }
-
-
-    // Metodo para redireccionar a otra pagina.
-    const handleNavigateCode = () => {
-        // Navegar a la pagina de registro.
-        navigate('/codigoAcceso', {
             replace: true,
         });
 
@@ -135,12 +105,12 @@ export const LoginAdmin = () => {
                                 <TextField
                                     required
                                     sx={{ width: 350, m: 1 }}
-                                    label={checked ? "Código" : "Contraseña"}
+                                    label="Contraseña"
                                     type='password'
                                     InputProps={{
                                         startAdornment: (
                                             <InputAdornment position="start">
-                                                {checked ? <VpnKeyIcon /> : <LockIcon />}
+                                                <VpnKeyIcon />
                                             </InputAdornment>
                                         ),
                                     }}
@@ -151,14 +121,6 @@ export const LoginAdmin = () => {
                                     onChange={handleChange}
                                 />
 
-                            </div>
-
-
-                            <div className='animate__animated animate__backInRight animate__delay-0.5s' style={{ marginTop: 2, display: 'flex', justifyContent: 'center' }}>
-                                <FormControlLabel
-                                    control={<Checkbox checked={checked} onChange={handleCheckedChange} />}
-                                    label='código de acceso'
-                                />
                             </div>
 
 
@@ -175,18 +137,6 @@ export const LoginAdmin = () => {
                             </div>
 
                         </form>
-
-
-                        <div className='animate__animated animate__backInUp animate__delay-0.5s' style={{ marginTop: 5 }}>
-                            <Link
-                                component="button"
-                                variant="body2"
-                                onClick={handleNavigateCode}
-                            >
-                                Enviar código de acceso
-                            </Link>
-
-                        </div>
 
                     </div>
 

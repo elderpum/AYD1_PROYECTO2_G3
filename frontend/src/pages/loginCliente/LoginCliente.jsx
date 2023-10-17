@@ -11,13 +11,15 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@mui/material';
 import { useForm } from '../hooks/useForm'; // Custom hook.
 import { setLoginCliente } from './helpers/setLoginCliente';
+// import { setCodeLogin } from './helpers/setCodeLogin';
+import { setCodeAuth } from '../helpers/setCodeAuth';
 
 import './loginCliente.css'; // Stylesheet.
 import 'animate.css'; // Stylesheet animate.
 import logo1 from '../../assets/logo1.png'; // Image.
 
 
-export const LoginCliente = () => {
+export const LoginCliente = ({ setIsAuth }) => {
 
     // Custom hook para el formulario.
     const { form, handleChange, handleReset, setForm } = useForm({
@@ -79,6 +81,9 @@ export const LoginCliente = () => {
 
     // Metodo para redireccionar a otra pagina.
     const handleNavigateCode = () => {
+
+        setIsAuth(false);
+
         // Navegar a la pagina de registro.
         navigate('/codigoAcceso', {
             replace: true,
@@ -102,7 +107,14 @@ export const LoginCliente = () => {
 
         e.preventDefault();
 
-        setLoginCliente(form, handleNavigatetoHome); // Metodo para iniciar sesion.
+        if (checked) {
+
+            setCodeAuth(form, handleNavigatetoHome); //Metodo para iniciar sesion con codigo.
+
+        } else {
+
+            setLoginCliente(form, handleNavigatetoHome); // Metodo para iniciar sesion.
+        }
 
         handleReset();
     }
