@@ -12,10 +12,10 @@ import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import styled from 'styled-components';
 
-export function Inventario(props) {
-  const { user } = props;
+export function Inventario() {
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
+  const [user, setUser] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
   const categoria = ["Sedan", "Bus", "Van", "Pickup", "Panel", "Truck"];
   const [selecCategoria, setSelecCategoria] = useState("");
@@ -44,14 +44,19 @@ export function Inventario(props) {
         })
         .then((res) => {
           console.log(res);
+          if (res.message === 'Invalid token') {
+            console.log("entre")
+            navigate(`/`);
+          }
           setMarca(res.data.marcas);
           setInventario(res.data.inventario);
           setTotalPages(res.data.totalPages);
+          setUser(res.data.user);
         })
         .catch((error) => console.error("Error:", error));
     };
     fetchData();
-  }, [ip]);
+  }, [ip, navigate]);
 
   const nextPage = (event, value) => {
     setPage(value);
@@ -73,7 +78,12 @@ export function Inventario(props) {
         })
         .then((res) => {
           console.log(res);
+          if (res.message === 'Invalid token') {
+            console.log("entre")
+            navigate(`/`);
+          }
           setInventario(res.data.inventario);
+          setUser(res.data.user);
         })
         .catch((error) => console.error("Error:", error));
     };
@@ -103,8 +113,13 @@ export function Inventario(props) {
         })
         .then((res) => {
           console.log(res);
+          if (res.message === 'Invalid token') {
+            console.log("entre")
+            navigate(`/`);
+          }
           setInventario(res.data.inventario);
           setTotalPages(res.data.totalPages);
+          setUser(res.data.user);
           if (res.data.totalPages === 0) {
             alert("No se encontraron resultados con los filtros seleccionados");
           }
@@ -203,7 +218,7 @@ export function Inventario(props) {
           >
             {inventario.map((vehiculo) => (
               <Grid item xs={2} sm={4} md={4}>
-                <Card sx={{ maxWidth: 250, maxHeight: 190 }} className="card-inventario">
+                <Card sx={{ maxWidth: 250, maxHeight: 210 }} className="card-inventario">
                   <CardActionArea>
                     <CardMedia
                       onClick={alquiler}
@@ -217,7 +232,7 @@ export function Inventario(props) {
                         {vehiculo.nombre}
                       </Typography>
                       <Typography variant="body2" color="text.secondary">
-                        {vehiculo.disponibilidad !== "" ? (
+                        {vehiculo.disponibilidad !== "available" ? (
                           vehiculo.disponibilidad
                         ) : (
                           <div>Q {vehiculo.cuota} por dia.</div>

@@ -1,7 +1,7 @@
 .containerContent-inventario {
   display: flex;
   justify-content: center;
-  height: 40rem;
+  height: 46rem;
   min-height: 95%;
   width: 95%;
   min-width: 85%;
@@ -14,7 +14,7 @@
   background-attachment: fixed;
   display: flex;
   justify-content: center;
-  height: 50rem;
+  height: 54rem;
   min-height: 100%;
   width: 60rem;
   min-width: 100%;
