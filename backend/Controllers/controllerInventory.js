@@ -12,7 +12,9 @@ function ejemplo(req, res){
 async function getInventory(req, res){
     try {
         const data = req.body
-        const response =await serviceAutomovil.getInventory(data);
+        const id = req.id;
+        const type = req.type;
+        const response =await serviceAutomovil.getInventory(data,id,type);
 
         if(response.err){
             return res.status(400).json(response)
