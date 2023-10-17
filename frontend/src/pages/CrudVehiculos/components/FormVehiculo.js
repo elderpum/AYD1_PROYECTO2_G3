@@ -1,9 +1,14 @@
-import React, {useState} from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 import { 
     Stack, TextField
 } from '@mui/material';
+
+import Box from '@mui/material/Box';
+import ImageList from '@mui/material/ImageList';
+import ImageListItem from '@mui/material/ImageListItem';
+
 import { ImageInput } from './ImageInput';
 
 export function FormVehiculo({ tipo, vehiculo, newImage, handleImageChange }) {
@@ -21,19 +26,20 @@ export function FormVehiculo({ tipo, vehiculo, newImage, handleImageChange }) {
             "rentalFee": "",
             "state": "",
             "category": "",
-            "photos": []
+            "images": []
         }
     }
 
     /* generación de imagenes para la edición */
+    /*
     var imagenes = [];
     if (tipo === 'edit') {
-        for (let i = 0; i < vehiculo.photos.length; i++) {
+        for (let i = 0; i < vehiculo.images.length; i++) {
             imagenes.push(
-                <ImageInput image={vehiculo.photos[i]} handleImageChange={handleImageChange} key={i}/>
+                <ImageInput image={vehiculo.images[i].img} handleImageChange={handleImageChange} key={vehiculo.images[i].id}/>
             );
         }
-    }
+    }*/
 
     return (
         <>
@@ -52,7 +58,6 @@ export function FormVehiculo({ tipo, vehiculo, newImage, handleImageChange }) {
                     label="Placa"
                     size="small"
                     sx={{ width: "15%"}}
-                    inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
                     defaultValue={vehiculo.licensePlate}
                 />
                 <TextField
@@ -116,10 +121,22 @@ export function FormVehiculo({ tipo, vehiculo, newImage, handleImageChange }) {
                 />
             </Stack>
             {tipo === 'edit' ? (
-                <ContainerImages>
-                    {/*imagenes*/}
-                </ContainerImages>
-            ) :(
+                <>
+                    <Box sx={{ width: '100%', height: 300, overflowY: 'scroll', marginTop: 2 }}>
+                        <ImageList variant="masonry" cols={2} gap={0}>
+                            {vehiculo.images.map((item) => (
+                                <ImageListItem key={item.img}>
+                                    <img
+                                        src={`${item.img}?w=161&fit=crop&auto=format`}
+                                        alt={'img'}
+                                        loading="lazy"
+                                    />
+                                </ImageListItem>
+                            ))}
+                        </ImageList>
+                    </Box>
+                </>
+            ) : (
                 <ContainerImage>
                     <ImageInput image={newImage} handleImageChange={handleImageChange}/>
                 </ContainerImage>
@@ -127,14 +144,14 @@ export function FormVehiculo({ tipo, vehiculo, newImage, handleImageChange }) {
         </>
     );
 }
-
+/*
 const ContainerImages = styled.div`
 display: flex;
 margin-top: 25px;
 overflow: auto;
 white-space: nowrap;
 `
-
+*/
 const ContainerImage = styled.div`
 display: flex;
 margin-top: 25px;

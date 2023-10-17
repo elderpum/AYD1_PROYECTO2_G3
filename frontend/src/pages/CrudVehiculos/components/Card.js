@@ -5,14 +5,15 @@ import '../../../components/Titulo.css';
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 
 import { Carousel } from 'react-responsive-carousel';
-import { Grid, Button, Stack, IconButton, Dialog, DialogTitle } from '@mui/material';
+import { Button, IconButton, Dialog, DialogTitle } from '@mui/material';
 import { FormVehiculo } from './FormVehiculo';
 
 import CloseIcon from '@mui/icons-material/Close';
 import SaveIcon from '@mui/icons-material/Save';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-
+import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
+import ImageNotSupportedIcon from '@mui/icons-material/ImageNotSupported';
 
 const Swal = require('sweetalert2')
 
@@ -68,6 +69,35 @@ export function Card({ obj }) {
         })
     };
 
+    const handleAddImage = async () => {
+        setOpen(false);
+        const { value: file } = await Swal.fire({
+            title: 'Selecciona un Imagen',
+            input: 'file',
+            inputAttributes: {
+                'accept': 'image/*',
+                'aria-label': 'Upload your profile picture'
+            }
+        })
+          
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                Swal.fire({
+                    title: 'Your uploaded picture',
+                    imageUrl: e.target.result,
+                    imageAlt: 'The uploaded picture'
+                })
+            }
+            reader.readAsDataURL(file);
+        }
+        setOpen(true);
+    };
+
+    const handleDeleteImage = () => {
+
+    };
+
     const handleSave = (e) => {
         e.preventDefault();
                 
@@ -100,10 +130,10 @@ export function Card({ obj }) {
     };
     
     var imagenes = [];
-    for (let i=0;i<obj.photos.length;i++) {
+    for (let i=0;i<obj.images.length;i++) {
         imagenes.push(
             <div>
-                <img src={obj.photos[i]} alt='imagen'/>
+                <img src={obj.images[i].img} alt='imagen' key={obj.images[i].id}/>
             </div>
         );
     }
@@ -147,11 +177,29 @@ export function Card({ obj }) {
                             handleImageChange={handleImageChange}
                             />
                         <Button
+                            startIcon={<AddPhotoAlternateIcon />}
+                            variant="outlined"
+                            color="success"
+                            onClick={handleAddImage}
+                            sx={{ marginTop: '2rem', marginBottom: '-2rem' }}
+                        >
+                            Agregar Imagen
+                        </Button>
+                        <Button
+                            startIcon={<ImageNotSupportedIcon />}
+                            variant="outlined"
+                            color="secondary"
+                            onClick={handleDeleteImage}
+                            sx={{ marginTop: '2rem', marginLeft: '1rem', marginBottom: '-2rem' }}
+                        >
+                            Eliminar Imagenes
+                        </Button>
+                        <Button
                             startIcon={<CloseIcon />}
                             variant="outlined"
                             color="error"
                             onClick={handleClose}
-                            sx={{ marginTop: '2rem', marginBottom: '-2rem' }}
+                            sx={{ marginTop: '2rem', marginLeft: '1rem', marginBottom: '-2rem' }}
                         >
                             Cancelar
                         </Button>

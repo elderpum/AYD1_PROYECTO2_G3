@@ -30,12 +30,12 @@ export function CrudVehiculos() {
         "rentalFee": "55.00",
         "state": "available",
         "category": "Sedan",
-        "photos": [
-            "https://loscoches.com/wp-content/uploads/2021/04/carros-deportivos-potencia.jpg", 
-            "https://i.ytimg.com/vi/zRlEDI01RFU/maxresdefault.jpg", 
-            "https://st1.uvnimg.com/d4/4a/006304a74db4902c0b4d8d8026c8/chevrolet-corvette-c8-stingray-2020-1280-08.jpg", 
-            "https://static.vecteezy.com/system/resources/thumbnails/008/585/294/small/3d-rendering-sport-blue-car-on-white-bakcground-jpg-free-photo.jpg", 
-            "https://www.eltiempo.com/files/article_multimedia/uploads/2019/10/15/5da64f9a11291.jpeg"
+        "images": [
+            { "id": 1, "img": "https://loscoches.com/wp-content/uploads/2021/04/carros-deportivos-potencia.jpg"},
+            { "id": 2, "img": "https://i.ytimg.com/vi/zRlEDI01RFU/maxresdefault.jpg"},
+            { "id": 3, "img": "https://st1.uvnimg.com/d4/4a/006304a74db4902c0b4d8d8026c8/chevrolet-corvette-c8-stingray-2020-1280-08.jpg"},
+            { "id": 4, "img": "https://static.vecteezy.com/system/resources/thumbnails/008/585/294/small/3d-rendering-sport-blue-car-on-white-bakcground-jpg-free-photo.jpg"},
+            { "id": 5, "img": "https://www.eltiempo.com/files/article_multimedia/uploads/2019/10/15/5da64f9a11291.jpeg"}
         ]
     }
 
