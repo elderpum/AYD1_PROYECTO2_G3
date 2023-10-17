@@ -12,7 +12,7 @@ async function getInventory(data) {
     
     let response = [];
     let query =
-    "SELECT V.licensePlate, CONCAT(B.name,' ',S.name,' ',V.model) as name, V.rentalFee, V.state from Vehicle V inner join Series S on V.Series_idSeries = S.idSeries inner join Brand B on S.Brand_idBrand = B.idBrand;";
+    "SELECT V.licensePlate, CONCAT(B.name,' ',S.name,' ',V.model) as name, V.rentalFee, V.state from Vehicle V inner join Series S on V.Series_idSeries = S.idSeries inner join Brand B on S.Brand_idBrand = B.idBrand";
 
     const params = [];
 
