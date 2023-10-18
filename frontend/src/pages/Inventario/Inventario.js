@@ -24,7 +24,7 @@ export function Inventario(props) {
   const [selecMarca, setSelecMarca] = useState("");
   const [inventario, setInventario] = useState([]);
 
-  const ip = "https://zd8mw8xl-3001.use.devtunnels.ms"; //`http://localhost:3001`;
+  const ip = `http://localhost:3001`;
 
   useEffect(() => {
     const url = `${ip}/api/inventario/get`;
