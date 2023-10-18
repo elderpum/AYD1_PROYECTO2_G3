@@ -100,7 +100,7 @@ export const Sidebar = () => {
 
       { /* Aqui van los componentes de las vistas */ }
 
-      { index === 1 && <Inventario/> }
+      { index === 1 && <Inventario setIndex={ setIndex }/> }
       { /* {index === 2 && <COMPONENTE-DESEADO />} */ }
       { /* {index === 3 && <COMPONENTE-DESEADO />} */ }
       { /* {index === 4 && <COMPONENTE-DESEADO />} */ }
