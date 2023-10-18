@@ -12,7 +12,8 @@ import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import styled from 'styled-components';
 
-export function Inventario() {
+export function Inventario(props) {
+  const { setIndex } = props;
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const [user, setUser] = useState(0);
@@ -132,7 +133,7 @@ export function Inventario() {
   const alquiler = () => {
     console.log("alquilando ", user);
     if (user === 0 || user === 2) {
-      navigate(`/alquiler/1`);
+      setIndex(6);
     } else {
       alert(
         "La funcion de alquilar solo esta disponible para clientes y administradores"
@@ -143,7 +144,7 @@ export function Inventario() {
   const gestionar = () => {
     console.log("gestionando costo ", user);
     if (user === 0 || user === 1) {
-      navigate(`/gestionarCosto/1`);
+      setIndex(7);
     } else {
       alert(
         "La funcion de gestionar el costo solo esta disponible para empleados y administradores"
