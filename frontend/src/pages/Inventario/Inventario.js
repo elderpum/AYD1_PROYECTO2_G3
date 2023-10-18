@@ -133,7 +133,7 @@ export function Inventario(props) {
   const alquiler = () => {
     console.log("alquilando ", user);
     if (user === 0 || user === 2) {
-      setIndex(6);
+      setIndex(7);
     } else {
       alert(
         "La funcion de alquilar solo esta disponible para clientes y administradores"
@@ -144,7 +144,7 @@ export function Inventario(props) {
   const gestionar = () => {
     console.log("gestionando costo ", user);
     if (user === 0 || user === 1) {
-      setIndex(7);
+      setIndex(6);
     } else {
       alert(
         "La funcion de gestionar el costo solo esta disponible para empleados y administradores"
