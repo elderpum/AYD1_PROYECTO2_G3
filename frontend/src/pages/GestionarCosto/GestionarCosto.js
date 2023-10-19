@@ -4,14 +4,12 @@ import '../../components/Titulo.css';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Grid, Button, Input, InputLabel, FormControl, InputAdornment } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
 import { BsArrowLeft } from "react-icons/bs";
 
-export function GestionarCosto() {
-    const navigate = useNavigate();
+export function GestionarCosto({setIndex}) {
 
     const regresar = () => {
-        navigate('/inicio');
+        setIndex(1);
     };
 
     let theme = createTheme({});

@@ -105,8 +105,8 @@ export const Sidebar = () => {
       { /* {index === 3 && <COMPONENTE-DESEADO />} */ }
       { /* {index === 4 && <COMPONENTE-DESEADO />} */ }
       { /* {index === 5 && <COMPONENTE-DESEADO />} */ }
-      { index === 6 && <GestionarCosto/> }
-      { index === 7 && <Alquilar/> }
+      { index === 6 && <GestionarCosto setIndex={setIndex}/> }
+      { index === 7 && <Alquilar setIndex={setIndex}/> }
       { index === 8 && <CrudVehiculos/> }
 
     </ContainerVista>

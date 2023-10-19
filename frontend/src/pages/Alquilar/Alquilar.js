@@ -7,18 +7,16 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useNavigate } from 'react-router-dom';
 import { BsArrowLeft } from "react-icons/bs";
 
-export function Alquilar() {
+export function Alquilar({setIndex}) {
     const [fechaInicio, setFechaInicio] = useState('');
     const [fechaFinal, setFechaFinal] = useState('');
-    const navigate = useNavigate();
 
     /* useEffect -> getVehiculo */
     
     const regresar = () => {
-        navigate('/inicio');
+        setIndex(1);
     };
 
     const configFechaInicio = (fecha) => {
