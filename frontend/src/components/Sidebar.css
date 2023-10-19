@@ -1,0 +1,46 @@
+.logo {
+    text-align: center;
+    margin: 1.5rem 0;
+}
+
+img {
+    max-inline-size: 70%;
+    block-size: auto;
+}
+
+.ul_sidebar {
+    margin: 0;
+    margin-top: 20px;
+    margin-left: max(1.5vw, 0.2em, 0.1rem);
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 0 1rem;
+    text-decoration: none;
+}
+
+.option {
+    padding: 2px;
+    padding-left: 12px;
+    border-radius: 4px;
+    margin: 0;
+    display: flex;
+    gap: 1rem;
+    cursor: pointer;
+    font-size: max(1vw, 0.5em, 0.5rem);
+    transition: 0.3s ease-in-out;
+    text-decoration: none;
+    &:hover {
+    color: white;
+    }
+}
+
+.activo {
+    color: #04BFBF;
+}
+
+
+.cerrar:hover {
+    color: #b60000;
+}
