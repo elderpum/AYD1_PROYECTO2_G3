@@ -46,7 +46,7 @@ export function Inventario(props) {
         .then((res) => {
           console.log(res);
           if (res.message === 'Invalid token') {
-            console.log("entre")
+            alert("Su sesión ha expirado");
             navigate(`/`);
           }
           setMarca(res.data.marcas);
@@ -80,7 +80,7 @@ export function Inventario(props) {
         .then((res) => {
           console.log(res);
           if (res.message === 'Invalid token') {
-            console.log("entre")
+            alert("Su sesión ha expirado");
             navigate(`/`);
           }
           setInventario(res.data.inventario);
@@ -115,7 +115,7 @@ export function Inventario(props) {
         .then((res) => {
           console.log(res);
           if (res.message === 'Invalid token') {
-            console.log("entre")
+            alert("Su sesión ha expirado");
             navigate(`/`);
           }
           setInventario(res.data.inventario);

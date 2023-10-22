@@ -9,6 +9,7 @@ import {
   MdOutlineEventAvailable,
   MdOutlineSettingsBackupRestore,
   MdContentPasteSearch,
+  MdPeopleAlt,
 } from "react-icons/md";
 
 import { FaCarAlt } from "react-icons/fa";
@@ -17,6 +18,7 @@ import { CrudVehiculos } from "../pages/CrudVehiculos/CrudVehiculos";
 import { Alquilar } from "../pages/Alquilar/Alquilar";
 import { GestionarCosto } from "../pages/GestionarCosto/GestionarCosto";
 import { Inventario } from "../pages/Inventario/Inventario";
+import { CRUDClientes } from "../pages/CRUDClientes/CRUDClientes";
 
 // ---- BARRA LATERAL IZQUIERDA. ---- //
 export const Sidebar = () => {
@@ -87,6 +89,11 @@ export const Sidebar = () => {
               <span>Administrar Vehiculos</span>
             </li>
 
+            <li className={`option d-flex align-items-center`} onClick={() => setIndex(9)}>
+              <MdPeopleAlt />
+              <span>Administrar Clientes</span>
+            </li>
+
             <li className="option d-flex align-items-center cerrar" onClick={cerrarSesion}>
               <MdLogout />
               <span>Cerrar Sesión</span>
@@ -108,6 +115,7 @@ export const Sidebar = () => {
       { index === 6 && <GestionarCosto setIndex={setIndex}/> }
       { index === 7 && <Alquilar setIndex={setIndex}/> }
       { index === 8 && <CrudVehiculos/> }
+      { index === 9 && <CRUDClientes/> }
 
     </ContainerVista>
 
