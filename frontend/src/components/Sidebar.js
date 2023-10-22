@@ -10,13 +10,15 @@ import {
   MdOutlineSettingsBackupRestore,
   MdContentPasteSearch,
 } from "react-icons/md";
-
-import { FaCarAlt } from "react-icons/fa";
+import { FaCarAlt, FaUserCog } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+
 import { CrudVehiculos } from "../pages/CrudVehiculos/CrudVehiculos";
 import { Alquilar } from "../pages/Alquilar/Alquilar";
 import { GestionarCosto } from "../pages/GestionarCosto/GestionarCosto";
 import { Inventario } from "../pages/Inventario/Inventario";
+import { Pago } from "../pages/Pago/Pago";
+import { CrudEmpleados } from "../pages/CrudEmpleados/CrudEmpleados";
 
 // ---- BARRA LATERAL IZQUIERDA. ---- //
 export const Sidebar = () => {
@@ -81,10 +83,14 @@ export const Sidebar = () => {
               <span>Historial de Alquileres</span>
             </li>
 
-
             <li className={`option d-flex align-items-center`} onClick={() => setIndex(8)}>
               <FaCarAlt />
               <span>Administrar Vehiculos</span>
+            </li>
+
+            <li className={`option d-flex align-items-center`} onClick={() => setIndex(10)}>
+              <FaUserCog />
+              <span>Administrar Empleados</span>
             </li>
 
             <li className="option d-flex align-items-center cerrar" onClick={cerrarSesion}>
@@ -99,7 +105,6 @@ export const Sidebar = () => {
       </Container>
 
       { /* Aqui van los componentes de las vistas */ }
-
       { index === 1 && <Inventario setIndex={ setIndex }/> }
       { /* {index === 2 && <COMPONENTE-DESEADO />} */ }
       { /* {index === 3 && <COMPONENTE-DESEADO />} */ }
@@ -108,6 +113,8 @@ export const Sidebar = () => {
       { index === 6 && <GestionarCosto setIndex={setIndex}/> }
       { index === 7 && <Alquilar setIndex={setIndex}/> }
       { index === 8 && <CrudVehiculos/> }
+      { index === 3 && <Pago setIndex={setIndex}/> }
+      { index === 10 && <CrudEmpleados/> }
 
     </ContainerVista>
 

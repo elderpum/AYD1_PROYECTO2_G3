@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./Inventario.css";
 import { useNavigate } from "react-router-dom";
+import { useGeneralContext } from '../../contexts/generalContext';
 // ui components
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
@@ -14,6 +15,7 @@ import styled from 'styled-components';
 
 export function Inventario(props) {
   const { setIndex } = props;
+  const { setVehiculo } = useGeneralContext();
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const [user, setUser] = useState(0);
@@ -130,9 +132,10 @@ export function Inventario(props) {
     fetchData();
   };
 
-  const alquiler = () => {
+  const alquiler = (v) => {
     console.log("alquilando ", user);
     if (user === 0 || user === 2) {
+      setVehiculo(v); // se guarda la informacion del vehiculo para la vista Alquilar
       setIndex(7);
     } else {
       alert(
@@ -141,9 +144,10 @@ export function Inventario(props) {
     }
   };
 
-  const gestionar = () => {
+  const gestionar = (v) => {
     console.log("gestionando costo ", user);
     if (user === 0 || user === 1) {
+      setVehiculo(v); // se guarda la informacion del vehiculo para la vista gestionar Costo
       setIndex(6);
     } else {
       alert(
@@ -222,7 +226,7 @@ export function Inventario(props) {
                 <Card sx={{ maxWidth: 250, maxHeight: 210 }} className="card-inventario">
                   <CardActionArea>
                     <CardMedia
-                      onClick={alquiler}
+                      onClick={() => alquiler(vehiculo)}
                       component="img"
                       height="80"
                       image={vehiculo.imagen}
@@ -247,7 +251,7 @@ export function Inventario(props) {
                             variant="contained"
                             size="small"
                             color="info"
-                            onClick={gestionar}
+                            onClick={() => gestionar(vehiculo)}
                           >
                             Gestionar Costo
                           </Button>

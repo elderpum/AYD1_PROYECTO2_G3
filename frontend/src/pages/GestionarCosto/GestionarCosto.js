@@ -1,12 +1,20 @@
-import React from 'react';
+import {useEffect} from 'react';
 import styled from 'styled-components';
 import '../../components/Titulo.css';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Grid, Button, Input, InputLabel, FormControl, InputAdornment } from '@mui/material';
 import { BsArrowLeft } from "react-icons/bs";
+import { useGeneralContext } from '../../contexts/generalContext';
 
 export function GestionarCosto({setIndex}) {
+    const { vehiculo } = useGeneralContext();
+
+    useEffect(() => {
+        console.log(vehiculo)
+        /* Setear fecha inicial dia actual */
+        /* Peticion para obtener un vehiculo utilizando su placa */
+    })
 
     const regresar = () => {
         setIndex(1);

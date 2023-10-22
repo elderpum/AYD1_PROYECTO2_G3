@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import '../../components/Titulo.css';
 
@@ -8,12 +8,20 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { BsArrowLeft } from "react-icons/bs";
+import { useGeneralContext } from '../../contexts/generalContext';
 
 export function Alquilar({setIndex}) {
+    const [licensePlate, setLicensePlate] = useState('');
+    const [rentalFee, setRentalFee] = useState('');
     const [fechaInicio, setFechaInicio] = useState('');
     const [fechaFinal, setFechaFinal] = useState('');
+    const { vehiculo } = useGeneralContext();
 
-    /* useEffect -> getVehiculo */
+    useEffect(() => {
+        console.log(vehiculo)
+        /* Setear fecha inicial dia actual */
+        /* Peticion para obtener un vehiculo utilizando su placa */
+    })
     
     const regresar = () => {
         setIndex(1);
@@ -82,7 +90,7 @@ export function Alquilar({setIndex}) {
                                 <h6 className='align_l'> Cuota por día: Q 20.00</h6>
                             </Grid>
                             <Grid item xs={4}>
-                                <p className='align_l'>  Cuota de Alquiler: <h4 className='align_l'>Q 100.00 </h4> </p>
+                                <p className='align_l'>  Cuota de Alquiler: <h4 className='align_l'> Q 100.00 </h4> </p>
                                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                                     <DatePicker 
                                         label="Inicio"

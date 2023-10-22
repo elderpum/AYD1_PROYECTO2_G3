@@ -18,6 +18,8 @@ import ImageNotSupportedIcon from '@mui/icons-material/ImageNotSupported';
 const Swal = require('sweetalert2')
 
 export function Card({ obj }) {
+    const ip = "http://localhost:3001"; //"https://zd8mw8xl-3001.use.devtunnels.ms"
+
     const [open, setOpen] = useState(false);
     const [newImage, setNewImage] = useState(null);
     const [newImageFile, setNewImageFile] = useState(null);
@@ -60,11 +62,38 @@ export function Card({ obj }) {
             confirmButtonText: 'Si, Eliminar!'
         }).then((result) => {
             if (result.isConfirmed) {
-                Swal.fire(
-                    'Elimiando!',
-                    'El vehículo se eliminó exitosamente.',
-                    'success'
-                )
+                /* peticion para eliminar */
+                const url = `${ip}/api/vehiculo/eliminarVehiculo`;
+                async function getInfo() {
+                    fetch(`${url}`, {
+                        method: "DELETE",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            licensePlate: obj.licensePlate 
+                        })
+                    })
+                    .then((res) => res.json())
+                    .catch((error) => console.error("Error:", error))
+                    .then((res) => {
+                        console.log(res);
+                        if (res.error) {
+                            Swal.fire(
+                                'Error!',
+                                'Hubo un error eliminando el vehiculo.',
+                                'error'
+                            )
+                        } else {
+                            Swal.fire(
+                                'Elimiando!',
+                                'El vehículo se eliminó exitosamente.',
+                                'success'
+                            )
+                        }
+                    });
+                }
+                getInfo();
             }
         })
     };
@@ -94,41 +123,42 @@ export function Card({ obj }) {
         setOpen(true);
     };
 
-    const handleDeleteImage = () => {
-
+    const handleDeleteImage = () => { 
     };
 
     const handleSave = (e) => {
         e.preventDefault();
-                
-        /**
-            ● Modelo
-            ● Marca
-            ● Transmisión
-            ● Cantidad de asientos
-            ● Tipo de combustible (Gasolina o diesel o eléctrico)
-            ● Categoría (Sedan, Bus, Camioneta, Pickup, panel, camion)
-            ● Cuota de alquiler por día.
-            ● Estado, por defecto este estará como disponible.
-        */
+
         var data = {
-            marca: e.target[0].value,
-            modelo: e.target[1].value,
-            transmision: e.target[2].value,
-            asientos: e.target[3].value,
-            combustible: e.target[4].value,
-            categoria: e.target[5].value,
-            cuota: e.target[6].value,
-            estado: e.target[7].value,
-            imagenes: [newImageFile]
+            brand: e.target[0].value,
+            licensePlate: e.target[2].value,
+            model: e.target[4].value,
+            transmission: e.target[6].value,
+            seatings: e.target[8].value,
+            fuelType: e.target[10].value,
+            category: e.target[12].value,
+            rentalFee: e.target[14].value,
+            state: e.target[16].value,
+            addImages: [],
+            deleteImages: []
         };
-
         console.log(data)
+        
+        if (!(/^[0-9]{0,4}$/.test(data.model) && data.model <= 2023)) {
+            alert("Modelo inválido para el vehículo")
+            return;
+        }
 
+        if (!(/^-?\d*\.?\d+$/.test(data.rentalFee))) {
+            alert("Cuota inválida para el vehículo")
+            return;
+        }
+        
         handleClose();
         /** petición update vehiculo */
     };
-    
+
+    /*
     var imagenes = [];
     for (let i=0;i<obj.images.length;i++) {
         imagenes.push(
@@ -137,11 +167,12 @@ export function Card({ obj }) {
             </div>
         );
     }
-    
+    */
+
     return (
         <CardContainer>
             <Carousel showArrows={true} showThumbs={false} width={"290px"} infiniteLoop={true}>
-                {imagenes}
+                {/*imagenes*/}
             </Carousel>
             <h5> {obj.brand} </h5>
             <h6> Placa: {obj.licensePlate} </h6>
@@ -175,7 +206,7 @@ export function Card({ obj }) {
                             vehiculo={obj}
                             newImage={newImage}
                             handleImageChange={handleImageChange}
-                            />
+                        />
                         <Button
                             startIcon={<AddPhotoAlternateIcon />}
                             variant="outlined"
