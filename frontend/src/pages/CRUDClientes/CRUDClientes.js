@@ -46,9 +46,12 @@ export function CRUDClientes() {
   useEffect(() => {
     const url = `${ip}/api/admin/clients/get`;
     const token = localStorage.getItem("auth");
+    const dataAux = { page: page };
+    console.log(dataAux);
     const fetchData = async () => {
       fetch(url, {
         method: "GET",
+        body: JSON.stringify(dataAux),
         headers: {
           "Content-Type": "application/json",
           Authorization: `${token}`,
@@ -69,7 +72,7 @@ export function CRUDClientes() {
         .catch((error) => console.error("Error:", error));
     };
     fetchData();
-  }, [navigate]);
+  }, [navigate, page]);
 
   const handleClose = () => {
     setOpen(false);
@@ -97,8 +100,8 @@ export function CRUDClientes() {
           return res.json();
         })
         .then((res) => {
-          console.log("res: ",res);
-          if (res.message === 'Invalid token') {
+          console.log("res: ", res);
+          if (res.message === "Invalid token") {
             alert("Su sesión ha expirado");
             navigate(`/`);
           }
@@ -120,40 +123,39 @@ export function CRUDClientes() {
     };
     fetchData();
     handleClose();
-    /** petición update vehiculo */
   };
 
-  // const nextPage = (event, value) => {
-  //   setPage(value);
-  //   const url = `${ip}/api/inventario/get`;
-  //   const token = localStorage.getItem("auth");
-  //   const data = { categoria: selecCategoria, marca: selecMarca, page: value };
-  //   console.log(data);
-  //   const fetchData = async () => {
-  //     fetch(url, {
-  //       method: "POST",
-  //       body: JSON.stringify(data),
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: `${token}`,
-  //       },
-  //     })
-  //       .then((res) => {
-  //         return res.json();
-  //       })
-  //       .then((res) => {
-  //         console.log(res);
-  //         if (res.message === "Invalid token") {
-  //           console.log("entre");
-  //           navigate(`/`);
-  //         }
-  //         setInventario(res.data.inventario);
-  //         setUser(res.data.user);
-  //       })
-  //       .catch((error) => console.error("Error:", error));
-  //   };
-  //   fetchData();
-  // };
+  const nextPage = (event, value) => {
+    setPage(value);
+    const url = `${ip}/api/admin/clients/get`;
+    const token = localStorage.getItem("auth");
+    const dataAux = { page: page };
+    console.log(dataAux);
+    const fetchData = async () => {
+      fetch(url, {
+        method: "POST",
+        body: JSON.stringify(dataAux),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `${token}`,
+        },
+      })
+        .then((res) => {
+          return res.json();
+        })
+        .then((res) => {
+          console.log(res);
+          if (res.message === "Invalid token") {
+            alert("Su sesión ha expirado");
+            navigate(`/`);
+          }
+          setClientes(res.data.clients);
+          setTotalPages(res.data.totalPages);
+        })
+        .catch((error) => console.error("Error:", error));
+    };
+    fetchData();
+  };
 
   return (
     <BodyContent>
@@ -169,9 +171,10 @@ export function CRUDClientes() {
       </Button>
       <Info>
         <Stack direction="row" spacing={1} useFlexGap flexWrap="wrap">
-          {/*vehiculos.map((vehiculo) => { return (
-                    <Card obj={vehiculo} key={vehiculo.licensePlate}/>
-                )})*/}
+          {clientes.map((cliente) => (
+            <Card obj={cliente} key={cliente.licencia} />
+          ))}
+
           <Card obj={cliente} key={cliente.licencia} />
           <Card obj={cliente} key={cliente.licencia} />
           <Card obj={cliente} key={cliente.licencia} />
@@ -228,7 +231,7 @@ export function CRUDClientes() {
         count={totalPages}
         page={page}
         color="success"
-        // onChange={nextPage}
+        onChange={nextPage}
         className="pag-inventario"
       />
     </BodyContent>
