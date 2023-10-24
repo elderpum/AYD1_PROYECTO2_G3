@@ -84,3 +84,25 @@ exports.updateVehicle = async (data) => {
         return {error: true, message: error.message};
     }
 }
+
+// Update vehicle rentalFee by licensePlate in req.body
+exports.updateRentalFee = async (data) => {
+    try {
+        const query = 'UPDATE Vehicle SET rentalFee = ? WHERE licensePlate = ?';
+
+        const values = [
+            data.rentalFee,
+            data.licensePlate
+        ]
+
+        const result = await db.execute(query, values);
+
+        if(!result){
+            return {err: true, message: 'Error al actualizar el vehiculo'}
+        }
+
+        return {error: false, message: "Vehiculo actualizado exitosamente"};
+    } catch (error) {
+        return {error: true, message: error.message};
+    }
+}
