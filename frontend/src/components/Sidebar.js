@@ -8,7 +8,7 @@ import {
   MdLogout,
   MdOutlineEventAvailable,
   MdOutlineSettingsBackupRestore,
-  MdContentPasteSearch,
+  MdCarRental,
 } from "react-icons/md";
 import { FaCarAlt, FaUserCog } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
@@ -19,6 +19,7 @@ import { GestionarCosto } from "../pages/GestionarCosto/GestionarCosto";
 import { Inventario } from "../pages/Inventario/Inventario";
 import { Pago } from "../pages/Pago/Pago";
 import { CrudEmpleados } from "../pages/CrudEmpleados/CrudEmpleados";
+import { Solicitud } from '../pages/SolicitudRenta/Solicitud'
 
 // ---- BARRA LATERAL IZQUIERDA. ---- //
 export const Sidebar = () => {
@@ -66,9 +67,9 @@ export const Sidebar = () => {
             </li>
 
 
-            <li className={`option d-flex align-items-center`} onClick={() => setIndex(2)}>
-              <MdContentPasteSearch />
-              <span>Solicitudes de Reserva</span>
+            <li className={`option d-flex align-items-center`} onClick={() => setIndex(20)}>
+              <MdCarRental />
+              <span>Solicitudes de Rentas</span>
             </li>
 
 
@@ -88,6 +89,8 @@ export const Sidebar = () => {
               <span>Administrar Vehiculos</span>
             </li>
 
+
+
             <li className={`option d-flex align-items-center`} onClick={() => setIndex(10)}>
               <FaUserCog />
               <span>Administrar Empleados</span>
@@ -104,17 +107,15 @@ export const Sidebar = () => {
 
       </Container>
 
-      { /* Aqui van los componentes de las vistas */ }
-      { index === 1 && <Inventario setIndex={ setIndex }/> }
-      { /* {index === 2 && <COMPONENTE-DESEADO />} */ }
-      { /* {index === 3 && <COMPONENTE-DESEADO />} */ }
-      { /* {index === 4 && <COMPONENTE-DESEADO />} */ }
-      { /* {index === 5 && <COMPONENTE-DESEADO />} */ }
-      { index === 6 && <GestionarCosto setIndex={setIndex}/> }
-      { index === 7 && <Alquilar setIndex={setIndex}/> }
-      { index === 8 && <CrudVehiculos/> }
-      { index === 3 && <Pago setIndex={setIndex}/> }
-      { index === 10 && <CrudEmpleados/> }
+      { /* Aqui van los componentes de las vistas */}
+      {index === 1 && <Inventario setIndex={setIndex} />}
+      {index === 3 && <Pago setIndex={setIndex} />}
+      {index === 6 && <GestionarCosto setIndex={setIndex} />}
+      {index === 7 && <Alquilar setIndex={setIndex} />}
+      {index === 8 && <CrudVehiculos />}
+      {index === 10 && <CrudEmpleados />}
+
+      {index === 20 && <Solicitud />}
 
     </ContainerVista>
 
