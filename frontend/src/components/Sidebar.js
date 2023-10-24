@@ -20,6 +20,7 @@ import { Inventario } from "../pages/Inventario/Inventario";
 import { Pago } from "../pages/Pago/Pago";
 import { CrudEmpleados } from "../pages/CrudEmpleados/CrudEmpleados";
 import { Solicitud } from '../pages/SolicitudRenta/Solicitud'
+import { Historial } from "../pages/HistorialAlquiler/Historial";
 
 // ---- BARRA LATERAL IZQUIERDA. ---- //
 export const Sidebar = () => {
@@ -89,8 +90,6 @@ export const Sidebar = () => {
               <span>Administrar Vehiculos</span>
             </li>
 
-
-
             <li className={`option d-flex align-items-center`} onClick={() => setIndex(10)}>
               <FaUserCog />
               <span>Administrar Empleados</span>
@@ -115,6 +114,7 @@ export const Sidebar = () => {
       {index === 8 && <CrudVehiculos />}
       {index === 10 && <CrudEmpleados />}
 
+      {index === 4 && <Historial />}
       {index === 20 && <Solicitud />}
 
     </ContainerVista>
