@@ -1,4 +1,3 @@
-const fs = require("fs");
 const db = require("../Config/databaseConfig");
 
 function ejemploAutomovil() {
@@ -97,6 +96,38 @@ async function getInventory(data,id,type) {
       employee: 1,
       client: 2,
     };
+
+    let fechaDev = ""
+    let vehiculo = {}
+
+    if(type == 'client'){
+      query = `SELECT V.model, CONCAT(B.name,' ',S.name) as Brand, V.transmission, V.seatings, V.fuelType, V.category, R.rentalFee, V.licensePlate, R.rentalEnd  FROM Request R
+                inner join ayd1p2.Vehicle V on R.Vehicle_licensePlate = V.licensePlate
+              inner join ayd1p2.Series S on V.Series_idSeries = S.idSeries
+              inner join ayd1p2.Brand B on S.Brand_idBrand = B.idBrand
+                WHERE User_email = ?;`
+
+      const [result] = await db.query(query, [id]);
+
+      query = `SELECT link from Image
+                WHERE Vehicle_licensePlate = ;`
+
+      const [image] = await db.query(query, [result[0].licensePlate]);
+      
+
+      fechaDev = result[0].rentalEnd
+      vehiculo = {
+        imagen: image[0].link,
+        modelo: result[0].model,
+        marca: result[0].Brand,
+        transmision: result[0].transmission,
+        asientos: result[0].seatings,
+        combustible: result[0].fuelType,
+        categoria: result[0].category,
+        cuota: result[0].rentalFee
+      }
+    }
+
 
     const numero = parseInt(tipos[type]);
 
