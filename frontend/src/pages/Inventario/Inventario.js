@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import "./Inventario.css";
 import { useNavigate } from "react-router-dom";
 import { format, set } from "date-fns";
@@ -28,6 +28,29 @@ export function Inventario(props) {
 
   const ip = `http://localhost:3001`;
 
+  const mostrarDevolucion = useCallback((res) => {
+    // devolución de vehiculo
+    const fechaAux = new Date();
+    const fechaActual = format(fechaAux, "yyyy-MM-dd");
+    console.log("fechaactual: ", fechaActual);
+    if (res.fechaDevolucion !== "" && res.fechaDevolucion === fechaActual) {
+      Swal.fire({
+        title: `FECHA LÍMITE: ${res.fechaDevolucion}`,
+        icon: "info",
+        html: mensajeDevolucion(res.vehiculo),
+        showCloseButton: true,
+        focusConfirm: true,
+        confirmButtonText: `¡DEVOLVER Y PAGAR!`,
+        confirmButtonAriaLabel: "Thumbs up, great!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          console.log("devolviendo");
+          setIndex(7);
+        }
+      });
+    }
+  }, [setIndex]);
+
   useEffect(() => {
     // const fechaAux = new Date();
     // const fechaActual = format(fechaAux, "yyyy-MM-dd");
@@ -43,7 +66,7 @@ export function Inventario(props) {
     //   cuota: "1000",
     // };
     // console.log("fechaactual: ", fechaActual);
-    // const fecha = "2023-10-22";
+    // const fecha = "2023-10-23";
     // if (fecha === fechaActual) {
     //   Swal.fire({
     //     title: `FECHA LÍMITE: ${fecha}`,
@@ -87,35 +110,13 @@ export function Inventario(props) {
           setInventario(res.data.inventario);
           setTotalPages(res.data.totalPages);
           setUser(res.data.user);
-
           // devolución de vehiculo
-          const fechaAux = new Date();
-          const fechaActual = format(fechaAux, "yyyy-MM-dd");
-          console.log("fechaactual: ", fechaActual);
-          if (
-            res.fechaDevolucion !== "" &&
-            res.fechaDevolucion === fechaActual
-          ) {
-            Swal.fire({
-              title: `FECHA LÍMITE: ${res.fechaDevolucion}`,
-              icon: "info",
-              html: mensajeDevolucion(res.vehiculo),
-              showCloseButton: true,
-              focusConfirm: true,
-              confirmButtonText: `¡DEVOLVER Y PAGAR!`,
-              confirmButtonAriaLabel: "Thumbs up, great!",
-            }).then((result) => {
-              if (result.isConfirmed) {
-                console.log("devolviendo");
-                setIndex(7);
-              }
-            });
-          }
+          mostrarDevolucion(res);
         })
         .catch((error) => console.error("Error:", error));
     };
     fetchData();
-  }, [ip, navigate, setIndex]);
+  }, [ip, navigate, mostrarDevolucion]);
 
   const mensajeDevolucion = (vehiculo) => {
     return `<div>
@@ -173,6 +174,14 @@ export function Inventario(props) {
           }
           setInventario(res.data.inventario);
           setUser(res.data.user);
+
+          // devolución de vehiculo
+          const fechaAux = new Date();
+          const fechaActual = format(fechaAux, "yyyy-MM-dd");
+          console.log("fechaactual: ", fechaActual);
+          
+          // devolución de vehiculo
+          mostrarDevolucion(res);
         })
         .catch((error) => console.error("Error:", error));
     };
@@ -212,6 +221,14 @@ export function Inventario(props) {
           if (res.data.totalPages === 0) {
             alert("No se encontraron resultados con los filtros seleccionados");
           }
+
+          // devolución de vehiculo
+          const fechaAux = new Date();
+          const fechaActual = format(fechaAux, "yyyy-MM-dd");
+          console.log("fechaactual: ", fechaActual);
+          
+          // devolución de vehiculo
+          mostrarDevolucion(res);
         })
         .catch((error) => console.error("Error:", error));
     };
@@ -349,7 +366,6 @@ export function Inventario(props) {
                   </Card>
                 </Grid>
               ))}
-
             </Grid>
             <Pagination
               count={totalPages}
