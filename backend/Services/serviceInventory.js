@@ -101,7 +101,7 @@ async function getInventory(data,id,type) {
     let vehiculo = {}
 
     if(type == 'client'){
-      query = `SELECT V.model, CONCAT(B.name,' ',S.name) as Brand, V.transmission, V.seatings, V.fuelType, V.category, R.rentalFee, V.licensePlate, R.rentalEnd  FROM Request R
+      query = `SELECT V.model, CONCAT(B.name,' ',S.name) as Brand, V.transmission, V.seatings, V.fuelType, V.category, V.rentalFee, V.licensePlate, R.rentalEnd  FROM Request R
                 inner join ayd1p2.Vehicle V on R.Vehicle_licensePlate = V.licensePlate
               inner join ayd1p2.Series S on V.Series_idSeries = S.idSeries
               inner join ayd1p2.Brand B on S.Brand_idBrand = B.idBrand
@@ -110,12 +110,12 @@ async function getInventory(data,id,type) {
       const [result] = await db.query(query, [id]);
 
       query = `SELECT link from Image
-                WHERE Vehicle_licensePlate = ;`
+                WHERE Vehicle_licensePlate = ?;`
 
       const [image] = await db.query(query, [result[0].licensePlate]);
       
-
-      fechaDev = result[0].rentalEnd
+      const date = new Date(result[0].rentalEnd);
+      fechaDev = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`
       vehiculo = {
         imagen: image[0].link,
         modelo: result[0].model,
@@ -141,6 +141,8 @@ async function getInventory(data,id,type) {
           inventario: [],
           totalPages: 0,
         },
+        fechaDevolucion: fechaDev,
+        vehiculo: vehiculo
       }
     }
 
@@ -154,6 +156,8 @@ async function getInventory(data,id,type) {
           inventario: [],
           totalPages: 0,
         },
+        fechaDevolucion: fechaDev,
+        vehiculo: vehiculo
       }
     }
 
@@ -167,6 +171,8 @@ async function getInventory(data,id,type) {
         totalPages: arregloBidimensional.length,
         client: ''
       },
+      fechaDevolucion: fechaDev,
+      vehiculo: vehiculo
     };
   } catch (error) {
     return {

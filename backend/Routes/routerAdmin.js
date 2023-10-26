@@ -6,17 +6,14 @@ const router = express.Router();
 const controllerAccess = require('../Controllers/controllerAccess');
 const controllerAdmin = require('../Controllers/controllerAdmin');
 
-
-//GET
-router.get("/clients", controllerAdmin.getClients);
-
 //POST
-router.post("/client", controllerAdmin.createClient);
+router.post("/client/create",controllerAccess.isAnAdmin ,controllerAdmin.createClient);
+router.post("/clients",controllerAccess.isAnAdmin ,controllerAdmin.getClients);
 
 //PUT
-router.put("/client",  controllerAdmin.updateClient);
+router.post("/client/update", controllerAccess.isAnAdmin ,controllerAdmin.updateClient);
 
 //DELETE
-router.delete("/client", controllerAdmin.deleteClient);
+router.post("/client/delete", controllerAccess.isAnAdmin ,controllerAdmin.deleteClient);
 
 module.exports = router;
