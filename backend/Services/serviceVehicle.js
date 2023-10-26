@@ -1,5 +1,16 @@
 const db = require('../Config/databaseConfig');
 const bcrypt = require('bcrypt');
+const controllerS3 = require("../Controllers/controllerS3");
+
+function generarRandom(num) {
+    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    const charactersLength = characters.length;
+    let result = "";
+    for (let i = 0; i < num; i++) {
+          result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }  
+    return result;
+}
 
 //Create vehicle
 exports.newVehicle = async (data) => {
@@ -18,11 +29,32 @@ exports.newVehicle = async (data) => {
             data.category
         ];
 
+        // const randomName = generarRandom(5);
+        // const nameFile = randomName + '_' + data.licensePlate + '.jpg';
+
+        // const image = data.newImages;
+
+        // const s3Response = await controllerS3.uploadFile(nameFile, image);
+        // let imageLink = s3Response.link;
+
         const result = await db.execute(query, values);
 
         if(!result){
             return {err: true, message: 'Error al registrar el vehiculo'}
         }
+
+        // const query2 = 'INSERT INTO Image (Vehicle_licensePlate, link) VALUES (?, ?)';
+
+        // const values2 = [
+        //     data.licensePlate,
+        //     imageLink
+        // ];
+
+        // const result2 = await db.execute(query2, values2);
+
+        // if(!result2){
+        //     return {err: true, message: 'Error al registrar la imagen'}
+        // }
 
         return {error: false, message: "Vehiculo registrado exitosamente"};
     } catch(error){
