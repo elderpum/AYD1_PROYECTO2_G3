@@ -15,7 +15,10 @@ app.use(function (req, res, next) {
   );
   next();
 });
-
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+}));
 
 //MIDDLEWARE
 

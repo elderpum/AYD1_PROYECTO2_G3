@@ -98,8 +98,8 @@ async function createClient(data){
 
 async function getClients(data){
     try {
-        query = `SELECT name,lastName,birthday,license,address,email,phone,userName FROM User where type = 'client';`
-        cosnt [result] = await db.query(query, params);
+        let query = `SELECT name,lastName,birthday,license,address,email,phone,userName FROM User where type = 'client';`
+        const [result] = await db.query(query, []);
 
         const clientsArray = [];
 
@@ -118,8 +118,8 @@ async function getClients(data){
 
         const arregloBidimensional = [];
 
-        for (let i = 0; i < vehiclesArr.length; i += 9) {
-            const subarreglo = vehiclesArr.slice(i, i + 9);
+        for (let i = 0; i < clientsArray.length; i += 9) {
+            const subarreglo = clientsArray.slice(i, i + 9);
             arregloBidimensional.push(subarreglo);
         }
 
@@ -128,22 +128,28 @@ async function getClients(data){
               ok: false,
               message: "No hay clientes disponibles",
               clients:arregloBidimensional,
-              totalpages: 0
+              totalPages: 0
             }
           }
-
+        let pagina = data.page
+        if(arregloBidimensional.length == 1){
+            pagina = 0
+        }else{
+            pagina = data.page - 1
+        }
+          
         return {
             message: "Clientes Encontrados",
             ok: true,
-            clients: arregloBidimensional[data.page -1],
-            totalpages: arregloBidimensional.length
+            clients: arregloBidimensional[pagina],
+            totalPages: arregloBidimensional.length
         };
     } catch (error) {
         return {
             message: error.message,
             ok: false,
             clients: [],
-            totalpages: 0
+            totalPages: 0
         };
     }
 }
