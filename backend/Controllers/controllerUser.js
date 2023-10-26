@@ -92,3 +92,15 @@ exports.loginByCode = async (req, res) => {
 
     return res.status(401).json({authExitoso:false, message:"Código expirado"})
 }
+
+exports.getUserInfo = async (req, res) => {
+    const {email} = req.id;
+    const info = await service.getUserInfo(email)
+
+    if(info.error){
+        console.log(info.message);
+        return res.status(400).json(info);
+    }
+
+    return res.status(200).json(info);
+}

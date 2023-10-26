@@ -145,3 +145,17 @@ exports.getUserInfo = async (user) => {
         return {error: true, message: error.message}  
     }
 }
+
+exports.getUserInfoByUsername = async (user) => {
+    try{
+        const [result] = await db.execute('SELECT * FROM User u WHERE u.userName = ?;', [user])
+
+        if(result.length === 0){
+            return {error: true, message:"No hay ningun usuario registrado con ese correo"}
+        }
+
+        return {error: false, message:"El usuario existe", data: result[0]}
+    }catch (error){
+        return {error: true, message: error.message}  
+    }
+}
