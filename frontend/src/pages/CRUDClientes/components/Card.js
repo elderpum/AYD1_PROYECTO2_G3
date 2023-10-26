@@ -15,7 +15,7 @@ import { useNavigate } from "react-router-dom";
 
 const Swal = require("sweetalert2");
 
-export function Card({ obj }) {
+export function Card({ obj, key, setClientes, setTotalPages, page }) {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const ip = "http://localhost:3001";
@@ -25,6 +25,19 @@ export function Card({ obj }) {
   };
   const handleOpen = () => {
     setOpen(true);
+  };
+
+  const verificacionToken = (res) => {
+    if (res.message === "No token provided") {
+      alert(res.message);
+      navigate(`/`);
+    } else if (res.message === "Invalid type token") {
+      alert("No tienes permiso para accederer a esta página.");
+      navigate(`/`);
+    } else if (res.message === "Invalid token") {
+      alert("Su sesión ha expirado");
+      navigate(`/`);
+    }
   };
 
   const handleDelete = () => {
@@ -38,8 +51,9 @@ export function Card({ obj }) {
       confirmButtonText: "Si, Eliminar!",
     }).then((result) => {
       if (result.isConfirmed) {
-        const data = { id: obj.id };
-        const url = `${ip}/api/admin/clients/delete`;
+        setClientes([]);
+        const data = { email: obj.email, page: page };
+        const url = `${ip}/api/admin/client/delete`;
         const token = localStorage.getItem("auth");
         console.log(data);
         const fetchData = async () => {
@@ -56,10 +70,9 @@ export function Card({ obj }) {
             })
             .then((res) => {
               console.log("res: ", res);
-              if (res.message === "Invalid token") {
-                alert("Su sesión ha expirado");
-                navigate(`/`);
-              }
+              verificacionToken(res);
+              setClientes(res.clients);
+              setTotalPages(res.totalPages);
               if (res.ok) {
                 Swal.fire(
                   "¡Eliminado!",
@@ -83,14 +96,15 @@ export function Card({ obj }) {
 
   const updateClient = (e) => {
     e.preventDefault();
+    setClientes([]);
     const data = obj;
-    const url = `${ip}/api/admin/clients/update`;
+    const url = `${ip}/api/admin/client/update`;
     const token = localStorage.getItem("auth");
     console.log(data);
     const fetchData = async () => {
       fetch(url, {
         method: "POST",
-        body: JSON.stringify(data),
+        body: JSON.stringify({client: data, page: page}),
         headers: {
           "Content-Type": "application/json",
           Authorization: `${token}`,
@@ -101,10 +115,9 @@ export function Card({ obj }) {
         })
         .then((res) => {
           console.log("res: ", res);
-          if (res.message === "Invalid token") {
-            alert("Su sesión ha expirado");
-            navigate(`/`);
-          }
+          verificacionToken(res);
+          setClientes(res.clients);
+          setTotalPages(res.totalPages);
           if (res.ok) {
             Swal.fire(
               "¡Cliente actualizado!",
@@ -178,7 +191,7 @@ export function Card({ obj }) {
       >
         <DialogTitle style={{ textAlign: "center" }}>
           <form onSubmit={updateClient}>
-            <FormCliente cliente={obj} />
+            <FormCliente cliente={obj} create={false} />
             <Button
               startIcon={<CloseIcon />}
               variant="outlined"

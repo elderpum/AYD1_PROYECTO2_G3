@@ -4,7 +4,7 @@ import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 
-export function FormCliente({ cliente }) {
+export function FormCliente({ cliente, create }) {
   // Estado de la fecha de nacimiento.
   const [date, setDate] = useState(
     cliente.nacimiento !== "" ? dayjs(cliente.nacimiento) : null
@@ -102,10 +102,22 @@ export function FormCliente({ cliente }) {
           label="Usuario"
           size="small"
           sx={{ width: "30%" }}
-            inputProps={{ inputMode: "text" }}
+          inputProps={{ inputMode: "text" }}
           defaultValue={cliente.user}
           onChange={(e) => (cliente.user = e.target.value)}
         />
+        {create && (
+          <TextField
+            required
+            id="outlined-required"
+            label="Password"
+            size="small"
+            sx={{ width: "30%" }}
+            inputProps={{ inputMode: "password" }}
+            defaultValue={cliente.password}
+            onChange={(e) => (cliente.password = e.target.value)}
+          />
+        )}
         <LocalizationProvider dateAdapter={AdapterDayjs} required>
           <DatePicker
             required

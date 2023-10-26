@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import styled from "styled-components";
 import "../../components/Titulo.css";
 
@@ -29,28 +29,35 @@ export function CRUDClientes() {
     email: "",
     telefono: "",
     user: "",
+    password: "",
   };
 
   const ip = "http://localhost:3001";
-  const cliente = {
-    nombre: "Lionel",
-    apellido: "Messi",
-    nacimiento: "1987-06-24",
-    licencia: 1111111111111,
-    direccion: "Maimi, Florida, USA",
-    email: "lionelmessi@goat.com",
-    telefono: 12345678,
-    user: "messi10",
-  };
+
+  const verificacionToken = useCallback(
+    (res) => {
+      if (res.message === "No token provided") {
+        alert(res.message);
+        navigate(`/`);
+      } else if (res.message === "Invalid type token") {
+        alert("No tienes permiso para accederer a esta página.");
+        navigate(`/`);
+      } else if (res.message === "Invalid token") {
+        alert("Su sesión ha expirado");
+        navigate(`/`);
+      }
+    },
+    [navigate]
+  );
 
   useEffect(() => {
-    const url = `${ip}/api/admin/clients/get`;
+    const url = `${ip}/api/admin/clients`;
     const token = localStorage.getItem("auth");
     const dataAux = { page: page };
     console.log(dataAux);
     const fetchData = async () => {
       fetch(url, {
-        method: "GET",
+        method: "POST",
         body: JSON.stringify(dataAux),
         headers: {
           "Content-Type": "application/json",
@@ -61,18 +68,15 @@ export function CRUDClientes() {
           return res.json();
         })
         .then((res) => {
-          console.log(res);
-          if (res.message === "Invalid token") {
-            alert("Su sesión ha expirado");
-            navigate(`/`);
-          }
-          setClientes(res.data.clients);
-          setTotalPages(res.data.totalPages);
+          console.log("res: ", res);
+          verificacionToken(res);
+          setClientes(res.clients);
+          setTotalPages(res.totalPages);
         })
         .catch((error) => console.error("Error:", error));
     };
     fetchData();
-  }, [navigate, page]);
+  }, [navigate, page, verificacionToken]);
 
   const handleClose = () => {
     setOpen(false);
@@ -84,13 +88,14 @@ export function CRUDClientes() {
 
   const newClient = (e) => {
     e.preventDefault();
-    const url = `${ip}/api/admin/clients/create`;
+    setClientes([]);
+    const url = `${ip}/api/admin/client/create`;
     const token = localStorage.getItem("auth");
     console.log(data);
     const fetchData = async () => {
       fetch(url, {
         method: "POST",
-        body: JSON.stringify(data),
+        body: JSON.stringify({ client: data, page: page }),
         headers: {
           "Content-Type": "application/json",
           Authorization: `${token}`,
@@ -101,10 +106,9 @@ export function CRUDClientes() {
         })
         .then((res) => {
           console.log("res: ", res);
-          if (res.message === "Invalid token") {
-            alert("Su sesión ha expirado");
-            navigate(`/`);
-          }
+          verificacionToken(res);
+          setClientes(res.clients);
+          setTotalPages(res.totalPages);
           if (res.ok) {
             Swal.fire(
               "¡Cliente creado!",
@@ -126,8 +130,9 @@ export function CRUDClientes() {
   };
 
   const nextPage = (event, value) => {
+    setClientes([]);
     setPage(value);
-    const url = `${ip}/api/admin/clients/get`;
+    const url = `${ip}/api/admin/clients`;
     const token = localStorage.getItem("auth");
     const dataAux = { page: page };
     console.log(dataAux);
@@ -145,10 +150,7 @@ export function CRUDClientes() {
         })
         .then((res) => {
           console.log(res);
-          if (res.message === "Invalid token") {
-            alert("Su sesión ha expirado");
-            navigate(`/`);
-          }
+          verificacionToken(res);
           setClientes(res.data.clients);
           setTotalPages(res.data.totalPages);
         })
@@ -172,18 +174,14 @@ export function CRUDClientes() {
       <Info>
         <Stack direction="row" spacing={1} useFlexGap flexWrap="wrap">
           {clientes.map((cliente) => (
-            <Card obj={cliente} key={cliente.licencia} />
+            <Card
+              obj={cliente}
+              key={cliente.licencia}
+              setClientes={setClientes}
+              setTotalPages={setTotalPages}
+              page={page}
+            />
           ))}
-
-          <Card obj={cliente} key={cliente.licencia} />
-          <Card obj={cliente} key={cliente.licencia} />
-          <Card obj={cliente} key={cliente.licencia} />
-          <Card obj={cliente} key={cliente.licencia} />
-          <Card obj={cliente} key={cliente.licencia} />
-          <Card obj={cliente} key={cliente.licencia} />
-          <Card obj={cliente} key={cliente.licencia} />
-          <Card obj={cliente} key={cliente.licencia} />
-          <Card obj={cliente} key={cliente.licencia} />
         </Stack>
       </Info>
 
@@ -201,7 +199,7 @@ export function CRUDClientes() {
       >
         <DialogTitle style={{ textAlign: "center" }}>
           <form onSubmit={newClient}>
-            <FormCliente cliente={data} />
+            <FormCliente cliente={data} create={true} />
             <Button
               startIcon={<CloseIcon />}
               variant="outlined"

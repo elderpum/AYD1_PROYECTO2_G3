@@ -28,6 +28,22 @@ export function Inventario(props) {
 
   const ip = `http://localhost:3001`;
 
+  const verificacionToken = useCallback(
+    (res) => {
+      if (res.message === "No token provided") {
+        alert(res.message);
+        navigate(`/`);
+      } else if (res.message === "Invalid type token") {
+        alert("No tienes permiso para accederer a esta página.");
+        navigate(`/`);
+      } else if (res.message === "Invalid token") {
+        alert("Su sesión ha expirado");
+        navigate(`/`);
+      }
+    },
+    [navigate]
+  );
+
   const mostrarDevolucion = useCallback((res) => {
     // devolución de vehiculo
     const fechaAux = new Date();
@@ -52,38 +68,6 @@ export function Inventario(props) {
   }, [setIndex]);
 
   useEffect(() => {
-    // const fechaAux = new Date();
-    // const fechaActual = format(fechaAux, "yyyy-MM-dd");
-    // const vehiculo = {
-    //   imagen:
-    //     "https://www.dodge.com/content/dam/cross-regional/nafta/dodge/es_mx/Blog/2020/muscle-cars/dodge-charger-rt-1970-el-favorito-de-toretto/desktop/dodge-noticias-dodge-charger-1970-el-auto-favorito-de-toretto-cuerpo-1-dk.jpg.img.1440.jpg",
-    //   modelo: "Charger",
-    //   marca: "Dodge",
-    //   transmision: "Automatica",
-    //   asientos: "5",
-    //   combustible: "Gasolina",
-    //   categoria: "Sedan",
-    //   cuota: "1000",
-    // };
-    // console.log("fechaactual: ", fechaActual);
-    // const fecha = "2023-10-23";
-    // if (fecha === fechaActual) {
-    //   Swal.fire({
-    //     title: `FECHA LÍMITE: ${fecha}`,
-    //     icon: "info",
-    //     html: mensajeDevolucion(vehiculo),
-    //     showCloseButton: true,
-    //     focusConfirm: true,
-    //     confirmButtonText: `¡DEVOLVER Y PAGAR!`,
-    //     confirmButtonAriaLabel: "Thumbs up, great!",
-    //   }).then((result) => {
-    //     if (result.isConfirmed) {
-    //       console.log("devolviendo");
-    //       setIndex(7);
-    //     }
-    //   });
-    // }
-
     const url = `${ip}/api/inventario/get`;
     const token = localStorage.getItem("auth");
     const data = { categoria: "", marca: "", page: 1 };
@@ -102,10 +86,7 @@ export function Inventario(props) {
         })
         .then((res) => {
           console.log(res);
-          if (res.message === "Invalid token") {
-            alert("Su sesión ha expirado");
-            navigate(`/`);
-          }
+          verificacionToken(res);
           setMarca(res.data.marcas);
           setInventario(res.data.inventario);
           setTotalPages(res.data.totalPages);
@@ -116,7 +97,7 @@ export function Inventario(props) {
         .catch((error) => console.error("Error:", error));
     };
     fetchData();
-  }, [ip, navigate, mostrarDevolucion]);
+  }, [ip, navigate, mostrarDevolucion, verificacionToken]);
 
   const mensajeDevolucion = (vehiculo) => {
     return `<div>
