@@ -138,3 +138,25 @@ exports.updateRentalFee = async (data) => {
         return {error: true, message: error.message};
     }
 }
+
+// Details of a vehicle by licensePlate in req.params
+exports.getVehicleDetails = async (licensePlate) => {
+    try{
+        const query = 'SELECT * FROM Vehicle WHERE licensePlate = ?';
+        const [result] = await db.execute(query, [licensePlate]);
+        const query2 = 'SELECT * FROM Image WHERE Vehicle_licensePlate = ?';
+        const [result2] = await db.execute(query2, [licensePlate]);
+
+        if(!result){
+            return {err: true, message: 'Error al obtener el vehiculo'}
+        }
+
+        if(!result2){
+            return {err: true, message: 'Error al obtener las imagenes del vehiculo'}
+        }
+
+        return {error: false, message: "Vehiculo obtenido exitosamente", vehicle: result, images: result2};
+    } catch(error){
+        return {error: true, message: error.message};
+    }
+}
