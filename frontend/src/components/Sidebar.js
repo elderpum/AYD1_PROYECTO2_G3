@@ -9,6 +9,8 @@ import {
   MdOutlineEventAvailable,
   MdOutlineSettingsBackupRestore,
   MdCarRental,
+  MdContentPasteSearch,
+  MdPeopleAlt,
 } from "react-icons/md";
 import { FaCarAlt, FaUserCog } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
@@ -21,6 +23,7 @@ import { Pago } from "../pages/Pago/Pago";
 import { CrudEmpleados } from "../pages/CrudEmpleados/CrudEmpleados";
 import { Solicitud } from '../pages/SolicitudRenta/Solicitud'
 import { Historial } from "../pages/HistorialAlquiler/Historial";
+import { CRUDClientes } from "../pages/CRUDClientes/CRUDClientes";
 
 // ---- BARRA LATERAL IZQUIERDA. ---- //
 export const Sidebar = () => {
@@ -95,6 +98,11 @@ export const Sidebar = () => {
               <span>Administrar Empleados</span>
             </li>
 
+            <li className={`option d-flex align-items-center`} onClick={() => setIndex(9)}>
+              <MdPeopleAlt />
+              <span>Administrar Clientes</span>
+            </li>
+
             <li className="option d-flex align-items-center cerrar" onClick={cerrarSesion}>
               <MdLogout />
               <span>Cerrar Sesión</span>
@@ -116,6 +124,15 @@ export const Sidebar = () => {
 
       {index === 4 && <Historial />}
       {index === 20 && <Solicitud />}
+      { index === 1 && <Inventario setIndex={ setIndex }/> }
+      { /* {index === 2 && <COMPONENTE-DESEADO />} */ }
+      { /* {index === 3 && <COMPONENTE-DESEADO />} */ }
+      { /* {index === 4 && <COMPONENTE-DESEADO />} */ }
+      { /* {index === 5 && <COMPONENTE-DESEADO />} */ }
+      { index === 6 && <GestionarCosto setIndex={setIndex}/> }
+      { index === 7 && <Alquilar setIndex={setIndex}/> }
+      { index === 8 && <CrudVehiculos/> }
+      { index === 9 && <CRUDClientes/> }
 
     </ContainerVista>
 
