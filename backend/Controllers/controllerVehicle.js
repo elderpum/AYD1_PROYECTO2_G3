@@ -44,3 +44,21 @@ exports.updateRentalFee = async (req, res) => {
     }
     return res.status(200).json(result);
 }
+
+exports.getVehicleDetails = async (req, res) => {
+    const result = await service.getVehicleDetails(req.body.licensePlate);
+    if(result.error){
+        console.log(result.message);
+        return res.status(400).json(result);
+    }
+    return res.status(200).json(result);
+}
+
+exports.rentVehicle = async (req, res) => {
+    const result = await service.rentVehicle(req.body);
+    if(result.error){
+        console.log(result.message);
+        return res.status(400).json(result);
+    }
+    return res.status(201).json(result);
+}

@@ -1,4 +1,4 @@
-const AWS = require('../Config/s3')
+const AWS = require('../Config/awsConfig')
 const s3 = new AWS.S3();
 const p = require('path')
 const bucketName=process.env.S3_BUCKET_NAME
@@ -15,7 +15,7 @@ function generateName(oldName){
 exports.uploadFile = async (key, body) => {
     try{
         console.log(body)
-        const b = Buffer.from(body.split(',')[1], 'base64')
+        const b = Buffer.from(body, 'base64')
         const name = generateName(key)
         const params = {
         Bucket: bucketName,
