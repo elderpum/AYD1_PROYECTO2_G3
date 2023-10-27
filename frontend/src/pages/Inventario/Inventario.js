@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import "./Inventario.css";
 import { useNavigate } from "react-router-dom";
 import { format, set } from "date-fns";
+import { useGeneralContext } from "../../contexts/generalContext";
 import Swal from "sweetalert2";
 // ui components
 import Grid from "@mui/material/Grid";
@@ -15,6 +16,7 @@ import Stack from "@mui/material/Stack";
 import styled from "styled-components";
 
 export function Inventario(props) {
+  const { setVehiculo } = useGeneralContext();
   const { setIndex } = props;
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
@@ -61,11 +63,12 @@ export function Inventario(props) {
       }).then((result) => {
         if (result.isConfirmed) {
           console.log("devolviendo");
-          setIndex(7);
+          setIndex(5);
+          setVehiculo(res.vehiculo);
         }
       });
     }
-  }, [setIndex]);
+  }, [setIndex, setVehiculo]);
 
   useEffect(() => {
     const url = `${ip}/api/inventario/get`;
@@ -216,10 +219,11 @@ export function Inventario(props) {
     fetchData();
   };
 
-  const alquiler = () => {
+  const alquiler = (vehiculo) => {
     console.log("alquilando ", user);
     if (user === 0 || user === 2) {
       setIndex(7);
+      setVehiculo(vehiculo);
     } else {
       alert(
         "La funcion de alquilar solo esta disponible para clientes y administradores"
@@ -227,10 +231,11 @@ export function Inventario(props) {
     }
   };
 
-  const gestionar = () => {
+  const gestionar = (vehiculo) => {
     console.log("gestionando costo ", user);
     if (user === 0 || user === 1) {
       setIndex(6);
+      setVehiculo(vehiculo);
     } else {
       alert(
         "La funcion de gestionar el costo solo esta disponible para empleados y administradores"
@@ -311,7 +316,7 @@ export function Inventario(props) {
                   >
                     <CardActionArea>
                       <CardMedia
-                        onClick={alquiler}
+                        onClick={() => alquiler(vehiculo)}
                         component="img"
                         height="80"
                         image={vehiculo.imagen}

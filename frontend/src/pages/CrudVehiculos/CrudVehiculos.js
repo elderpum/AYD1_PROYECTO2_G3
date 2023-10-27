@@ -7,11 +7,13 @@ import { useNavigate } from 'react-router-dom';
 import { Titulo } from "../../components/Titulo";
 import { Card } from './components/Card';
 import { FormVehiculo } from './components/FormVehiculo';
+import { useGeneralContext } from '../../contexts/generalContext';
 
 import CloseIcon from '@mui/icons-material/Close';
 import SaveIcon from '@mui/icons-material/Save';
 
 export function CrudVehiculos() {
+    const { setVehiculo } = useGeneralContext();
     const navigate = useNavigate();
     const ip = "http://localhost:3001"; //"https://zd8mw8xl-3001.use.devtunnels.ms"
     const [open, setOpen] = useState(false);
@@ -99,7 +101,7 @@ export function CrudVehiculos() {
             if (selectedImage) {
                 const reader = new FileReader();
                 reader.onloadend = () => {
-                    setNewVehiculoImageFile(reader.result.split(',')[1].trim());
+                    setNewVehiculoImageFile(reader.result.trim());
                 };
                 reader.readAsDataURL(selectedImage);
             }

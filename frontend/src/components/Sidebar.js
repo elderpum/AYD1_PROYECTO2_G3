@@ -77,7 +77,7 @@ export const Sidebar = () => {
             </li>
 
 
-            <li className={`option d-flex align-items-center`} onClick={() => setIndex(3)}>
+            <li className={`option d-flex align-items-center`} onClick={() => setIndex(7)}>
               <MdOutlineSettingsBackupRestore />
               <span>Devolución</span>
             </li>
@@ -114,21 +114,12 @@ export const Sidebar = () => {
 
       </Container>
 
-      { /* Aqui van los componentes de las vistas */}
-      {index === 1 && <Inventario setIndex={setIndex} />}
-      {index === 3 && <Pago setIndex={setIndex} />}
-      {index === 6 && <GestionarCosto setIndex={setIndex} />}
-      {index === 7 && <Alquilar setIndex={setIndex} />}
-      {index === 8 && <CrudVehiculos />}
-      {index === 10 && <CrudEmpleados />}
-
-      {index === 4 && <Historial />}
-      {index === 20 && <Solicitud />}
-      { index === 1 && <Inventario setIndex={ setIndex }/> }
-      { /* {index === 2 && <COMPONENTE-DESEADO />} */ }
-      { /* {index === 3 && <COMPONENTE-DESEADO />} */ }
-      { /* {index === 4 && <COMPONENTE-DESEADO />} */ }
-      { /* {index === 5 && <COMPONENTE-DESEADO />} */ }
+      { index === 1 && <Inventario setIndex={setIndex} /> }
+      { index === 4 && <Historial /> }
+      { index === 10 && <CrudEmpleados /> }
+      { index === 20 && <Solicitud /> }
+      
+      { index === 5 && <Pago setIndex={setIndex} /> }
       { index === 6 && <GestionarCosto setIndex={setIndex}/> }
       { index === 7 && <Alquilar setIndex={setIndex}/> }
       { index === 8 && <CrudVehiculos/> }

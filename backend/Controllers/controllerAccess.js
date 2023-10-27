@@ -45,8 +45,8 @@ exports.isAnEmployee = (req, res, next) => {
 
     try{
         const decoded = jwt.verify(token, process.env.JWT_SECRET_PW);
-
-        if(decoded.tipo != 'employee'){
+        console.log(decoded)
+        if(decoded.tipo != 'employee' && decoded.tipo != 'admin' ){
             return res.status(401).json({
                 err: true,
                 message: 'Invalid type token'

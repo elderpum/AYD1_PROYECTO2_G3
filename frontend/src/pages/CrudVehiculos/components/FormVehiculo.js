@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import {
-    Stack, TextField, InputAdornment
+    Stack, TextField, InputAdornment,
+    Box, ImageList, ImageListItem
 } from '@mui/material';
 
 import InputLabel from '@mui/material/InputLabel';
@@ -128,7 +129,7 @@ export function FormVehiculo({ tipo, vehiculo, newImage, handleImageChange }) {
                     </Select>
                 </FormControl>
             </Stack>
-            {/*tipo === 'edit' ? (
+            {tipo === 'edit' ? (
                 <>
                     <Box sx={{ width: '100%', height: 300, overflowY: 'scroll', marginTop: 2 }}>
                         <ImageList variant="masonry" cols={2} gap={0}>
@@ -148,7 +149,7 @@ export function FormVehiculo({ tipo, vehiculo, newImage, handleImageChange }) {
                 <ContainerImage>
                     <ImageInput image={newImage} handleImageChange={handleImageChange}/>
                 </ContainerImage>
-            ) */}
+            ) }
         </>
     );
 }

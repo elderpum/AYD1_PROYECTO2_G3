@@ -7,7 +7,7 @@ export const setLoginCliente = async (form, handleNavigatetoHome) => {
         password: form.password,
         type: 'client'
     }
-
+    console.log(newLoginClient)
     const url = 'http://localhost:3001/api/usuario/login';
     // const token = localStorage.getItem("auth");
 
@@ -22,12 +22,13 @@ export const setLoginCliente = async (form, handleNavigatetoHome) => {
     });
 
     const data = await rep.json();
+    console.log(data)
 
     if (data.authExitoso) {
 
         const token = data.tokenAuth;
         localStorage.setItem("auth", token); // Guardar token en localstorage.
-
+        localStorage.setItem("email", newLoginClient.user);
         handleNavigatetoHome();
         
     } else {

@@ -19,7 +19,7 @@ router.put('/actualizarVehiculo', controller.updateVehicle);
 router.put('/actualizarTarifa',access.isAnEmployee, controller.updateRentalFee);
 
 //Get Vehicle by licensePlate
-router.get('/detalleVehiculo', controller.getVehicleDetails);
+router.post('/detalleVehiculo', controller.getVehicleDetails);
 
 //Rent Vehicle
 router.post('/rentarVehiculo', controller.rentVehicle);
