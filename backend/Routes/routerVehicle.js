@@ -21,4 +21,7 @@ router.put('/actualizarTarifa',access.isAnEmployee, controller.updateRentalFee);
 //Get Vehicle by licensePlate
 router.get('/detalleVehiculo', controller.getVehicleDetails);
 
+//Rent Vehicle
+router.post('/rentarVehiculo', controller.rentVehicle);
+
 module.exports = router;
