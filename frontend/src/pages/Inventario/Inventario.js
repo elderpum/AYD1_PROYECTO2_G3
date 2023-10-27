@@ -3,7 +3,6 @@ import "./Inventario.css";
 import { useNavigate } from "react-router-dom";
 import { format, set } from "date-fns";
 import Swal from "sweetalert2";
-import { useGeneralContext } from '../../contexts/generalContext';
 // ui components
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
@@ -17,7 +16,6 @@ import styled from "styled-components";
 
 export function Inventario(props) {
   const { setIndex } = props;
-  const { setVehiculo } = useGeneralContext();
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const [user, setUser] = useState(0);
@@ -218,10 +216,9 @@ export function Inventario(props) {
     fetchData();
   };
 
-  const alquiler = (v) => {
+  const alquiler = () => {
     console.log("alquilando ", user);
     if (user === 0 || user === 2) {
-      setVehiculo(v); // se guarda la informacion del vehiculo para la vista Alquilar
       setIndex(7);
     } else {
       alert(
@@ -230,10 +227,9 @@ export function Inventario(props) {
     }
   };
 
-  const gestionar = (v) => {
+  const gestionar = () => {
     console.log("gestionando costo ", user);
     if (user === 0 || user === 1) {
-      setVehiculo(v); // se guarda la informacion del vehiculo para la vista gestionar Costo
       setIndex(6);
     } else {
       alert(
@@ -351,88 +347,6 @@ export function Inventario(props) {
                   </Card>
                 </Grid>
               ))}
-          <Grid
-            container
-            direction="row"
-            justifyContent="center"
-            alignItems="flex-start"
-          >
-            {inventario.map((vehiculo) => (
-              <Grid item xs={2} sm={4} md={4}>
-                <Card sx={{ maxWidth: 250, maxHeight: 210 }} className="card-inventario">
-                  <CardActionArea>
-                    <CardMedia
-                      onClick={() => alquiler(vehiculo)}
-                      component="img"
-                      height="80"
-                      image={vehiculo.imagen}
-                      alt="..."
-                    />
-                    <CardContent>
-                      <Typography gutterBottom variant="h7" component="div">
-                        {vehiculo.nombre}
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        {vehiculo.disponibilidad !== "available" ? (
-                          vehiculo.disponibilidad
-                        ) : (
-                          <div>Q {vehiculo.cuota} por dia.</div>
-                        )}
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        {user === 2 ? (
-                          <div></div>
-                        ) : (
-                          <Button
-                            variant="contained"
-                            size="small"
-                            color="info"
-                            onClick={() => gestionar(vehiculo)}
-                          >
-                            Gestionar Costo
-                          </Button>
-                        )}
-                      </Typography>
-                    </CardContent>
-                  </CardActionArea>
-                </Card>
-              </Grid>
-            ))}
-
-            {/* <Grid item xs={2} sm={4} md={4}>
-              <Card sx={{ maxWidth: 250, maxHeight: 180 }}>
-                <CardActionArea sx={{ padding: 0 }}>
-                  <CardMedia
-                    onClick={alquiler}
-                    component="img"
-                    height="80"
-                    image="https://www.dodge.com/content/dam/cross-regional/nafta/dodge/es_mx/Blog/2020/muscle-cars/dodge-charger-rt-1970-el-favorito-de-toretto/desktop/dodge-noticias-dodge-charger-1970-el-auto-favorito-de-toretto-cuerpo-1-dk.jpg.img.1440.jpg"
-                    alt="..."
-                  />
-                  <CardContent>
-                    <Typography gutterBottom variant="h7" component="div">
-                      Carro de Toretto
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      ocupado - Gerson Quiroa
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      {user === 2 ? (
-                        <div></div>
-                      ) : (
-                        <Button
-                          variant="contained"
-                          size="small"
-                          color="info"
-                          onClick={gestionar}
-                        >
-                          Gestionar Costo
-                        </Button>
-                      )}
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-              </Card>
             </Grid>
             <Pagination
               count={totalPages}
