@@ -123,13 +123,26 @@ exports.updateRentalFee = async (data) => {
         const query = 'UPDATE Vehicle SET rentalFee = ? WHERE licensePlate = ?';
 
         const values = [
-            data.rentalFee,
+            data.newRentalFee,
             data.licensePlate
         ]
 
         const result = await db.execute(query, values);
 
         if(!result){
+            return {err: true, message: 'Error al actualizar el vehiculo'}
+        }
+
+        const query2 = 'UPDATE Request SET rentalFee = ? WHERE Vehicle_licensePlate = ?';
+
+        const values2 = [
+            data.newRentalFee,
+            data.licensePlate
+        ]
+
+        const result2 = await db.execute(query2, values2);
+
+        if(!result2){
             return {err: true, message: 'Error al actualizar el vehiculo'}
         }
 
