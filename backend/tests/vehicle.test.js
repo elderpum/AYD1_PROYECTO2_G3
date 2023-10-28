@@ -1,5 +1,5 @@
 const supertest = require('supertest');
-const app = require('../index');
+const app = require('../app');
 const api = supertest(app);
 const db = require('../Config/databaseConfig')
 
