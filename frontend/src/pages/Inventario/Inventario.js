@@ -234,8 +234,8 @@ export function Inventario(props) {
   const gestionar = (vehiculo) => {
     console.log("gestionando costo ", user);
     if (user === 0 || user === 1) {
-      setIndex(6);
       setVehiculo(vehiculo);
+      setIndex(6);
     } else {
       alert(
         "La funcion de gestionar el costo solo esta disponible para empleados y administradores"
@@ -341,7 +341,7 @@ export function Inventario(props) {
                               variant="contained"
                               size="small"
                               color="info"
-                              onClick={gestionar}
+                              onClick={() => gestionar(vehiculo)}
                             >
                               Gestionar Costo
                             </Button>

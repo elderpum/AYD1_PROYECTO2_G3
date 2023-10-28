@@ -77,7 +77,7 @@ export const Sidebar = () => {
             </li>
 
 
-            <li className={`option d-flex align-items-center`} onClick={() => setIndex(7)}>
+            <li className={`option d-flex align-items-center`} onClick={() => setIndex(1)}>
               <MdOutlineSettingsBackupRestore />
               <span>Devolución</span>
             </li>

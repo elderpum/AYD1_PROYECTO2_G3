@@ -24,7 +24,7 @@ export function Alquilar({ setIndex }) {
     useEffect(() => {
         console.log(vehiculo)
         const token = localStorage.getItem("auth");
-        const data = { licensePlate: vehiculo.licensePlate };
+        const data = { licensePlate: vehiculo.id };
         console.log(vehiculo)
         /* Peticion para obtener un vehiculo utilizando su placa */
         const fetchData = async () => {
@@ -57,38 +57,38 @@ export function Alquilar({ setIndex }) {
     const handleTotal = () => {
         const fechaInicioJS = dayjs(fechaInicio);
         const fechaFinalJS = dayjs(fechaFinal);
-        if (fechaFinalJS > fechaInicioJS) {
-            const diferenciaEnDias = fechaFinalJS.diff(fechaInicioJS, 'day');
+        const diferenciaEnDias = fechaFinalJS.diff(fechaInicioJS, 'day');
+        if (diferenciaEnDias > 0) {
             setTotal(vehiculoAlquilar.rentalFee * diferenciaEnDias);
+        } else if (diferenciaEnDias === 0) {
+            setTotal(vehiculoAlquilar.rentalFee);
         } else {
             setTotal(0);
         }
     }
 
     const configFechaInicio = (fecha) => {
-        console.log(fechaInicio)
         try {
+            handleTotal();
             const mont = (parseInt(fecha.$M) + 1).toString();
             var fecha_ = fecha.$y + "-" + mont + "-" + fecha.$D;
             setFechaInicio(fecha_);
         } catch (error) {
             setFechaInicio('');
         }
-        handleTotal();
 
     };
 
     const configFechaFinal = (fecha) => {
-        console.log(fecha)
         try {
+            setFechaFinal('');
             console.log(fechaFinal)
             const mont = (parseInt(fecha.$M) + 1).toString();
             var fecha_ = fecha.$y + "-" + mont + "-" + fecha.$D;
             setFechaFinal(fecha_);
+            handleTotal();
         } catch (error) {
-            setFechaFinal('');
         }
-        handleTotal();
     };
 
     const solicitar = () => {

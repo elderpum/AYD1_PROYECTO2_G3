@@ -18,7 +18,7 @@ export function GestionarCosto({ setIndex }) {
 
     useEffect(() => {
         const token = localStorage.getItem("auth");
-        const data = { licensePlate: vehiculo.licensePlate };
+        const data = { licensePlate: vehiculo.id };
         console.log(vehiculo)
         /* Peticion para obtener un vehiculo utilizando su placa */
         const fetchData = async () => {
@@ -116,7 +116,7 @@ export function GestionarCosto({ setIndex }) {
                         <BsArrowLeft style={{ color: "#3DF28B", fontSize: "1.5em" }} />
                     </Button>
                 </ThemeProvider>
-                <h2> {"Gestionar Cuota"} </h2>
+                <h2> {"Gestionar Costo"} </h2>
             </ContainerButton>
             <Info>
                 <TituloInfo>  Mercedez Benz - {vehiculoGestion.model} </TituloInfo>
