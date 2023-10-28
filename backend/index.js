@@ -33,3 +33,5 @@ app.use("/api", router);
 app.listen(app.get("port"), () => {
     console.log(`SERVIDOR EN PUERTO: ${app.get("port")}`);
   });
+
+  module.exports = app;
