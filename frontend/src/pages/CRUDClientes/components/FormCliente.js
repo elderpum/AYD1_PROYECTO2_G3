@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { Stack, TextField } from "@mui/material";
+import { InputAdornment, Stack, TextField } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
+import LockIcon from '@mui/icons-material/Lock';
 
 export function FormCliente({ cliente, create }) {
   // Estado de la fecha de nacimiento.
@@ -15,7 +16,7 @@ export function FormCliente({ cliente, create }) {
       <Stack direction="row" spacing={2} useFlexGap flexWrap="wrap">
         <TextField
           required
-          id="outlined-required"
+          id="nombre"
           label="Nombre"
           size="small"
           sx={{ width: "30%" }}
@@ -30,7 +31,7 @@ export function FormCliente({ cliente, create }) {
         />
         <TextField
           required
-          id="outlined-required"
+          id="apellido"
           label="Apellido"
           size="small"
           sx={{ width: "30%" }}
@@ -44,7 +45,7 @@ export function FormCliente({ cliente, create }) {
         />
         <TextField
           required
-          id="outlined-required"
+          id="licencia"
           label="Licencia"
           size="small"
           sx={{ width: "25%" }}
@@ -59,7 +60,7 @@ export function FormCliente({ cliente, create }) {
         />
         <TextField
           required
-          id="outlined-required"
+          id="direccion"
           label="Dirección"
           size="small"
           sx={{ width: "40%" }}
@@ -69,7 +70,7 @@ export function FormCliente({ cliente, create }) {
         />
         <TextField
           required
-          id="outlined-required"
+          id="correo"
           label="Correo"
           size="small"
           sx={{ width: "40%" }}
@@ -83,7 +84,7 @@ export function FormCliente({ cliente, create }) {
         />
         <TextField
           required
-          id="outlined-required"
+          id="telefono"
           label="Telefono"
           size="small"
           sx={{ width: "18%" }}
@@ -98,7 +99,7 @@ export function FormCliente({ cliente, create }) {
         />
         <TextField
           required
-          id="outlined-required"
+          id="usuario"
           label="Usuario"
           size="small"
           sx={{ width: "30%" }}
@@ -109,19 +110,28 @@ export function FormCliente({ cliente, create }) {
         {create && (
           <TextField
             required
-            id="outlined-required"
+            id="password"
             label="Password"
+            type='password'
             size="small"
             sx={{ width: "30%" }}
-            inputProps={{ inputMode: "password" }}
+            InputProps={{
+              startAdornment: (
+                  <InputAdornment position="start">
+                      <LockIcon />
+                  </InputAdornment>
+              ),
+          }}
+          variant="standard"
             defaultValue={cliente.password}
             onChange={(e) => (cliente.password = e.target.value)}
           />
         )}
-        <LocalizationProvider dateAdapter={AdapterDayjs} required>
+        <LocalizationProvider id="nacimiento"  dateAdapter={AdapterDayjs} required>
           <DatePicker
             required
             label="Fecha de nacimiento"
+            id="nacimiento"
             value={date}
             size="small"
             onChange={(newValue) => {
