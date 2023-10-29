@@ -18,7 +18,20 @@ export function CRUDClientes() {
   const [open, setOpen] = useState(false);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [clientes, setClientes] = useState([]);
+  const [clientes, setClientes] = useState([
+    {
+      id: 1,
+      nombre: "Lionel",
+      apellido: "Messi",
+      nacimiento: "2000-01-01",
+      licencia: "123456789",
+      direccion: "6ta calle 10-02 zona 1",
+      email: "messi@goat.com",
+      telefono: "12345678",
+      user: "messi10",
+      password: "messi10",
+    }
+  ]);
   const data = {
     id: "",
     nombre: "",
@@ -163,6 +176,7 @@ export function CRUDClientes() {
     <BodyContent>
       <Titulo titulo={"Administración de Clientes"} />
       <Button
+        id="crear-cliente"
         variant="contained"
         size="small"
         onClick={handleOpen}
@@ -210,6 +224,7 @@ export function CRUDClientes() {
               Cancelar
             </Button>
             <Button
+              id="boton-guardar-nuevo-cliente"
               startIcon={<SaveIcon />}
               variant="outlined"
               color="primary"

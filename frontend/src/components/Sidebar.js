@@ -65,7 +65,7 @@ export const Sidebar = () => {
           <ul className='ul_sidebar'>
 
 
-            <li className={`option d-flex align-items-center`} onClick={() => setIndex(1)}>
+            <li id="inventario" className={`option d-flex align-items-center`} onClick={() => setIndex(1)}>
               <MdHomeFilled />
               <span>Inicio</span>
             </li>
@@ -98,7 +98,7 @@ export const Sidebar = () => {
               <span>Administrar Empleados</span>
             </li>
 
-            <li className={`option d-flex align-items-center`} onClick={() => setIndex(9)}>
+            <li id="crud-clientes" className={`option d-flex align-items-center`} onClick={() => setIndex(9)}>
               <MdPeopleAlt />
               <span>Administrar Clientes</span>
             </li>

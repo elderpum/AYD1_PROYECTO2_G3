@@ -170,10 +170,10 @@ export function Card({ obj, key, setClientes, setTotalPages, page }) {
         <b>Telefono:</b> {obj.telefono}{" "}
       </h7>
       <ButtonsContainer>
-        <IconButton aria-label="edit" color="primary" onClick={handleOpen}>
+        <IconButton id="editar-cliente" aria-label="edit" color="primary" onClick={handleOpen}>
           <EditIcon />
         </IconButton>
-        <IconButton aria-label="delete" color="error" onClick={handleDelete}>
+        <IconButton id="eliminar-cliente" aria-label="delete" color="error" onClick={handleDelete}>
           <DeleteIcon />
         </IconButton>
       </ButtonsContainer>
@@ -206,6 +206,7 @@ export function Card({ obj, key, setClientes, setTotalPages, page }) {
               Cancelar
             </Button>
             <Button
+              id="boton-editar-cliente"
               startIcon={<SaveIcon />}
               variant="outlined"
               color="primary"

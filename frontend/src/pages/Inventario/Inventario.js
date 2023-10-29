@@ -22,11 +22,19 @@ export function Inventario(props) {
   const [page, setPage] = useState(1);
   const [user, setUser] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
-  const categoria = ["Sedan", "Bus", "Van", "Pickup", "Panel", "Truck"];
   const [selecCategoria, setSelecCategoria] = useState("");
-  const [marca, setMarca] = useState([]);
   const [selecMarca, setSelecMarca] = useState("");
-  const [inventario, setInventario] = useState([]);
+  const categoria = ["Sedan", "Bus", "Van", "Pickup", "Panel", "Truck"];
+  const [marca, setMarca] = useState(["Toyota", "Honda", "Mazda", "Nissan"]);
+  const [inventario, setInventario] = useState([
+    {
+      nombre: "Toyota Corolla",
+      imagen:
+        "https://hips.hearstapps.com/hmg-prod/images/toyotacorollagrsport20231-6466305f0bd9f.jpg?crop=0.7498666666666667xw:1xh;center,top&resize=1200:*",
+      cuota: 100,
+      disponibilidad: "available",
+    },
+  ]);
 
   const ip = `http://localhost:3001`;
 
@@ -46,29 +54,32 @@ export function Inventario(props) {
     [navigate]
   );
 
-  const mostrarDevolucion = useCallback((res) => {
-    // devolución de vehiculo
-    const fechaAux = new Date();
-    const fechaActual = format(fechaAux, "yyyy-MM-dd");
-    console.log("fechaactual: ", fechaActual);
-    if (res.fechaDevolucion !== "" && res.fechaDevolucion === fechaActual) {
-      Swal.fire({
-        title: `FECHA LÍMITE: ${res.fechaDevolucion}`,
-        icon: "info",
-        html: mensajeDevolucion(res.vehiculo),
-        showCloseButton: true,
-        focusConfirm: true,
-        confirmButtonText: `¡DEVOLVER Y PAGAR!`,
-        confirmButtonAriaLabel: "Thumbs up, great!",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          console.log("devolviendo");
-          setIndex(5);
-          setVehiculo(res.vehiculo);
-        }
-      });
-    }
-  }, [setIndex, setVehiculo]);
+  const mostrarDevolucion = useCallback(
+    (res) => {
+      // devolución de vehiculo
+      const fechaAux = new Date();
+      const fechaActual = format(fechaAux, "yyyy-MM-dd");
+      console.log("fechaactual: ", fechaActual);
+      if (res.fechaDevolucion !== "" && res.fechaDevolucion === fechaActual) {
+        Swal.fire({
+          title: `FECHA LÍMITE: ${res.fechaDevolucion}`,
+          icon: "info",
+          html: mensajeDevolucion(res.vehiculo),
+          showCloseButton: true,
+          focusConfirm: true,
+          confirmButtonText: `¡DEVOLVER Y PAGAR!`,
+          confirmButtonAriaLabel: "Thumbs up, great!",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            console.log("devolviendo");
+            setIndex(5);
+            setVehiculo(res.vehiculo);
+          }
+        });
+      }
+    },
+    [setIndex, setVehiculo]
+  );
 
   useEffect(() => {
     const url = `${ip}/api/inventario/get`;
@@ -163,7 +174,7 @@ export function Inventario(props) {
           const fechaAux = new Date();
           const fechaActual = format(fechaAux, "yyyy-MM-dd");
           console.log("fechaactual: ", fechaActual);
-          
+
           // devolución de vehiculo
           mostrarDevolucion(res);
         })
@@ -210,7 +221,7 @@ export function Inventario(props) {
           const fechaAux = new Date();
           const fechaActual = format(fechaAux, "yyyy-MM-dd");
           console.log("fechaactual: ", fechaActual);
-          
+
           // devolución de vehiculo
           mostrarDevolucion(res);
         })
@@ -267,7 +278,7 @@ export function Inventario(props) {
               >
                 <Grid item>
                   <Autocomplete
-                    id="free-solo-demo"
+                    id="categorias-carros"
                     size="small"
                     sx={{ width: 300 }}
                     options={categoria}
@@ -279,7 +290,7 @@ export function Inventario(props) {
                 </Grid>
                 <Grid item>
                   <Autocomplete
-                    id="free-solo-demo"
+                    id="marcas-carros"
                     size="small"
                     sx={{ width: 300 }}
                     options={marca}
@@ -290,7 +301,12 @@ export function Inventario(props) {
                   />
                 </Grid>
                 <Grid item>
-                  <Button className="busc" variant="text" onClick={filtrar}>
+                  <Button
+                    id="boton-filtrar"
+                    className="busc"
+                    variant="text"
+                    onClick={filtrar}
+                  >
                     <img
                       src="https://cdn-icons-png.flaticon.com/512/3031/3031293.png"
                       alt=""
@@ -308,7 +324,7 @@ export function Inventario(props) {
               justifyContent="center"
               alignItems="flex-start"
             >
-              {inventario.map((vehiculo) => (
+              {inventario.map((vehiculo, index) => (
                 <Grid item xs={2} sm={4} md={4}>
                   <Card
                     sx={{ maxWidth: 250, maxHeight: 210 }}
@@ -316,6 +332,7 @@ export function Inventario(props) {
                   >
                     <CardActionArea>
                       <CardMedia
+                        id={`alquilar-${index}`}
                         onClick={() => alquiler(vehiculo)}
                         component="img"
                         height="80"
@@ -338,6 +355,7 @@ export function Inventario(props) {
                             <div></div>
                           ) : (
                             <Button
+                              id={`gestionar-${index}`}
                               variant="contained"
                               size="small"
                               color="info"
