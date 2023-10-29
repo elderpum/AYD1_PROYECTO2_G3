@@ -83,5 +83,29 @@ test.describe("test_pag_crud_clientes_202000166", () => {
     // Establecer la fecha
     await page.click('button[aria-label="Choose date"]');
     await page.click('.MuiPickersDay-root[aria-colindex="4"]:not([aria-selected="true"])');
+    await page.click('#boton-guardar-nuevo-cliente');
+  });
+
+  test("Debería editar un cliente.", async ({ page }) => {
+    // Click en el navbar para ir a la pagina de CRUDClientes
+    await page.click("#crud-clientes");
+    // Click en el boton de editar cliente
+    await page.click("#editar-cliente");
+    // llenar el formulario
+    await page.fill('input[id="nombre"]', "Lio");
+    await page.fill('input[id="apellido"]', "Goat");
+    await page.fill('input[id="licencia"]', "1111111111111");
+    await page.fill('input[id="direccion"]', "Miami, USA");
+    // Click en el boton de guardar cambios
+    await page.click("#boton-editar-cliente");
+  });
+
+  test("Debería eliminar un cliente.", async ({ page }) => {
+    // Click en el navbar para ir a la pagina de CRUDClientes
+    await page.click("#crud-clientes");
+    // Click en el boton de eliminar cliente
+    await page.click("#eliminar-cliente");
+    // Click en el boton de confirmar
+    await page.click('button.swal2-confirm');
   });
 });

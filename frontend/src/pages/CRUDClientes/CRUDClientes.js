@@ -224,6 +224,7 @@ export function CRUDClientes() {
               Cancelar
             </Button>
             <Button
+              id="boton-guardar-nuevo-cliente"
               startIcon={<SaveIcon />}
               variant="outlined"
               color="primary"
