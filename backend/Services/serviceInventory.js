@@ -48,7 +48,6 @@ async function getInventory(data,id,type) {
     const [images] = await db.query(query);
 
     for (const vehicle of response) {
-
       const image = images.find((image) => image.Vehicle_licensePlate === vehicle.licensePlate);
 
       if(type == 'admin' || type == 'employee'){
