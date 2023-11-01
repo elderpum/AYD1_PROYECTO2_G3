@@ -38,6 +38,33 @@ exports.createEmployee = async (req, res) => {
     return res.status(201).json(result);
 }
 
+exports.updateEmployee = async (req, res) => {
+    const result = await service.updateEmployee(req.body);
+    if(result.error){
+        console.log(result.message);
+        return res.status(400).json(result);
+    }
+    return res.status(200).json(result);
+}
+
+exports.deleteEmployee = async (req, res) => {
+    const result = await service.deleteEmployee(req.body);
+    if(result.error){
+        console.log(result.message);
+        return res.status(400).json(result);
+    }
+    return res.status(200).json(result);
+}
+
+exports.getAllEmployees = async (req, res) => {
+    const result = await service.getAllEmployees();
+    if(result.error){
+        console.log(result.message);
+        return res.status(400).json(result);
+    }
+    return res.status(200).json(result);
+}
+
 function generateRandomCode() {
     const min = 100000; // El número más pequeño de 6 dígitos (100000)
     const max = 999999; // El número más grande de 6 dígitos (999999)

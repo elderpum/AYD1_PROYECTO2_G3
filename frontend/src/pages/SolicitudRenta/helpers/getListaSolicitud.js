@@ -5,7 +5,7 @@ export const getListaSolicitud = async () => {
 
     const url = 'http://localhost:3001/api/solicitud/solicitudes-no-procesadas';
 
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('auth');
 
 
     console.log('Token: ', token);
