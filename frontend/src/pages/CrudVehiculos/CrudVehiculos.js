@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import '../../components/Titulo.css';
 
 import { Button, Stack, Dialog, DialogTitle } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+//import { useNavigate } from 'react-router-dom';
 import { Titulo } from "../../components/Titulo";
 import { Card } from './components/Card';
 import { FormVehiculo } from './components/FormVehiculo';

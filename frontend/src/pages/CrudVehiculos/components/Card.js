@@ -140,7 +140,7 @@ export function Card({ obj }) {
             category: e.target[12].value,
             rentalFee: e.target[14].value,
             state: e.target[16].value,
-            addImages: [],
+            addImages: [newImageFile],
             deleteImages: []
         };
         console.log(data)

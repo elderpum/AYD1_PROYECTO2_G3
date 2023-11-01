@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import placeholder from '../../../assets/placeholder.png'
 
 import { Button, Avatar } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';

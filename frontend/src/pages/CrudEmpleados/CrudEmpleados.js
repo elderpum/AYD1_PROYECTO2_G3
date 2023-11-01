@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import '../../components/Titulo.css';
 
 import { Button, Stack, Dialog, DialogTitle } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+//import { useNavigate } from 'react-router-dom';
 import { Titulo } from "../../components/Titulo";
 import { Card } from './components/Card';
 import { FormEmpleado } from './components/FormEmpleados';
@@ -13,10 +13,10 @@ import CloseIcon from '@mui/icons-material/Close';
 import SaveIcon from '@mui/icons-material/Save';
 
 export function CrudEmpleados() {
-    const navigate = useNavigate();
-    const ip = "http://localhost:3001"; //"https://zd8mw8xl-3001.use.devtunnels.ms"
+    //const navigate = useNavigate();
+    //const ip = "http://localhost:3001"; //"https://zd8mw8xl-3001.use.devtunnels.ms"
     const [open, setOpen] = useState(false);
-    const [empleados, setEmpleados] = useState([]);
+    //const [empleados, setEmpleados] = useState([]);
 
     const empleado = {
         email: "oiram@gmail.com",
@@ -151,14 +151,14 @@ export function CrudEmpleados() {
 ver todos los vehiculos
 crear nuevo vehiculo
 */
-
+/*
 const ContainerButton = styled.div`
 display: flex;
 color: #3DF28B;
 justify-content: start;
 margin-top: 50px;
 margin-bottom: 40px;
-`
+`*/
 
 const Info = styled.div`
 display: flex;
