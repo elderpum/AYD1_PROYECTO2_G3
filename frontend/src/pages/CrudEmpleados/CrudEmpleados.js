@@ -8,13 +8,13 @@ import { Titulo } from "../../components/Titulo";
 import { Card } from './components/Card';
 import { FormEmpleado } from './components/FormEmpleados';
 import { validateEmail } from './utils/validations';
+//import { ip } from '../../components/Ip'
 
 import CloseIcon from '@mui/icons-material/Close';
 import SaveIcon from '@mui/icons-material/Save';
 
 export function CrudEmpleados() {
     //const navigate = useNavigate();
-    //const ip = "http://localhost:3001"; //"https://zd8mw8xl-3001.use.devtunnels.ms"
     const [open, setOpen] = useState(false);
     //const [empleados, setEmpleados] = useState([]);
 

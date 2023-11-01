@@ -7,6 +7,7 @@ import { Button, Stack, Dialog, DialogTitle } from '@mui/material';
 import { Titulo } from "../../components/Titulo";
 import { Card } from './components/Card';
 import { FormVehiculo } from './components/FormVehiculo';
+import { ip } from '../../components/Ip'
 //import { useGeneralContext } from '../../contexts/generalContext';
 
 import CloseIcon from '@mui/icons-material/Close';
@@ -17,7 +18,7 @@ const Swal = require('sweetalert2')
 export function CrudVehiculos() {
     //const { setVehiculo } = useGeneralContext();
     //const navigate = useNavigate();
-    const ip = "http://localhost:3001"; //"https://zd8mw8xl-3001.use.devtunnels.ms"
+    //const ip = "http://localhost:3001"; //"https://zd8mw8xl-3001.use.devtunnels.ms"
     const [open, setOpen] = useState(false);
     const [vehiculos, setVehiculos] = useState([]);
     const [marca, setMarca] = useState('');

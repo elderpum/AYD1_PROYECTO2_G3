@@ -7,6 +7,7 @@ import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a lo
 import { Carousel } from 'react-responsive-carousel';
 import { Button, IconButton, Dialog, DialogTitle } from '@mui/material';
 import { FormVehiculo } from './FormVehiculo';
+import { ip } from '../../../components/Ip';
 
 import CloseIcon from '@mui/icons-material/Close';
 import SaveIcon from '@mui/icons-material/Save';
@@ -19,7 +20,7 @@ import Chip from '@mui/material/Chip';
 const Swal = require('sweetalert2')
 
 export function Card({ obj }) {
-    const ip = "http://localhost:3001"; //"https://zd8mw8xl-3001.use.devtunnels.ms"
+    //const ip = "http://localhost:3001"; //"https://zd8mw8xl-3001.use.devtunnels.ms"
 
     const [open, setOpen] = useState(false);
     const [newImage, setNewImage] = useState(null);
