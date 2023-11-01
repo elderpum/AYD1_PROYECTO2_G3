@@ -62,3 +62,14 @@ exports.rentVehicle = async (req, res) => {
     }
     return res.status(201).json(result);
 }
+
+exports.getMarcas = async (req, res) => {
+    const result = await service.getMarcas();
+
+    if(result.error){
+        console.log(result.message);
+        return res.status(400).json(result);
+    }
+    
+    return res.status(200).json(result);
+}

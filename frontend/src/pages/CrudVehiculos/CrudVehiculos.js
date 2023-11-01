@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import '../../components/Titulo.css';
 
@@ -7,17 +7,21 @@ import { useNavigate } from 'react-router-dom';
 import { Titulo } from "../../components/Titulo";
 import { Card } from './components/Card';
 import { FormVehiculo } from './components/FormVehiculo';
-import { useGeneralContext } from '../../contexts/generalContext';
+//import { useGeneralContext } from '../../contexts/generalContext';
 
 import CloseIcon from '@mui/icons-material/Close';
 import SaveIcon from '@mui/icons-material/Save';
 
+const Swal = require('sweetalert2')
+
 export function CrudVehiculos() {
-    const { setVehiculo } = useGeneralContext();
-    const navigate = useNavigate();
+    //const { setVehiculo } = useGeneralContext();
+    //const navigate = useNavigate();
     const ip = "http://localhost:3001"; //"https://zd8mw8xl-3001.use.devtunnels.ms"
     const [open, setOpen] = useState(false);
     const [vehiculos, setVehiculos] = useState([]);
+    const [marca, setMarca] = useState('');
+    /*
     const [nuevoVehiculo, setNuevoVehiculo] = useState({
         "licensePlate": "",
         "brand": "",
@@ -31,24 +35,25 @@ export function CrudVehiculos() {
         "category": "",
         "images": []
     });
+    */
     const [newVehiculoImage, setNewVehiculoImage] = useState(null);
     const [newVehiculoImageFile, setNewVehiculoImageFile] = useState(null);
-   
+
     useEffect(() => {
-        const url = `${ip}/api/vehiculo/obtenerVehiculos`;
+        
         async function getInfo() {
-            fetch(`${url}`, {
+            fetch(`${ip}/api/vehiculo/obtenerVehiculos`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json"
                 }
             })
-            .then((res) => res.json())
-            .catch((error) => console.error("Error:", error))
-            .then((res) => {
-                console.log(res);
-                setVehiculos(res);
-            });
+                .then((res) => res.json())
+                .catch((error) => console.error("Error:", error))
+                .then((res) => {
+                    console.log(res);
+                    setVehiculos(res.vehicles);
+                });
         }
         getInfo();
     }, []);
@@ -58,7 +63,7 @@ export function CrudVehiculos() {
         setNewVehiculoImage(null);
         setNewVehiculoImageFile(null);
 
-        setNuevoVehiculo({
+        /*setNuevoVehiculo({
             "licensePlate": "",
             "brand": "",
             "model": "",
@@ -70,7 +75,7 @@ export function CrudVehiculos() {
             "state": "",
             "category": "",
             "images": []
-        });
+        });*/
     };
 
     const handleOpen = () => {
@@ -78,7 +83,7 @@ export function CrudVehiculos() {
         setNewVehiculoImage(null);
         setNewVehiculoImageFile(null);
 
-        setNuevoVehiculo({
+        /*setNuevoVehiculo({
             "licensePlate": "",
             "brand": "",
             "model": "",
@@ -90,7 +95,7 @@ export function CrudVehiculos() {
             "state": "",
             "category": "",
             "images": []
-        });
+        });*/
     };
 
     const handleImageChange = (event) => {
@@ -112,7 +117,8 @@ export function CrudVehiculos() {
         e.preventDefault();
 
         var data = {
-            brand: e.target[0].value,
+            Series_idSeries: e.target[0].value, // validar en backend
+            brand: marca, // validar en backend
             licensePlate: e.target[2].value,
             model: e.target[4].value,
             transmission: e.target[6].value,
@@ -124,42 +130,113 @@ export function CrudVehiculos() {
             newImages: [newVehiculoImageFile]
         };
         console.log(data)
-
-        if (!(/^[0-9]{0,4}$/.test(data.model) && data.model <= 2023)) {
-            alert("Modelo inválido para el vehículo")
+        //console.log(newVehiculoImageFile)
+        if (!newVehiculoImageFile) {
+            setOpen(false);
+            Swal.fire({
+                title: 'Error!',
+                text: 'Debe ingresar una imagen para el vehiculo',
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            }).then((result) => {
+                setOpen(true);
+            });
             return;
         }
 
-        if (!(/^-?\d*\.?\d+$/.test(data.rentalFee))) {
-            alert("Cuota inválida para el vehículo")
+        if (!(/^(P|C|M)-?\d{3}[A-Z]{3}$/.test(data.licensePlate))) {
+            setOpen(false);
+            Swal.fire({
+                title: 'Error!',
+                text: 'Placa inválida. Formato: P-123ABC o P123ABC',
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            }).then((result) => {
+                setOpen(true);
+            });
             return;
         }
-        
-        handleClose();
+
+        if (!(/^[0-9]{0,4}$/.test(data.model) && data.model <= 2024 && data.model >= 1960)) {
+            setOpen(false);
+            Swal.fire({
+                title: 'Error!',
+                text: "Modelo inválido para el vehículo, debe ser un numero de año .",
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            }).then((result) => {
+                setOpen(true);
+            });
+            return;
+        }
+
+        if (!(/^(?!0\d)(\d+(\.\d{1,2})?)$/.test(data.rentalFee))) {
+            setOpen(false);
+            Swal.fire({
+                title: 'Error!',
+                text: "Cuota inválida para el vehículo",
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            }).then((result) => {
+                setOpen(true);
+            });
+            return;
+        }
+
+        if (data.rentalFee <= 0) {
+            setOpen(false);
+            Swal.fire({
+                title: 'Error!',
+                text: "Cuota inválida para el vehículo",
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            }).then((result) => {
+                setOpen(true);
+            });
+            return;
+        }
 
         /** petición update vehiculo */
+        
+        async function getInfo() {
+            fetch(`${ip}/api/vehiculo/registrarVehiculo`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            })
+                .then((res) => res.json())
+                .catch((error) => console.error("Error:", error))
+                .then((res) => {
+                    console.log(res);
+                });
+        }
+        getInfo();
+        handleClose();
+        
     };
 
     return (
         <BodyContent>
-            <Titulo titulo={"Administración De Vehículos"}/>
-            <Button 
-                variant="contained" 
-                size="small" 
+            <Titulo titulo={"Administración De Vehículos"} />
+            <Button
+                variant="contained"
+                size="small"
                 onClick={handleOpen}
                 sx={{ color: '#ffffff', backgroundColor: '#3DF28B' }}
             >
                 Nuevo Vehículo
             </Button>
             <Info>
-            <Stack direction="row" spacing={1} useFlexGap flexWrap="wrap">
-                {vehiculos.map((v) => 
-                    <Card 
-                        obj={v}
-                        key={v.licensePlate}
-                    />
-                )}
-            </Stack>
+                <Stack direction="row" spacing={1} useFlexGap flexWrap="wrap">
+                    {vehiculos.map((v) =>
+                        <Card
+                            obj={v}
+                            key={v.licensePlate}
+                        />
+                    )}
+                </Stack>
             </Info>
 
             <Dialog
@@ -169,11 +246,13 @@ export function CrudVehiculos() {
             >
                 <DialogTitle style={{ textAlign: 'center' }}>
                     <form onSubmit={handleSave}>
-                        <FormVehiculo 
-                            tipo={'create'} 
+                        <FormVehiculo
+                            tipo={'create'}
                             vehiculo={null}
                             newImage={newVehiculoImage}
                             handleImageChange={handleImageChange}
+                            marca={marca}
+                            setMarca={setMarca}
                         />
                         <Button
                             startIcon={<CloseIcon />}

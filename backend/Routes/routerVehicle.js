@@ -24,4 +24,6 @@ router.post('/detalleVehiculo', controller.getVehicleDetails);
 //Rent Vehicle
 router.post('/rentarVehiculo', controller.rentVehicle);
 
+router.get('/getMarcas', controller.getMarcas)
+
 module.exports = router;

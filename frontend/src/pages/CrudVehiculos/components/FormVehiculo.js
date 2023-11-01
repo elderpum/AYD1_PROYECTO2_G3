@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import {
@@ -13,7 +13,40 @@ import Select from '@mui/material/Select';
 
 import { ImageInput } from './ImageInput';
 
-export function FormVehiculo({ tipo, vehiculo, newImage, handleImageChange }) {
+export function FormVehiculo({ tipo, vehiculo, newImage, handleImageChange, marca, setMarca }) {
+    const ip = "http://localhost:3001"; //"https://zd8mw8xl-3001.use.devtunnels.ms"
+    const [marcas, setMarcas] = useState([])
+
+    useEffect(()=>{
+        const token = localStorage.getItem("auth");
+
+        const fetchData = async () => {
+            fetch(`${ip}/api/vehiculo/getMarcas`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `${token}`,
+                },
+            })
+                .then((res) => {
+                    return res.json();
+                })
+                .then((res) => {
+                    console.log(res)
+                    setMarcas(res.marcas);
+                })
+                .catch((error) => console.error("Error:", error));
+        };
+        fetchData();
+    }, [])
+
+    const handleMarca = (e) => {
+        for (let i = 0; i<marcas.length; i++) {
+            if (e.target.value === marcas[i].idSeries) {
+                setMarca(marcas[i].name)
+            }
+        }
+    }
 
     /* generación de imagenes para la edición */
     /*
@@ -25,19 +58,40 @@ export function FormVehiculo({ tipo, vehiculo, newImage, handleImageChange }) {
             );
         }
     }*/
+    /*
+    var opciones_marcas = []
+    for (let i = 0; i <marcas.length; i++) {
+        opciones_marcas.push(
+            <MenuItem value={marcas[i].idBrand}>{marcas[i].name}</MenuItem>
+        )
+    }
+    */
+    var opciones_series = []
+    for (let i = 0; i <marcas.length; i++) {
+        opciones_series.push(
+            <MenuItem value={marcas[i].idSeries}>{marcas[i].serie}</MenuItem>
+        )
+    }
 
     return (
         <>
             <h4> Vehiculo </h4>
+            <div sx={{width:' 10%'}}>
+                Marca: {marca}
+            </div>
             <Stack direction="row" spacing={2} useFlexGap flexWrap="wrap" sx={{marginTop: 3}}>
-                <TextField
-                    required
-                    id="outlined-required"
-                    label="Marca"
-                    size="small"
-                    sx={{ width: "50%" }}
-                    defaultValue={tipo === 'edit' ? 'vehiculo.brand' : ''}
-                />
+                <FormControl sx={{width: "50%"}}>
+                    <InputLabel size="small" id="input-label-combustible">Combustible</InputLabel>
+                    <Select
+                        required
+                        defaultValue={tipo === 'edit' ? vehiculo.fuelType : ''}
+                        label="Combustible"
+                        size="small"
+                        onChange={handleMarca}
+                    >
+                        {opciones_series}
+                    </Select>
+                </FormControl>
                 <TextField
                     required
                     id="outlined-required"
@@ -52,7 +106,7 @@ export function FormVehiculo({ tipo, vehiculo, newImage, handleImageChange }) {
                     label="Modelo"
                     size="small"
                     sx={{ width: "20%" }}
-                    inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+                    inputProps={{ inputMode: 'numeric', pattern: '[0-9]{4}' }}
                     defaultValue={tipo === 'edit' ? vehiculo.model : ''}
                 />
                 <FormControl sx={{width: "25%"}}>
@@ -64,8 +118,7 @@ export function FormVehiculo({ tipo, vehiculo, newImage, handleImageChange }) {
                         size="small"
                     >
                         <MenuItem value={'Manual'}>Manual</MenuItem>
-                        <MenuItem value={'Automático'}>Automático</MenuItem>
-                        <MenuItem value={'Hibrido'}>Hibrido</MenuItem>
+                        <MenuItem value={'Automatic'}>Automático</MenuItem>
                     </Select>
                 </FormControl>
                 <TextField
@@ -85,9 +138,9 @@ export function FormVehiculo({ tipo, vehiculo, newImage, handleImageChange }) {
                         label="Combustible"
                         size="small"
                     >
-                        <MenuItem value={'Gasolina'}>Gasolina</MenuItem>
-                        <MenuItem value={'Diesel'}>Diesel</MenuItem>
-                        <MenuItem value={'Eléctrico'}>Eléctrico</MenuItem>
+                        <MenuItem value={'gasoline'}>Gasolina</MenuItem>
+                        <MenuItem value={'diesel'}>Diesel</MenuItem>
+                        <MenuItem value={'electric'}>Eléctrico</MenuItem>
                     </Select>
                 </FormControl>
                 <FormControl sx={{width: "30%"}}>
@@ -124,8 +177,8 @@ export function FormVehiculo({ tipo, vehiculo, newImage, handleImageChange }) {
                         label="Estado"
                         size="small"
                     >
-                        <MenuItem value={'Disponible'}>Disponible</MenuItem>
-                        <MenuItem value={'No Disponible'}>No Disponible</MenuItem>
+                        <MenuItem value={'avilable'}>Disponible</MenuItem>
+                        <MenuItem value={'unavailable'}>No Disponible</MenuItem>
                     </Select>
                 </FormControl>
             </Stack>

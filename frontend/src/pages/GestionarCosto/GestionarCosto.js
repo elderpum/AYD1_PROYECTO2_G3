@@ -114,7 +114,7 @@ export function GestionarCosto({ setIndex }) {
         <BodyContent>
             <ContainerButton>
                 <ThemeProvider theme={theme}>
-                    <Button variant="contained" color="salmon" onClick={regresar} style={{ marginRight: 20 }}>
+                    <Button id='btnAtras' variant="contained" color="salmon" onClick={regresar} style={{ marginRight: 20 }}>
                         <BsArrowLeft style={{ color: "#3DF28B", fontSize: "1.5em" }} />
                     </Button>
                 </ThemeProvider>
