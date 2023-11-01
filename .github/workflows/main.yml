@@ -121,6 +121,7 @@ jobs:
             HOST: ${{ secrets.AWS_EC2_HOST }}  
           run: |
             echo "$PRIVATE_KEY" > ec2ayd1.pem
+            cat ec2ayd1.pem
             chmod 400 ec2ayd1.pem
            
             ssh -i "ec2ayd1.pem" ubuntu@ec2-18-222-231-240.us-east-2.compute.amazonaws.com
