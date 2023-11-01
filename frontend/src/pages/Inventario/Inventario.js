@@ -14,6 +14,7 @@ import { Autocomplete, Button, CardActionArea, TextField } from "@mui/material";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import styled from "styled-components";
+import useDocumentTitle from "../hooks/useDocumentTitle";
 
 export function Inventario(props) {
   const { setVehiculo } = useGeneralContext();
@@ -38,6 +39,8 @@ export function Inventario(props) {
 
   const ip = `http://localhost:3001`;
 
+  useDocumentTitle("Inventario");
+  
   const verificacionToken = useCallback(
     (res) => {
       if (res.message === "No token provided") {

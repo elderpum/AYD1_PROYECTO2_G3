@@ -1,6 +1,7 @@
 
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import useDocumentTitle from '../hooks/useDocumentTitle';
 import '../../components/Titulo.css';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -15,7 +16,7 @@ export function GestionarCosto({ setIndex }) {
     const [vehiculoGestion, setVehiculoGestion] = useState({})
     const [costo, setCosto] = useState(0.00)
     const ip = `http://localhost:3001`;
-
+    useDocumentTitle("Gestionar Costo")
     useEffect(() => {
         const token = localStorage.getItem("auth");
         const data = { licensePlate: vehiculo.id };
@@ -93,6 +94,7 @@ export function GestionarCosto({ setIndex }) {
                 .catch((error) => console.error("Error:", error));
         };
         fetchData();
+        setIndex(1);
     };
 
     let theme = createTheme({});
@@ -119,7 +121,7 @@ export function GestionarCosto({ setIndex }) {
                 <h2> {"Gestionar Costo"} </h2>
             </ContainerButton>
             <Info>
-                <TituloInfo>  Mercedez Benz - {vehiculoGestion.model} </TituloInfo>
+                <TituloInfo id='tituloInfo'>{vehiculo.nombre}</TituloInfo>
                 <Grid sx={{ flexGrow: 1 }} container spacing={2}>
                     <Grid item xs={12}>
                         <Grid container justifyContent="center" spacing={0.5}>
@@ -146,7 +148,7 @@ export function GestionarCosto({ setIndex }) {
                                     />
                                 </FormControl>
                                 <p></p>
-                                <Button variant="outlined" size="small" sx={{ color: '#3DF28B', borderColor: '#3DF28B' }} onClick={modificar}>
+                                <Button id='btnModificar' variant="outlined" size="small" sx={{ color: '#3DF28B', borderColor: '#3DF28B' }} onClick={modificar}>
                                     Modificar
                                 </Button>
                             </Grid>

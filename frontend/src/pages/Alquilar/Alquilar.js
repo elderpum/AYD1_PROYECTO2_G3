@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import useDocumentTitle from '../hooks/useDocumentTitle';
 import '../../components/Titulo.css';
 
 import { Grid, Button } from '@mui/material';
@@ -20,6 +21,8 @@ export function Alquilar({ setIndex }) {
     const [total, setTotal] = useState(0)
     const { vehiculo } = useGeneralContext();
     const ip = `http://localhost:3001`;
+
+    useDocumentTitle("Alquilar")
 
     useEffect(() => {
         console.log(vehiculo)
@@ -50,7 +53,7 @@ export function Alquilar({ setIndex }) {
         setFechaInicio(new Date().toDateString());
     }, [ip, vehiculo])
 
-    const regresar = () => {
+    const Regresar = () => {
         setIndex(1);
     };
 
@@ -88,6 +91,7 @@ export function Alquilar({ setIndex }) {
             setFechaFinal(fecha_);
             handleTotal();
         } catch (error) {
+            setFechaFinal('');
         }
     };
 
@@ -173,7 +177,7 @@ export function Alquilar({ setIndex }) {
             })
         };
         fetchData();
-
+        setIndex(1);
     }
 
     let theme = createTheme({});
@@ -193,14 +197,14 @@ export function Alquilar({ setIndex }) {
         <BodyContent>
             <ContainerButton>
                 <ThemeProvider theme={theme}>
-                    <Button variant="contained" color="salmon" onClick={regresar} style={{ marginRight: 20 }}>
+                    <Button id='btnAtras' variant="contained" color="salmon" onClick={Regresar} style={{ marginRight: 20 }}>
                         <BsArrowLeft style={{ color: "#3DF28B", fontSize: "1.5em" }} />
                     </Button>
                 </ThemeProvider>
                 <h2 className='heads'> {"Alquilar Vehiculo"} </h2>
             </ContainerButton>
             <Info>
-                <TituloInfo>  Mercedez Benz - {vehiculoAlquilar.model} </TituloInfo>
+                <TituloInfo id='tituloInfo'>{vehiculo.nombre}</TituloInfo>
                 <Grid sx={{ flexGrow: 1 }} container spacing={2}>
                     <Grid item xs={12}>
                         <Grid container justifyContent="center" spacing={0.5}>
@@ -238,7 +242,7 @@ export function Alquilar({ setIndex }) {
                                     />
                                 </LocalizationProvider>
                                 <p></p>
-                                <Button variant="outlined" size="small" sx={{ color: '#3DF28B', borderColor: '#3DF28B' }} onClick={solicitar}>
+                                <Button id='btnAlquilar' variant="outlined" size="small" sx={{ color: '#3DF28B', borderColor: '#3DF28B' }} onClick={solicitar}>
                                     Alquilar
                                 </Button>
                             </Grid>

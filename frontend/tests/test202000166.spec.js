@@ -29,7 +29,7 @@ test.describe("test_pag_inventario_202000166", () => {
     // obtener el texto del h2 mediante su clase
     const text = await page.$eval("h2", (element) => element.textContent);
     // verificar que el texto sea el esperado
-    expect(text).toBe(" Gestionar Cuota ");
+    expect(text).toBe(" Gestionar Costo ");
   });
 
   test("Debería filtrar autos por categoría y modelos.", async ({ page }) => {

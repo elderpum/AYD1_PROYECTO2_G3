@@ -10,6 +10,7 @@ import {
 } from '@mui/material';
 import '../../components/Titulo.css';
 import styled from 'styled-components';
+import useDocumentTitle from '../hooks/useDocumentTitle';
 
 export function Pago({ setIndex }) {
   const [metodo, setMetodo] = useState('');
@@ -19,7 +20,7 @@ export function Pago({ setIndex }) {
   const [CVC, setCVC] = useState('');
   const [total, setTotal] = useState('354.00')
   const { getExpiryDateProps, getCVCProps } = usePaymentInputs();
-
+  useDocumentTitle("Pago");
   const regresar = () => {
     setIndex(3);
   }

@@ -5,12 +5,12 @@ function ejemploAutomovil() {
   return "Automovil";
 }
 
-async function getInventory(data,id,type) {
+async function getInventory(data, id, type) {
   try {
     let client = ''
     let response = [];
     let query = ''
-    if(type == 'admin' || type == 'employee'){
+    if (type == 'admin' || type == 'employee') {
       query = `
             SELECT V.licensePlate, CONCAT(B.name,' ',S.name,' ',V.model) as name, V.rentalFee, V.state, R.User_email from Vehicle V
             inner join Series S on V.Series_idSeries = S.idSeries
@@ -18,7 +18,7 @@ async function getInventory(data,id,type) {
             left join Request R on V.licensePlate = R.Vehicle_licensePlate
             left join User U on R.User_email = U.email
       `
-    }else if (type == 'client'){
+    } else if (type == 'client') {
       query = `
             SELECT V.licensePlate, CONCAT(B.name,' ',S.name,' ',V.model) as name, V.rentalFee, V.state from Vehicle V
             inner join Series S on V.Series_idSeries = S.idSeries
@@ -50,18 +50,18 @@ async function getInventory(data,id,type) {
     for (const vehicle of response) {
       const image = images.find((image) => image.Vehicle_licensePlate === vehicle.licensePlate);
 
-      if(type == 'admin' || type == 'employee'){
+      if (type == 'admin' || type == 'employee') {
 
         const vehicleObj = {
           id: vehicle.licensePlate,
           nombre: vehicle.name,
           imagen: image.link,
           cuota: vehicle.rentalFee,
-          disponibilidad: vehicle.state + ' '+(vehicle.User_email ? vehicle.User_email : ' '),
+          disponibilidad: vehicle.state + ' ' + (vehicle.User_email ? vehicle.User_email : ' '),
         };
         vehiclesArr.push(vehicleObj);
 
-      }else if (type == 'client'){
+      } else if (type == 'client') {
 
         const vehicleObj = {
           id: vehicle.licensePlate,
@@ -86,7 +86,7 @@ async function getInventory(data,id,type) {
     const [marcas] = await db.query(query);
 
     const marcasSend = []
-    for(const marca of marcas){
+    for (const marca of marcas) {
       marcasSend.push(marca.name)
     }
 
@@ -99,7 +99,7 @@ async function getInventory(data,id,type) {
     let fechaDev = ""
     let vehiculo = {}
 
-    if(type == 'client'){
+    if (type == 'client') {
       query = `SELECT V.model, CONCAT(B.name,' ',S.name) as Brand, V.transmission, V.seatings, V.fuelType, V.category, V.rentalFee, V.licensePlate, R.rentalEnd  FROM Request R
                 inner join ayd1p2.Vehicle V on R.Vehicle_licensePlate = V.licensePlate
               inner join ayd1p2.Series S on V.Series_idSeries = S.idSeries
@@ -107,23 +107,25 @@ async function getInventory(data,id,type) {
                 WHERE User_email = ?;`
 
       const [result] = await db.query(query, [id]);
+      if (result.length !== 0) {
+        query = `SELECT link from Image
+      WHERE Vehicle_licensePlate = ?;`
 
-      query = `SELECT link from Image
-                WHERE Vehicle_licensePlate = ?;`
+        const [image] = await db.query(query, [result[0].licensePlate]);
 
-      const [image] = await db.query(query, [result[0].licensePlate]);
-      
-      const date = new Date(result[0].rentalEnd);
-      fechaDev = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`
-      vehiculo = {
-        imagen: image[0].link,
-        modelo: result[0].model,
-        marca: result[0].Brand,
-        transmision: result[0].transmission,
-        asientos: result[0].seatings,
-        combustible: result[0].fuelType,
-        categoria: result[0].category,
-        cuota: result[0].rentalFee
+        const date = new Date(result[0].rentalEnd);
+        fechaDev = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
+        vehiculo = {
+          imagen: image[0].link,
+          modelo: result[0].model,
+          marca: result[0].Brand,
+          transmision: result[0].transmission,
+          asientos: result[0].seatings,
+          combustible: result[0].fuelType,
+          categoria: result[0].category,
+          cuota: result[0].rentalFee
+        }
+
       }
     }
 
@@ -145,7 +147,7 @@ async function getInventory(data,id,type) {
       }
     }
 
-    if(arregloBidimensional.length == 0){
+    if (arregloBidimensional.length == 0) {
       return {
         err: false,
         message: "No hay vehiculos disponibles",
