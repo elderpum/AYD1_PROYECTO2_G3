@@ -10,6 +10,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { BsArrowLeft } from "react-icons/bs";
 import { useGeneralContext } from '../../contexts/generalContext';
+import { ip } from '../../components/Ip'
 
 const dayjs = require('dayjs');
 const Swal = require('sweetalert2')
@@ -20,7 +21,7 @@ export function Alquilar({ setIndex }) {
     const [vehiculoAlquilar, setVehiculoAlquilar] = useState({})
     const [total, setTotal] = useState(0)
     const { vehiculo } = useGeneralContext();
-    const ip = `http://localhost:3001`;
+    //const ip = `http://localhost:3001`;
 
     useDocumentTitle("Alquilar")
 
@@ -51,7 +52,7 @@ export function Alquilar({ setIndex }) {
         fetchData();
         /* Setear fecha inicial dia actual */
         setFechaInicio(new Date().toDateString());
-    }, [ip, vehiculo])
+    }, [vehiculo])
 
     const Regresar = () => {
         setIndex(1);

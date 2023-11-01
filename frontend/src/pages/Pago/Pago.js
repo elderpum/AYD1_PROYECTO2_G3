@@ -1,12 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { BsArrowLeft } from "react-icons/bs";
 import { usePaymentInputs} from "react-payment-inputs";
 
 import { 
-  Grid, Button, Input, InputLabel, FormControl, 
-  InputAdornment, FormHelperText, MenuItem, Select,
-  TextField
+  Grid, Button, InputLabel, FormControl, 
+  MenuItem, Select, TextField
 } from '@mui/material';
 import '../../components/Titulo.css';
 import styled from 'styled-components';
@@ -19,8 +18,13 @@ export function Pago({ setIndex }) {
   const [fechaVence, setFechaVence] = useState('');
   const [CVC, setCVC] = useState('');
   const [total, setTotal] = useState('354.00')
-  const { getExpiryDateProps, getCVCProps } = usePaymentInputs();
+  const { getExpiryDateProps } = usePaymentInputs();
   useDocumentTitle("Pago");
+
+  useEffect(() => {
+    setTotal('354.00')
+  }, [])
+
   const regresar = () => {
     setIndex(3);
   }
