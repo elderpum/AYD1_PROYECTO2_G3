@@ -39,6 +39,12 @@ exports.newVehicle = async (data) => {
             const s3Response = await controllerS3.uploadFile(nameFile, image);
             let imageLink = s3Response.link;
 
+            const result = await db.execute(query, values);
+
+            if(!result){
+                return {err: true, message: 'Error al registrar el vehiculo'}
+            }
+
             const query2 = 'INSERT INTO Image (Vehicle_licensePlate, link) VALUES (?, ?)';
 
             const values2 = [
@@ -51,6 +57,8 @@ exports.newVehicle = async (data) => {
             if(!result2){
                 return {err: true, message: 'Error al registrar la imagen'}
             }
+
+            return {error: false, message: "Vehiculo registrado exitosamente"};
             
         }
 
