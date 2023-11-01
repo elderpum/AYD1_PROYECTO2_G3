@@ -28,6 +28,8 @@ export function Inventario(props) {
   const [selecMarca, setSelecMarca] = useState("");
   const categoria = ["Sedan", "Bus", "Van", "Pickup", "Panel", "Truck"];
   const [marca, setMarca] = useState(["Toyota", "Honda", "Mazda", "Nissan"]);
+
+  
   const [inventario, setInventario] = useState([
     {
       nombre: "Toyota Corolla",

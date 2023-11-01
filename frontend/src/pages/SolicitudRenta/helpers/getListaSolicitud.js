@@ -1,7 +1,9 @@
+import { ip } from '../../../components/Ip';
+
 
 export const getListaSolicitud = async () => {
 
-    const url = 'http://localhost:3001/api/solicitud/solicitudes-no-procesadas';
+    const url = `${ip}/api/solicitud/solicitudes-no-procesadas`;
 
     const token = localStorage.getItem('auth');
 

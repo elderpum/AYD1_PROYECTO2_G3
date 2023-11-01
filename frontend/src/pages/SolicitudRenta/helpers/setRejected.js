@@ -1,4 +1,6 @@
+import { ip } from '../../../components/Ip';
 const Swal = require('sweetalert2');
+
 
 export const setRejected = async (form, solicitud, setListaSolicitud) => {
 
@@ -9,7 +11,7 @@ export const setRejected = async (form, solicitud, setListaSolicitud) => {
         userEmail: solicitud.User_email,
     }
 
-    const url = 'http://localhost:3001/api/solicitud/responder-solicitud';
+    const url = `${ip}/api/solicitud/responder-solicitud`;
 
     const token = localStorage.getItem('auth');
 

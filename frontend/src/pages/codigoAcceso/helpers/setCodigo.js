@@ -1,4 +1,6 @@
+import { ip } from '../../../components/Ip';
 const Swal = require('sweetalert2');
+
 
 export const setCodigo = async (form) => {
 
@@ -6,7 +8,7 @@ export const setCodigo = async (form) => {
         email: form.email,
     }
 
-    const url = 'http://localhost:3001/api/usuario/generarCodigoAcceso';
+    const url = `${ip}/api/usuario/generarCodigoAcceso`;
 
     // Peticion al backend.
     const rep = await fetch(url, {
