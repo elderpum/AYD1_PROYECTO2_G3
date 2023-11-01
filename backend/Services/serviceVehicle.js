@@ -89,6 +89,20 @@ exports.newVehicle = async (data) => {
 
         return {error: false, message: "Vehiculo registrado exitosamente"};
     } catch(error){
+        console.log(error)
+        return {error:true, message: error.message};
+    }
+}
+
+exports.getMarcas = async () => {
+    try {
+        const query = `SELECT b.idBrand, b.name, s.idSeries, s.name as serie FROM Brand b
+        INNER JOIN Series s ON b.idBrand = s.Brand_idBrand`;
+        const [result] = await db.execute(query);
+        //console.log(result)
+
+        return {error: false, marcas: result}
+    } catch (error) {
         return {error:true, message: error.message};
     }
 }
@@ -97,7 +111,12 @@ exports.newVehicle = async (data) => {
 exports.getAllVehicles = async () => {
     try{
         // Obtenemos todos los vehículos y a su vez, obtenemos las imagenes asociadas a cada vehículo
-        const query = 'SELECT * FROM Vehicle';
+        const query = `SELECT V.licensePlate, V.model, V.Series_idSeries, V.transmission,
+                    V.seatings, V.fuelType, V.rentalFee, V.state, V.category,
+                    S.idSeries, S.name as serie, B.idBrand, B.name as name 
+                    FROM Vehicle V
+                    inner join Series S on V.Series_idSeries = S.idSeries
+                    inner join Brand B on S.Brand_idBrand = B.idBrand`;
         const [result] = await db.execute(query);
 
         if(!result){

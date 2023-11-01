@@ -6,6 +6,7 @@ import { Button, Avatar } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import AddToPhotosIcon from '@mui/icons-material/AddToPhotos';
+import ImageIcon from '@mui/icons-material/Image';
 
 export const ImageInput = ({ image, handleImageChange }) => {
 
@@ -41,8 +42,9 @@ export const ImageInput = ({ image, handleImageChange }) => {
                         height: '200px',
                         overflow: 'hidden',
                         borderRadius: '15px',
-                    }} // Ajusta estos valores para cambiar el tamaño/>
-                />
+                    }}>
+                <ImageIcon/>
+                </Avatar>
             )}
             <form>
                 <input

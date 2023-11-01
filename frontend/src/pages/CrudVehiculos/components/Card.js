@@ -14,6 +14,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import ImageNotSupportedIcon from '@mui/icons-material/ImageNotSupported';
+import Chip from '@mui/material/Chip';
 
 const Swal = require('sweetalert2')
 
@@ -158,32 +159,34 @@ export function Card({ obj }) {
         /** petición update vehiculo */
     };
 
-    /*
+    
     var imagenes = [];
     for (let i=0;i<obj.images.length;i++) {
         imagenes.push(
             <div>
-                <img src={obj.images[i].img} alt='imagen' key={obj.images[i].id}/>
+                <img src={obj.images[i].link} alt='imagen' key={obj.images[i].idImage}/>
             </div>
         );
     }
-    */
+    
 
     return (
         <CardContainer>
             <Carousel showArrows={true} showThumbs={false} width={"290px"} infiniteLoop={true}>
-                {/*imagenes*/}
+                {imagenes}
             </Carousel>
-            <h5> {obj.brand} </h5>
+            <h5 style={{marginTop: '20px'}}> {obj.name} {obj.serie} </h5>
             <h6> Placa: {obj.licensePlate} </h6>
             <ContainerText>
                 <div style={{marginRight: 'auto'}}>
-                    <h6> Modelo: {obj.model} </h6>
-                    <h6> Cuota: Q {obj.rentalFee} </h6>
-                </div>
-                <div>
-                    <h6> Estado: {obj.state} </h6>
-                    <h6> Categoria: {obj.category} </h6>
+                    <h6> Modelo: <Chip label={obj.model} color="primary"  size="small" /> </h6>
+                    <h6> Cuota: <Chip label={"Q " + obj.rentalFee} color="success" size="small" /> </h6>
+                    <h6> Estado: <Chip label={obj.state} color="primary"  size="small" /> </h6>
+                    <h6> Categoria: <Chip label={obj.category} color="primary"  size="small" /> </h6>
+                    <h6> Transmisión: <Chip label={obj.transmission} color="primary"  size="small" /> </h6>
+                    <h6> Asientos: <Chip label={obj.seatings} color="primary"  size="small" /> </h6>
+                    <h6> Combustible: <Chip label={obj.fuelType} color="primary"  size="small" /> </h6>
+                    <h6> Categoria: <Chip label={obj.category} color="primary"  size="small" /> </h6>
                 </div>
             </ContainerText>
             <ButtonsContainer>
@@ -267,6 +270,7 @@ display: flex;
 padding: 30px 15px 20px 20px;
 flex-direction: column;
 margin-top: 15px;
+margin-bottom: 0;
 min-width: 300px;
 
 border-radius: 5px 5px 5px 5px;
