@@ -7,7 +7,6 @@ import {
   MdHomeFilled,
   MdLogout,
   MdOutlineEventAvailable,
-  MdOutlineSettingsBackupRestore,
   MdCarRental,
   MdPeopleAlt,
 } from "react-icons/md";
@@ -76,18 +75,6 @@ export const Sidebar = ({ typeUser, credentials }) => {
                 <li className={`option d-flex align-items-center`} onClick={() => setIndex(20)}>
                   <MdCarRental />
                   <span>Aceptación de reservas</span>
-                </li>
-                :
-                null
-            }
-
-
-            {
-              typeUser === 2 // Es cliente.
-                ?
-                <li className={`option d-flex align-items-center`} onClick={() => setIndex(1)}>
-                  <MdOutlineSettingsBackupRestore />
-                  <span>Devolución de Vehículos</span>
                 </li>
                 :
                 null

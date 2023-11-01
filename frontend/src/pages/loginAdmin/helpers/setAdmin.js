@@ -1,6 +1,7 @@
 const Swal = require('sweetalert2');
+import { ip } from '../../../components/Ip';
 
-export const setAdmin = async(form, handleNavigatetoHome) => {
+export const setAdmin = async (form, handleNavigatetoHome) => {
 
     const newAdmin = {
         user: form.user,
@@ -8,7 +9,7 @@ export const setAdmin = async(form, handleNavigatetoHome) => {
         type: 'admin'
     }
 
-    const url = 'http://localhost:3001/api/usuario/login';
+    const url = `${ip}/api/usuario/login`;
 
     const rep = await fetch(url, {
         method: 'POST',

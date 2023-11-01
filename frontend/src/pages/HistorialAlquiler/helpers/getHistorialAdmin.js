@@ -1,8 +1,8 @@
-
+import { ip } from '../../../components/Ip';
 
 export const getHistorialAdmin = async () => {
 
-    const url = 'http://localhost:3001/api/solicitud/historial-admin';
+    const url = `${ip}/api/solicitud/historial-admin`;
 
     const token = localStorage.getItem('auth');
 

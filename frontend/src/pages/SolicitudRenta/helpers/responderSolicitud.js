@@ -1,10 +1,12 @@
 const Swal = require('sweetalert2');
 
+import { ip } from '../../../components/Ip';
+
 
 export const responderSolicitud = async () => {
 
 
-    const url = 'http://localhost:3001/responder-solicitud';
+    const url = `${ip}/responder-solicitud`;
 
     const token = localStorage.getItem('auth');
 

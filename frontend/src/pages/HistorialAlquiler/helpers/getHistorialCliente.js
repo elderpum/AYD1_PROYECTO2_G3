@@ -1,8 +1,8 @@
-
+import { ip } from '../../../components/Ip';
 
 export const getHistorialCliente = async () => {
 
-    const url = 'http://localhost:3001/api/solicitud/historial-cliente';
+    const url = `${ip}/api/solicitud/historial-cliente`;
 
     const token = localStorage.getItem('auth');
 
