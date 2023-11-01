@@ -210,7 +210,21 @@ export function CrudVehiculos() {
                 .then((res) => res.json())
                 .catch((error) => console.error("Error:", error))
                 .then((res) => {
-                    console.log(res);
+                    if (res.err) {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: res.message,
+                            icon: 'error',
+                            confirmButtonText: 'Ok'
+                        })
+                    } else {
+                        Swal.fire({
+                            title: 'Exito!',
+                            text: "Vehiculo registrado exitosamente!",
+                            icon: 'success',
+                            confirmButtonText: 'Ok'
+                        })
+                    }
                 });
         }
         getInfo();

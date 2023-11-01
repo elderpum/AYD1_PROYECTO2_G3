@@ -8,7 +8,7 @@ import { Titulo } from "../../components/Titulo";
 import { Card } from './components/Card';
 import { FormEmpleado } from './components/FormEmpleados';
 import { validateEmail } from './utils/validations';
-//import { ip } from '../../components/Ip'
+import { ip } from '../../components/Ip'
 
 import CloseIcon from '@mui/icons-material/Close';
 import SaveIcon from '@mui/icons-material/Save';
@@ -16,8 +16,8 @@ import SaveIcon from '@mui/icons-material/Save';
 export function CrudEmpleados() {
     //const navigate = useNavigate();
     const [open, setOpen] = useState(false);
-    //const [empleados, setEmpleados] = useState([]);
-
+    const [empleados, setEmpleados] = useState([]);
+    /*
     const empleado = {
         email: "oiram@gmail.com",
         name: "Oiram",
@@ -26,13 +26,11 @@ export function CrudEmpleados() {
         phone: "39660266",
         userName: "oiramxd",
         passw: "1234"
-    }
+    }*/
 
     useEffect(() => {
-        /*
-        const url = `${ip}/api/vehiculo/obtenerVehiculos`;
         async function getInfo() {
-            fetch(`${url}`, {
+            fetch(`${ip}/api/usuario/obtenerEmpleados`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json"
@@ -42,11 +40,11 @@ export function CrudEmpleados() {
             .catch((error) => console.error("Error:", error))
             .then((res) => {
                 console.log(res);
-                setVehiculos(res);
+                setEmpleados(res.data);
             });
         }
         getInfo();
-        */
+        
     }, []);
 
     const handleClose = () => {
@@ -83,14 +81,14 @@ export function CrudEmpleados() {
         /** petición update vehiculo */
     };
 
-    /* reder de vehiculos */
-    /*var lista_vehiculos = [];
-    console.log(vehiculos.length)
-    for (let i=0; i<vehiculos.length; i++) {
-        lista_vehiculos.push(
+    /* render de empleados */
+    var lista_empleados = [];
+    console.log(empleados.length)
+    for (let i=0; i<empleados.length; i++) {
+        lista_empleados.push(
 
         );
-    }*/
+    }
 
     return (
         <BodyContent>
@@ -105,10 +103,9 @@ export function CrudEmpleados() {
             </Button>
             <Info>
                 <Stack direction="row" spacing={1} useFlexGap flexWrap="wrap">
-                    {/*vehiculos.map((vehiculo) => { return (
-                        <Card obj={vehiculo} key={vehiculo.licensePlate}/>
-                    )})*/}
-                    <Card empleado={empleado}/>
+                    {empleados.map((empleado) => { return (
+                        <Card empleado={empleado}/>
+                    )})}
                 </Stack>
             </Info>
             <Dialog

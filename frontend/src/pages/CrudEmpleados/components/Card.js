@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import '../../../components/Titulo.css';
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 
-import { Button, IconButton, Dialog, DialogTitle } from '@mui/material';
+import { Button, IconButton, Dialog, DialogTitle, Chip } from '@mui/material';
 import { FormEmpleado } from './FormEmpleados';
 import { validateEmail } from '../utils/validations';
 
@@ -73,15 +73,13 @@ export function Card({ empleado }) {
     return (
         <CardContainer>
             <h5> {empleado.email} </h5>
-            <h6> Usuario: {empleado.userName} </h6>
-            <ContainerText>
-                <div style={{marginRight: 'auto'}}>
-                    <h6> Nombre: {empleado.name} </h6>
-                </div>
-                <div>
-                    <h6> Apellido: {empleado.lastName} </h6>
-                </div>
-            </ContainerText>
+            <h6> Usuario: <Chip label={empleado.userName} color="success"  size="small" /> </h6>
+            <h6> Nombre: <Chip label={empleado.name} color="success"  size="small" /> </h6>
+            <h6> Apellido: <Chip label={empleado.lastName} color="success"  size="small" /> </h6>
+            <h6> Fecha de Nacimiento: <Chip label={empleado.birthday} color="success"  size="small" /> </h6>
+            <h6> Licencia: <Chip label={empleado.license} color="success"  size="small" /> </h6>
+            <h6> Dirección: <Chip label={empleado.address} color="success"  size="small" /> </h6>
+            <h6> Telefono: <Chip label={empleado.phone} color="success"  size="small" /> </h6>
             <ButtonsContainer>
                 <IconButton aria-label="edit" color="primary" onClick={handleOpen}>
                     <EditIcon />
@@ -130,10 +128,6 @@ export function Card({ empleado }) {
 Utilizar Dialog para los formularios de edicion y eliminación
 */
 
-const ContainerText = styled.div`
-display: flex;
-`
-
 const ButtonsContainer = styled.div`
 display: flex;
 `
@@ -144,11 +138,13 @@ padding: 30px 15px 20px 20px;
 flex-direction: column;
 margin-top: 15px;
 min-width: 300px;
+word-wrap: break-word;
 
 border-radius: 5px 5px 5px 5px;
 -webkit-border-radius: 5px 5px 5px 5px;
 -moz-border-radius: 5px 5px 5px 5px;
 border: 1px solid #cccccc;
+    word-wrap: break-word;
 
 & img {
     width: 290px;

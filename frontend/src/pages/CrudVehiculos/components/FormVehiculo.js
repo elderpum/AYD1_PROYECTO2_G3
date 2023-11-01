@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import {
-    Stack, TextField, InputAdornment,
-    Box, ImageList, ImageListItem
+    Stack, TextField, InputAdornment
 } from '@mui/material';
 
 import InputLabel from '@mui/material/InputLabel';
@@ -50,6 +49,7 @@ export function FormVehiculo({ tipo, vehiculo, newImage, handleImageChange, marc
     }
 
     /* generación de imagenes para la edición */
+
     /*
     var imagenes = [];
     if (tipo === 'edit') {
@@ -59,6 +59,7 @@ export function FormVehiculo({ tipo, vehiculo, newImage, handleImageChange, marc
             );
         }
     }*/
+
     /*
     var opciones_marcas = []
     for (let i = 0; i <marcas.length; i++) {
@@ -67,6 +68,7 @@ export function FormVehiculo({ tipo, vehiculo, newImage, handleImageChange, marc
         )
     }
     */
+
     var opciones_series = []
     for (let i = 0; i <marcas.length; i++) {
         opciones_series.push(
@@ -82,11 +84,11 @@ export function FormVehiculo({ tipo, vehiculo, newImage, handleImageChange, marc
             </div>
             <Stack direction="row" spacing={2} useFlexGap flexWrap="wrap" sx={{marginTop: 3}}>
                 <FormControl sx={{width: "50%"}}>
-                    <InputLabel size="small" id="input-label-combustible">Combustible</InputLabel>
+                    <InputLabel size="small" id="input-serie">Serie</InputLabel>
                     <Select
                         required
-                        defaultValue={tipo === 'edit' ? vehiculo.fuelType : ''}
-                        label="Combustible"
+                        defaultValue={tipo === 'edit' ? vehiculo.idSeries : ''}
+                        label="Serie"
                         size="small"
                         onChange={handleMarca}
                     >
@@ -158,6 +160,7 @@ export function FormVehiculo({ tipo, vehiculo, newImage, handleImageChange, marc
                         <MenuItem value={'Pickup'}>Pickup</MenuItem>
                         <MenuItem value={'Panel'}>Panel</MenuItem>
                         <MenuItem value={'Camion'}>Camion</MenuItem>
+                        <MenuItem value={'Van'}>Van</MenuItem>
                     </Select>
                 </FormControl>
                 <TextField
@@ -178,30 +181,21 @@ export function FormVehiculo({ tipo, vehiculo, newImage, handleImageChange, marc
                         label="Estado"
                         size="small"
                     >
-                        <MenuItem value={'avilable'}>Disponible</MenuItem>
+                        <MenuItem value={'available'}>Disponible</MenuItem>
                         <MenuItem value={'unavailable'}>No Disponible</MenuItem>
+                        <MenuItem value={'reserved'}>Reservado</MenuItem>
                     </Select>
                 </FormControl>
             </Stack>
             {tipo === 'edit' ? (
                 <>
-                    <Box sx={{ width: '100%', height: 300, overflowY: 'scroll', marginTop: 2 }}>
-                        <ImageList variant="masonry" cols={2} gap={0}>
-                            {vehiculo.images.map((item) => (
-                                <ImageListItem key={item.img}>
-                                    <img
-                                        src={`${item.img}?w=161&fit=crop&auto=format`}
-                                        alt={'img'}
-                                        loading="lazy"
-                                    />
-                                </ImageListItem>
-                            ))}
-                        </ImageList>
-                    </Box>
+                <ContainerImage>
+                    <ImageInput tipo={tipo} image={newImage} handleImageChange={handleImageChange}/>
+                </ContainerImage>
                 </>
             ) : (
                 <ContainerImage>
-                    <ImageInput image={newImage} handleImageChange={handleImageChange}/>
+                    <ImageInput tipo={tipo}  image={null} handleImageChange={handleImageChange}/>
                 </ContainerImage>
             ) }
         </>
