@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Box } from '@mui/material';
 import Stack from '@mui/material/Stack';
@@ -16,6 +16,7 @@ import Typography from '@mui/material/Typography';
 import { Titulo } from "../../components/Titulo";
 import { DialogCancel } from './DialogCancel';
 import { setAccepted } from './helpers/setAccepted';
+import { UseFetchListaSolicitud } from './hooks/UseFetchListaSolicitud';
 
 
 
@@ -23,6 +24,20 @@ export const Solicitud = () => {
 
     // Estado para abrir y cerrar el modal.
     const [open, setOpen] = useState(false);
+
+
+    const [listaSolicitud, setListaSolicitud] = useState([]);
+
+
+
+    useEffect(() => {
+
+        UseFetchListaSolicitud(listaSolicitud, setListaSolicitud);
+
+
+    }, [listaSolicitud])
+
+
 
 
     // Funciones para abrir el modal.
