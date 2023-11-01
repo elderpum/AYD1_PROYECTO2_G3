@@ -1,7 +1,7 @@
 const AWS = require('../Config/awsConfig')
 const s3 = new AWS.S3();
 const p = require('path')
-const bucketName=process.env.S3_BUCKET_NAME
+const bucketName=process.env.S3_BUCKET_NAME || 'ayd1-proyecto1'
 
 function generateName(oldName){
     const extension = p.extname(oldName);
