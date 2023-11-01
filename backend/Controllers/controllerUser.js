@@ -17,7 +17,6 @@ exports.login = async (req, res) => {
     try{
         const {user, password, type} = req.body;
         const result = await service.auth(user, password, type);
-
         if(!result.authExitoso){
             return res.json({authExitoso: result.authExitoso, message: result.message})
         }
