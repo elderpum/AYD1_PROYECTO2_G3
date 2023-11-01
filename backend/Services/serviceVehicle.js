@@ -309,7 +309,7 @@ exports.rentVehicle = async (data) => {
     try{
         var today = new Date();
         var localDate = new Date(today.getTime() - (today.getTimezoneOffset() * 60000)).toISOString().slice(0, 10);
-        var state = "accepted";
+        var state = "pending";
 
         const query = 'INSERT INTO Request (User_email, Vehicle_licensePlate, state, processedBy, date_, rentalStart, rentalEnd, rentalFee) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
         const values = [

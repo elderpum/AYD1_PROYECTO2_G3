@@ -12,9 +12,10 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
 import { ImageInput } from './ImageInput';
+import { ip } from '../../../components/Ip';
 
 export function FormVehiculo({ tipo, vehiculo, newImage, handleImageChange, marca, setMarca }) {
-    const ip = "http://localhost:3001"; //"https://zd8mw8xl-3001.use.devtunnels.ms"
+    //const ip = "http://localhost:3001"; //"https://zd8mw8xl-3001.use.devtunnels.ms"
     const [marcas, setMarcas] = useState([])
 
     useEffect(()=>{
