@@ -7,40 +7,34 @@ import { useNavigate } from 'react-router-dom';
 import { Titulo } from "../../components/Titulo";
 import { Card } from './components/Card';
 import { FormVehiculo } from './components/FormVehiculo';
+import { useGeneralContext } from '../../contexts/generalContext';
 
 import CloseIcon from '@mui/icons-material/Close';
 import SaveIcon from '@mui/icons-material/Save';
 
 export function CrudVehiculos() {
+    const { setVehiculo } = useGeneralContext();
     const navigate = useNavigate();
     const ip = "http://localhost:3001"; //"https://zd8mw8xl-3001.use.devtunnels.ms"
     const [open, setOpen] = useState(false);
     const [vehiculos, setVehiculos] = useState([]);
+    const [nuevoVehiculo, setNuevoVehiculo] = useState({
+        "licensePlate": "",
+        "brand": "",
+        "model": "",
+        "Series_idSeries": "",
+        "transmission": "",
+        "seatings": "",
+        "fuelType": "",
+        "rentalFee": "",
+        "state": "",
+        "category": "",
+        "images": []
+    });
     const [newVehiculoImage, setNewVehiculoImage] = useState(null);
     const [newVehiculoImageFile, setNewVehiculoImageFile] = useState(null);
-
-    const vehiculo = {
-        "licensePlate": "P-098HIJ",
-        "brand": "BMW",
-        "model": 2015,
-        "Series_idSeries": 11,
-        "transmission": "Automatic",
-        "seatings": 5,
-        "fuelType": "gasoline",
-        "rentalFee": "55.00",
-        "state": "available",
-        "category": "Sedan",
-        "images": [
-            { "id": 1, "img": "https://loscoches.com/wp-content/uploads/2021/04/carros-deportivos-potencia.jpg"},
-            { "id": 2, "img": "https://i.ytimg.com/vi/zRlEDI01RFU/maxresdefault.jpg"},
-            { "id": 3, "img": "https://st1.uvnimg.com/d4/4a/006304a74db4902c0b4d8d8026c8/chevrolet-corvette-c8-stingray-2020-1280-08.jpg"},
-            { "id": 4, "img": "https://static.vecteezy.com/system/resources/thumbnails/008/585/294/small/3d-rendering-sport-blue-car-on-white-bakcground-jpg-free-photo.jpg"},
-            { "id": 5, "img": "https://www.eltiempo.com/files/article_multimedia/uploads/2019/10/15/5da64f9a11291.jpeg"}
-        ]
-    }
-
+   
     useEffect(() => {
-        /*
         const url = `${ip}/api/vehiculo/obtenerVehiculos`;
         async function getInfo() {
             fetch(`${url}`, {
@@ -57,19 +51,46 @@ export function CrudVehiculos() {
             });
         }
         getInfo();
-        */
     }, []);
 
     const handleClose = () => {
         setOpen(false);
         setNewVehiculoImage(null);
         setNewVehiculoImageFile(null);
+
+        setNuevoVehiculo({
+            "licensePlate": "",
+            "brand": "",
+            "model": "",
+            "Series_idSeries": "",
+            "transmission": "",
+            "seatings": "",
+            "fuelType": "",
+            "rentalFee": "",
+            "state": "",
+            "category": "",
+            "images": []
+        });
     };
 
     const handleOpen = () => {
         setOpen(true);
         setNewVehiculoImage(null);
         setNewVehiculoImageFile(null);
+
+        setNuevoVehiculo({
+            "licensePlate": "",
+            "brand": "",
+            "model": "",
+            "Series_idSeries": "",
+            "transmission": "",
+            "seatings": "",
+            "fuelType": "",
+            "rentalFee": "",
+            "state": "",
+            "category": "",
+            "images": []
+        });
     };
 
     const handleImageChange = (event) => {
@@ -80,7 +101,7 @@ export function CrudVehiculos() {
             if (selectedImage) {
                 const reader = new FileReader();
                 reader.onloadend = () => {
-                    setNewVehiculoImageFile(reader.result.split(',')[1].trim());
+                    setNewVehiculoImageFile(reader.result.trim());
                 };
                 reader.readAsDataURL(selectedImage);
             }
@@ -89,43 +110,35 @@ export function CrudVehiculos() {
 
     const handleSave = (e) => {
         e.preventDefault();
-                
-        /**
-            ● Modelo
-            ● Marca
-            ● Transmisión
-            ● Cantidad de asientos
-            ● Tipo de combustible (Gasolina o diesel o eléctrico)
-            ● Categoría (Sedan, Bus, Camioneta, Pickup, panel, camion)
-            ● Cuota de alquiler por día.
-            ● Estado, por defecto este estará como disponible.
-        */
-        var data = {
-            marca: e.target[0].value,
-            modelo: e.target[1].value,
-            transmision: e.target[2].value,
-            asientos: e.target[3].value,
-            combustible: e.target[4].value,
-            categoria: e.target[5].value,
-            cuota: e.target[6].value,
-            estado: e.target[7].value,
-            imagenes: [newVehiculoImageFile]
-        };
 
+        var data = {
+            brand: e.target[0].value,
+            licensePlate: e.target[2].value,
+            model: e.target[4].value,
+            transmission: e.target[6].value,
+            seatings: e.target[8].value,
+            fuelType: e.target[10].value,
+            category: e.target[12].value,
+            rentalFee: e.target[14].value,
+            state: e.target[16].value,
+            newImages: [newVehiculoImageFile]
+        };
         console.log(data)
 
+        if (!(/^[0-9]{0,4}$/.test(data.model) && data.model <= 2023)) {
+            alert("Modelo inválido para el vehículo")
+            return;
+        }
+
+        if (!(/^-?\d*\.?\d+$/.test(data.rentalFee))) {
+            alert("Cuota inválida para el vehículo")
+            return;
+        }
+        
         handleClose();
+
         /** petición update vehiculo */
     };
-
-    /* reder de vehiculos */
-    /*var lista_vehiculos = [];
-    console.log(vehiculos.length)
-    for (let i=0; i<vehiculos.length; i++) {
-        lista_vehiculos.push(
-
-        );
-    }*/
 
     return (
         <BodyContent>
@@ -140,10 +153,12 @@ export function CrudVehiculos() {
             </Button>
             <Info>
             <Stack direction="row" spacing={1} useFlexGap flexWrap="wrap">
-                {/*vehiculos.map((vehiculo) => { return (
-                    <Card obj={vehiculo} key={vehiculo.licensePlate}/>
-                )})*/}
-                <Card obj={vehiculo} key={vehiculo.licensePlate}/>
+                {vehiculos.map((v) => 
+                    <Card 
+                        obj={v}
+                        key={v.licensePlate}
+                    />
+                )}
             </Stack>
             </Info>
 
@@ -159,7 +174,7 @@ export function CrudVehiculos() {
                             vehiculo={null}
                             newImage={newVehiculoImage}
                             handleImageChange={handleImageChange}
-                            />
+                        />
                         <Button
                             startIcon={<CloseIcon />}
                             variant="outlined"
@@ -190,13 +205,6 @@ ver todos los vehiculos
 crear nuevo vehiculo
 */
 
-const ContainerButton = styled.div`
-display: flex;
-color: #3DF28B;
-justify-content: start;
-margin-top: 50px;
-margin-bottom: 40px;
-`
 
 const Info = styled.div`
 display: flex;
@@ -213,3 +221,24 @@ bottom: 0;
 padding-left: 75px;
 padding-right: 75px;
 `
+/*
+const vehiculo = {
+    "licensePlate": "P-098HIJ",
+    "brand": "BMW",
+    "model": 2015,
+    "Series_idSeries": 11,
+    "transmission": "Automatic",
+    "seatings": 5,
+    "fuelType": "gasoline",
+    "rentalFee": "55.00",
+    "state": "available",
+    "category": "Sedan",
+    "images": [
+        { "id": 1, "img": "https://loscoches.com/wp-content/uploads/2021/04/carros-deportivos-potencia.jpg"},
+        { "id": 2, "img": "https://i.ytimg.com/vi/zRlEDI01RFU/maxresdefault.jpg"},
+        { "id": 3, "img": "https://st1.uvnimg.com/d4/4a/006304a74db4902c0b4d8d8026c8/chevrolet-corvette-c8-stingray-2020-1280-08.jpg"},
+        { "id": 4, "img": "https://static.vecteezy.com/system/resources/thumbnails/008/585/294/small/3d-rendering-sport-blue-car-on-white-bakcground-jpg-free-photo.jpg"},
+        { "id": 5, "img": "https://www.eltiempo.com/files/article_multimedia/uploads/2019/10/15/5da64f9a11291.jpeg"}
+    ]
+}
+*/

@@ -1,34 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
-import { 
-    Stack, TextField
+import {
+    Stack, TextField, InputAdornment,
+    Box, ImageList, ImageListItem
 } from '@mui/material';
 
-import Box from '@mui/material/Box';
-import ImageList from '@mui/material/ImageList';
-import ImageListItem from '@mui/material/ImageListItem';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 
 import { ImageInput } from './ImageInput';
 
 export function FormVehiculo({ tipo, vehiculo, newImage, handleImageChange }) {
-    
-    /* validación tipo de operacion */
-    if (vehiculo == null) {
-        vehiculo = {
-            "licensePlate": "",
-            "brand": "",
-            "model": "",
-            "Series_idSeries": "",
-            "transmission": "",
-            "seatings": "",
-            "fuelType": "",
-            "rentalFee": "",
-            "state": "",
-            "category": "",
-            "images": []
-        }
-    }
 
     /* generación de imagenes para la edición */
     /*
@@ -43,82 +28,106 @@ export function FormVehiculo({ tipo, vehiculo, newImage, handleImageChange }) {
 
     return (
         <>
-            <Stack direction="row" spacing={2} useFlexGap flexWrap="wrap">
+            <h4> Vehiculo </h4>
+            <Stack direction="row" spacing={2} useFlexGap flexWrap="wrap" sx={{marginTop: 3}}>
                 <TextField
                     required
                     id="outlined-required"
                     label="Marca"
                     size="small"
-                    sx={{ width: "50%"}}
-                    defaultValue={vehiculo.brand}
+                    sx={{ width: "50%" }}
+                    defaultValue={tipo === 'edit' ? 'vehiculo.brand' : ''}
                 />
                 <TextField
                     required
                     id="outlined-required"
                     label="Placa"
                     size="small"
-                    sx={{ width: "15%"}}
-                    defaultValue={vehiculo.licensePlate}
+                    sx={{ width: "25%" }}
+                    defaultValue={tipo === 'edit' ? vehiculo.licensePlate : ''}
                 />
                 <TextField
                     required
                     id="outlined-required"
                     label="Modelo"
                     size="small"
-                    sx={{ width: "15%"}}
+                    sx={{ width: "20%" }}
                     inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
-                    defaultValue={vehiculo.model}
+                    defaultValue={tipo === 'edit' ? vehiculo.model : ''}
                 />
-                <TextField
-                    required
-                    id="outlined-required"
-                    label="Transmisión"
-                    size="small"
-                    sx={{ width: "25%"}}
-                    defaultValue={vehiculo.transmission}
-                />
+                <FormControl sx={{width: "25%"}}>
+                    <InputLabel size="small" id="input-label-transmission">Transmisión</InputLabel>
+                    <Select
+                        required
+                        defaultValue={tipo === 'edit' ? vehiculo.transmission : ''}
+                        label="Transmisión"
+                        size="small"
+                    >
+                        <MenuItem value={'Manual'}>Manual</MenuItem>
+                        <MenuItem value={'Automático'}>Automático</MenuItem>
+                        <MenuItem value={'Hibrido'}>Hibrido</MenuItem>
+                    </Select>
+                </FormControl>
                 <TextField
                     required
                     id="outlined-required"
                     label="Cantidad de asientos"
                     size="small"
-                    sx={{ width: "25%"}}
+                    sx={{ width: "30%" }}
                     inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
-                    defaultValue={vehiculo.seatings}
+                    defaultValue={tipo === 'edit' ? vehiculo.seatings : ''}
                 />
-                <TextField
-                    required
-                    id="outlined-required"
-                    label="Combustible"
-                    size="small"
-                    sx={{ width: "25%"}}
-                    defaultValue={vehiculo.fuelType}
-                />
-                <TextField
-                    required
-                    id="outlined-required"
-                    label="Categoría"
-                    size="small"
-                    sx={{ width: "25%"}}
-                    defaultValue={vehiculo.category}
-                />
+                <FormControl sx={{width: "25%"}}>
+                    <InputLabel size="small" id="input-label-combustible">Combustible</InputLabel>
+                    <Select
+                        required
+                        defaultValue={tipo === 'edit' ? vehiculo.fuelType : ''}
+                        label="Combustible"
+                        size="small"
+                    >
+                        <MenuItem value={'Gasolina'}>Gasolina</MenuItem>
+                        <MenuItem value={'Diesel'}>Diesel</MenuItem>
+                        <MenuItem value={'Eléctrico'}>Eléctrico</MenuItem>
+                    </Select>
+                </FormControl>
+                <FormControl sx={{width: "30%"}}>
+                    <InputLabel size="small" id="input-label-cat">Categoría</InputLabel>
+                    <Select
+                        required
+                        defaultValue={tipo === 'edit' ? vehiculo.category : ''}
+                        label="Categoría"
+                        size="small"
+                    >
+                        <MenuItem value={'Sedan'}>Sedan</MenuItem>
+                        <MenuItem value={'Bus'}>Bus</MenuItem>
+                        <MenuItem value={'Camioneta'}>Camioneta</MenuItem>
+                        <MenuItem value={'Pickup'}>Pickup</MenuItem>
+                        <MenuItem value={'Panel'}>Panel</MenuItem>
+                        <MenuItem value={'Camion'}>Camion</MenuItem>
+                    </Select>
+                </FormControl>
                 <TextField
                     required
                     id="outlined-required"
                     label="Cuota"
                     size="small"
-                    sx={{ width: "15%"}}
+                    sx={{ width: "25%" }}
+                    InputProps={{startAdornment: <InputAdornment position="start">Q</InputAdornment>}}
                     inputProps={{ inputMode: 'numeric', pattern: '[0-9]*.[0-9]*' }}
-                    defaultValue={vehiculo.rentalFee}
+                    defaultValue={tipo === 'edit' ? vehiculo.rentalFee : ''}
                 />
-                <TextField
-                    required
-                    id="outlined-required"
-                    label="Estado"
-                    size="small"
-                    sx={{ width: "25%"}}
-                    defaultValue={vehiculo.state}
-                />
+                <FormControl sx={{width: "30%"}}>
+                    <InputLabel size="small" id="input-label-cat">Estado</InputLabel>
+                    <Select
+                        required
+                        defaultValue={tipo === 'edit' ? vehiculo.state : ''}
+                        label="Estado"
+                        size="small"
+                    >
+                        <MenuItem value={'Disponible'}>Disponible</MenuItem>
+                        <MenuItem value={'No Disponible'}>No Disponible</MenuItem>
+                    </Select>
+                </FormControl>
             </Stack>
             {tipo === 'edit' ? (
                 <>

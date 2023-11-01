@@ -1,5 +1,6 @@
-import React, {useState} from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import useDocumentTitle from '../hooks/useDocumentTitle';
 import '../../components/Titulo.css';
 
 import { Grid, Button } from '@mui/material';
@@ -8,39 +9,176 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { BsArrowLeft } from "react-icons/bs";
+import { useGeneralContext } from '../../contexts/generalContext';
 
-export function Alquilar({setIndex}) {
+const dayjs = require('dayjs');
+const Swal = require('sweetalert2')
+
+export function Alquilar({ setIndex }) {
     const [fechaInicio, setFechaInicio] = useState('');
     const [fechaFinal, setFechaFinal] = useState('');
+    const [vehiculoAlquilar, setVehiculoAlquilar] = useState({})
+    const [total, setTotal] = useState(0)
+    const { vehiculo } = useGeneralContext();
+    const ip = `http://localhost:3001`;
 
-    /* useEffect -> getVehiculo */
-    
-    const regresar = () => {
+    useDocumentTitle("Alquilar")
+
+    useEffect(() => {
+        console.log(vehiculo)
+        const token = localStorage.getItem("auth");
+        const data = { licensePlate: vehiculo.id };
+        console.log(vehiculo)
+        /* Peticion para obtener un vehiculo utilizando su placa */
+        const fetchData = async () => {
+            fetch(`${ip}/api/vehiculo/detalleVehiculo`, {
+                method: "POST",
+                body: JSON.stringify(data),
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `${token}`,
+                },
+            })
+                .then((res) => {
+                    return res.json();
+                })
+                .then((res) => {
+                    console.log(res)
+                    setVehiculoAlquilar(res.vehicle[0])
+                })
+                .catch((error) => console.error("Error:", error));
+        };
+        fetchData();
+        /* Setear fecha inicial dia actual */
+        setFechaInicio(new Date().toDateString());
+    }, [ip, vehiculo])
+
+    const Regresar = () => {
         setIndex(1);
     };
 
+    const handleTotal = () => {
+        const fechaInicioJS = dayjs(fechaInicio);
+        const fechaFinalJS = dayjs(fechaFinal);
+        const diferenciaEnDias = fechaFinalJS.diff(fechaInicioJS, 'day');
+        if (diferenciaEnDias > 0) {
+            setTotal(vehiculoAlquilar.rentalFee * diferenciaEnDias);
+        } else if (diferenciaEnDias === 0) {
+            setTotal(vehiculoAlquilar.rentalFee);
+        } else {
+            setTotal(0);
+        }
+    }
+
     const configFechaInicio = (fecha) => {
-        console.log(fechaInicio)
         try {
+            handleTotal();
             const mont = (parseInt(fecha.$M) + 1).toString();
             var fecha_ = fecha.$y + "-" + mont + "-" + fecha.$D;
             setFechaInicio(fecha_);
         } catch (error) {
             setFechaInicio('');
         }
-        
+
     };
-    
+
     const configFechaFinal = (fecha) => {
         try {
+            setFechaFinal('');
             console.log(fechaFinal)
             const mont = (parseInt(fecha.$M) + 1).toString();
             var fecha_ = fecha.$y + "-" + mont + "-" + fecha.$D;
             setFechaFinal(fecha_);
+            handleTotal();
         } catch (error) {
             setFechaFinal('');
         }
     };
+
+    const solicitar = () => {
+        handleTotal();
+        const fechaActual = dayjs();
+        const fechaInicioJS = dayjs(fechaInicio);
+        const fechaFinalJS = dayjs(fechaFinal);
+
+        if (fechaInicioJS < fechaActual) {
+            Swal.fire({
+                title: 'Error!',
+                text: 'Fecha incial inválida',
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            })
+        }
+
+        if (fechaFinalJS < fechaInicioJS) {
+            Swal.fire({
+                title: 'Error!',
+                text: 'Fecha final inválida',
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            })
+        }
+
+
+        const usr_email = localStorage.getItem("email");
+        const data = {
+            "userEmail": usr_email,
+            "licensePlate": vehiculoAlquilar.licensePlate,
+            "rentalStart": fechaInicio,
+            "rentalEnd": fechaFinal,
+            "rentalFee": total
+        }
+        console.log(data)
+
+        const token = localStorage.getItem("auth");
+        const fetchData = async () => {
+            Swal.fire({
+                title: 'Está seguro?',
+                text: `Desea alquilar este vehiculo por: Q ${total}?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si',
+                cancelButtonText: 'No'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch(`${ip}/api/vehiculo/rentarVehiculo`, {
+                        method: "POST",
+                        body: JSON.stringify(data),
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `${token}`,
+                        },
+                    })
+                        .then((res) => {
+                            return res.json();
+                        })
+                        .then((res) => {
+                            console.log(res)
+                            if (res.err) {
+                                Swal.fire({
+                                    title: 'Error!',
+                                    text: 'Hubo un error rentando el carro',
+                                    icon: 'error',
+                                    confirmButtonText: 'Ok'
+                                })
+                            } else {
+                                Swal.fire({
+                                    title: 'Aceptada!',
+                                    text: 'La solicitud fue enviada correctamente.',
+                                    icon: 'success',
+                                    confirmButtonText: 'Ok'
+                                })
+                            }
+                        })
+                        .catch((error) => console.error("Error:", error));
+                }
+            })
+        };
+        fetchData();
+        setIndex(1);
+    }
 
     let theme = createTheme({});
     theme = createTheme(theme, {
@@ -48,25 +186,25 @@ export function Alquilar({setIndex}) {
         palette: {
             salmon: theme.palette.augmentColor({
                 color: {
-                main: '#FFFFFF',
+                    main: '#FFFFFF',
                 },
                 name: '#3DF28B',
             }),
         },
     });
-    
+
     return (
         <BodyContent>
             <ContainerButton>
                 <ThemeProvider theme={theme}>
-                    <Button variant="contained" color="salmon" onClick={regresar} style={{marginRight: 20}}>
-                        <BsArrowLeft style={{color: "#3DF28B", fontSize: "1.5em" }}/>
+                    <Button id='btnAtras' variant="contained" color="salmon" onClick={Regresar} style={{ marginRight: 20 }}>
+                        <BsArrowLeft style={{ color: "#3DF28B", fontSize: "1.5em" }} />
                     </Button>
                 </ThemeProvider>
                 <h2 className='heads'> {"Alquilar Vehiculo"} </h2>
             </ContainerButton>
             <Info>
-                <TituloInfo> Mercedez Benz - MODELO </TituloInfo>
+                <TituloInfo id='tituloInfo'>{vehiculo.nombre}</TituloInfo>
                 <Grid sx={{ flexGrow: 1 }} container spacing={2}>
                     <Grid item xs={12}>
                         <Grid container justifyContent="center" spacing={0.5}>
@@ -74,17 +212,18 @@ export function Alquilar({setIndex}) {
                                 foto del vehiculo
                             </Grid>
                             <Grid item xs={4}>
-                                <h6 className='align_l'> Transmisión: {'evento.fecha'}</h6>  
-                                <h6 className='align_l'> Asientos: {'evento.duracion'} </h6>
-                                <h6 className='align_l'> Combustible: {'evento.ubicacion'} </h6>
-                                <h6 className='align_l'> Estado: {'evento.formato'} </h6>
-                                <h6 className='align_l'> Categoría: {'evento.costo'} </h6>
-                                <h6 className='align_l'> Cuota por día: Q 20.00</h6>
+                                <h6 className='align_l'> Placa: {vehiculoAlquilar.licensePlate} </h6>
+                                <h6 className='align_l'> Transmisión: {vehiculoAlquilar.transmission} </h6>
+                                <h6 className='align_l'> Asientos: {vehiculoAlquilar.seatings} </h6>
+                                <h6 className='align_l'> Combustible: {vehiculoAlquilar.fuelType} </h6>
+                                <h6 className='align_l'> Estado: {vehiculoAlquilar.state} </h6>
+                                <h6 className='align_l'> Categoría: {vehiculoAlquilar.category} </h6>
+                                <h6 className='align_l'> Cuota por día Actual: Q {vehiculoAlquilar.rentalFee} </h6>
                             </Grid>
                             <Grid item xs={4}>
-                                <p className='align_l'>  Cuota de Alquiler: <h4 className='align_l'>Q 100.00 </h4> </p>
+                                <p className='align_l'>  Cuota de Alquiler: <h4 className='align_l'> Q {total}</h4> </p>
                                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                    <DatePicker 
+                                    <DatePicker
                                         label="Inicio"
                                         onChange={(newValue) => configFechaInicio(newValue)}
                                         views={["year", "month", "day"]}
@@ -94,7 +233,7 @@ export function Alquilar({setIndex}) {
                                 </LocalizationProvider>
                                 <p></p>
                                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                    <DatePicker 
+                                    <DatePicker
                                         label="Final"
                                         onChange={(newValue) => configFechaFinal(newValue)}
                                         views={["year", "month", "day"]}
@@ -103,7 +242,7 @@ export function Alquilar({setIndex}) {
                                     />
                                 </LocalizationProvider>
                                 <p></p>
-                                <Button variant="outlined" size="small" sx={{ color: '#3DF28B', borderColor: '#3DF28B' }}>
+                                <Button id='btnAlquilar' variant="outlined" size="small" sx={{ color: '#3DF28B', borderColor: '#3DF28B' }} onClick={solicitar}>
                                     Alquilar
                                 </Button>
                             </Grid>
@@ -116,10 +255,8 @@ export function Alquilar({setIndex}) {
 }
 
 /*
-ver datos del vehiculo
-rango de fecha inicio y fin
-calculo de cuota de alquiler = cuota al dia * dias de alquiler
-enviar la solicitud
+    MOSTRAR MARCA
+    MOSTRAR IMAGEN
 */
 
 const ContainerButton = styled.div`
@@ -157,25 +294,3 @@ bottom: 0;
 padding-left: 75px;
 padding-right: 75px;
 `
-
-/*
-const Container2 = styled.div`
-position: sticky;
-top: 0;
-flex: 0.2;
-height: 100%;
-min-height: 100vh;
-background-color: #181818;
-color: #b3b3b3;
-min-width: 240px;
--webkit-box-shadow: 4px 5px 20px -7px rgba(0, 0, 0, 0.65);
--moz-box-shadow: 4px 5px 20px -7px rgba(0, 0, 0, 0.65);
-box-shadow: 4px 5px 20px -7px rgba(0, 0, 0, 0.65);
-text-size-adjust: none;
-text-size-adjust: none;
-`
-
-const Container = styled.div`
-display: flex;
-`
-*/
