@@ -1,2 +1,2 @@
-const ip = 'http://localhost:3001';
+const ip = 'http://34.75.128.201:3001';
 export { ip };
