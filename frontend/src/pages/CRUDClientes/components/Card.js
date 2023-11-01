@@ -6,6 +6,7 @@ import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a lo
 
 import { Button, IconButton, Dialog, DialogTitle } from "@mui/material";
 import { FormCliente } from "./FormCliente";
+import { ip } from "../../../components/Ip";
 
 import CloseIcon from "@mui/icons-material/Close";
 import SaveIcon from "@mui/icons-material/Save";
@@ -18,7 +19,7 @@ const Swal = require("sweetalert2");
 export function Card({ obj, key, setClientes, setTotalPages, page }) {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
-  const ip = "http://localhost:3001";
+  // const ip = "http://localhost:3001";
 
   const handleClose = () => {
     setOpen(false);
