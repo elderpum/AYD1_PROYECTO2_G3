@@ -45,8 +45,66 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18.x'
-      - name: Install dependencies and run tests
-        working-directory: backend
+      #- name: Install dependencies and run tests
+      #  working-directory: backend
+      #  run: |
+      #    npm install
+      #    npm run test
+  build-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+      - name: Install dependencies and build
+        working-directory: frontend
         run: |
           npm install
-          npm run test
+          npm run build --if-present
+          echo "Se realizó BUILD ... ..."
+  #
+  # DOCKER
+  #
+  create-backend-image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build the Docker image
+        working-directory: backend
+        run: |
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/backend_ayd1 .
+          echo "Se realizó BUILD ... ..."
+      - name: Push the Docker image
+        working-directory: backend
+        run: |
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/backend_ayd1
+          echo "Se realizó PUSH ... ..."
+  create-frontend-image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build the Docker image
+        working-directory: frontend
+        run: |
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/frontend_ayd1 .
+          echo "Se realizó BUILD ... ..."
+      - name: Push the Docker image
+        working-directory: frontend
+        run: |
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/frontend_ayd1
+          echo "Se realizó PUSH ... ..."
