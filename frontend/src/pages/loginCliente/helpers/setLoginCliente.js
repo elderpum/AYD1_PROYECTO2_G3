@@ -1,6 +1,6 @@
+import { ip } from '../../../components/Ip';
 const Swal = require('sweetalert2');
 
-import { ip } from '../../../components/Ip';
 
 export const setLoginCliente = async (form, handleNavigatetoHome) => {
 

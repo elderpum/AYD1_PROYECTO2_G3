@@ -1,5 +1,5 @@
-const Swal = require('sweetalert2');
 import { ip } from '../../../components/Ip';
+const Swal = require('sweetalert2');
 
 export const setEmpleado = async (form, handleNavigatetoHome) => {
 
