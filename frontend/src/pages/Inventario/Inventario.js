@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import "./Inventario.css";
 import { useNavigate } from "react-router-dom";
-import { format, set } from "date-fns";
+import { format } from "date-fns";
 import { useGeneralContext } from "../../contexts/generalContext";
 import Swal from "sweetalert2";
 // ui components
@@ -328,8 +328,9 @@ export function Inventario(props) {
               alignItems="flex-start"
             >
               {inventario.map((vehiculo, index) => (
-                <Grid item xs={2} sm={4} md={4}>
+                <Grid item xs={2} sm={4} md={4} key={index}>
                   <Card
+                    key={index}
                     sx={{ maxWidth: 250, maxHeight: 210 }}
                     className="card-inventario"
                   >
