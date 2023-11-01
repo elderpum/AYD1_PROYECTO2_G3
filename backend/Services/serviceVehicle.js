@@ -29,13 +29,13 @@ exports.newVehicle = async (data) => {
             data.category
         ];
 
-        // const randomName = generarRandom(5);
-        // const nameFile = randomName + '_' + data.licensePlate + '.jpg';
+        const randomName = generarRandom(5);
+        const nameFile = randomName + '_' + data.licensePlate + '.jpg';
 
-        // const image = data.newImages;
+        const image = data.newImages;
 
-        // const s3Response = await controllerS3.uploadFile(nameFile, image);
-        // let imageLink = s3Response.link;
+        const s3Response = await controllerS3.uploadFile(nameFile, image);
+        let imageLink = s3Response.link;
 
         const result = await db.execute(query, values);
 
@@ -43,18 +43,49 @@ exports.newVehicle = async (data) => {
             return {err: true, message: 'Error al registrar el vehiculo'}
         }
 
-        // const query2 = 'INSERT INTO Image (Vehicle_licensePlate, link) VALUES (?, ?)';
+        const query2 = 'INSERT INTO Image (Vehicle_licensePlate, link) VALUES (?, ?)';
 
-        // const values2 = [
-        //     data.licensePlate,
-        //     imageLink
-        // ];
+        const values2 = [
+            data.licensePlate,
+            imageLink
+        ];
 
-        // const result2 = await db.execute(query2, values2);
+        const result2 = await db.execute(query2, values2);
 
-        // if(!result2){
-        //     return {err: true, message: 'Error al registrar la imagen'}
-        // }
+        if(!result2){
+            return {err: true, message: 'Error al registrar la imagen'}
+        }
+
+        const brand = data.brand;
+        const serie = data.Series_idSeries;
+
+        // Agregamos la brand a la tabla Brand, pero si no esta repetida no se agrega
+        const query3 = 'INSERT IGNORE INTO Brand (name) VALUES (?)';
+        const values3 = [brand];
+
+        const result3 = await db.execute(query3, values3);
+
+        if(!result3){
+            return {err: true, message: 'Error al registrar la marca'}
+        }
+
+        // Obtenemos el id de la brand que acabamos de agregar
+        const query4 = 'SELECT idBrand FROM Brand WHERE name = ?';
+        const [result4] = await db.execute(query4, [brand]);
+
+        if(!result4){
+            return {err: true, message: 'Error al obtener el id de la marca'}
+        }
+
+        // Agregamos a la tabla Series el nombre de la brand y vinculamos el id de la brand con el id de la serie
+        const query5 = 'INSERT INTO Series (name, Brand_idBrand) VALUES (?, ?)';
+        const values5 = [brand, result4[0].idBrand];
+
+        const result5 = await db.execute(query5, values5);
+
+        if(!result5){
+            return {err: true, message: 'Error al registrar la serie'}
+        }
 
         return {error: false, message: "Vehiculo registrado exitosamente"};
     } catch(error){
@@ -65,9 +96,38 @@ exports.newVehicle = async (data) => {
 // Get all Vehicles
 exports.getAllVehicles = async () => {
     try{
+        // Obtenemos todos los vehículos y a su vez, obtenemos las imagenes asociadas a cada vehículo
         const query = 'SELECT * FROM Vehicle';
         const [result] = await db.execute(query);
-        return result;
+
+        if(!result){
+            return {err: true, message: 'Error al obtener los vehiculos'}
+        }
+
+        // Obtenemos en un array todas las licensePlate de los vehículos
+        const licensePlates = [];
+        for(let i = 0; i < result.length; i++){
+            licensePlates.push(result[i].licensePlate);
+        }
+
+        // Obtenemos las imagenes de cada vehículo
+        const images = [];
+        for(let i = 0; i < licensePlates.length; i++){
+            const query2 = 'SELECT * FROM Image WHERE Vehicle_licensePlate = ?';
+            const [result2] = await db.execute(query2, [licensePlates[i]]);
+            images.push(result2);
+        }
+
+        if(!images){
+            return {err: true, message: 'Error al obtener las imagenes de los vehiculos'}
+        }
+
+        // Dentro del mismo json de cada vehículo, agregamos las imagenes
+        for(let i = 0; i < result.length; i++){
+            result[i].images = images[i];
+        }
+
+        return {error: false, message: "Vehiculos obtenidos exitosamente", vehicles: result};
     } catch(error){
         return {error: true, message: error.message};
     }
@@ -80,6 +140,14 @@ exports.deleteVehicle = async (licensePlate) => {
         const result = await db.execute(query, [licensePlate]);
         if(!result){
             return {err: true, message: 'Error al eliminar el vehiculo'}
+        }
+
+        // Eliminamos las imagenes del vehiculo
+        const query2 = 'DELETE FROM Image WHERE Vehicle_licensePlate = ?';
+        const result2 = await db.execute(query2, [licensePlate]);
+
+        if(!result2){
+            return {err: true, message: 'Error al eliminar las imagenes del vehiculo'}
         }
 
         return {error: false, message: "Vehiculo eliminado exitosamente"};
@@ -104,6 +172,75 @@ exports.updateVehicle = async (data) => {
             data.category,
             data.licensePlate
         ]
+
+        if (data.addImages != null) {
+            const randomName = generarRandom(5);
+            const nameFile = randomName + '_' + data.licensePlate + '.jpg';
+
+            const image = data.addImages;
+
+            const s3Response = await controllerS3.uploadFile(nameFile, image);
+            let imageLink = s3Response.link;
+
+            const query2 = 'INSERT INTO Image (Vehicle_licensePlate, link) VALUES (?, ?)';
+
+            const values2 = [
+                data.licensePlate,
+                imageLink
+            ];
+
+            const result2 = await db.execute(query2, values2);
+
+            if(!result2){
+                return {err: true, message: 'Error al registrar la imagen'}
+            }
+            
+        }
+
+        if (data.deleteImages != null) {
+            for(let i = 0; i < data.deleteImages.length; i++){
+                const query3 = 'DELETE FROM Image WHERE idImage = ?';
+                const result3 = await db.execute(query3, [data.deleteImages[i]]);
+    
+                if(!result3){
+                    return {err: true, message: 'Error al eliminar la imagen'}
+                }
+            }
+        }
+
+        if (data.brand != null) {
+            const brand = data.brand;
+            const serie = data.Series_idSeries;
+
+            // Agregamos la brand a la tabla Brand, pero si no esta repetida no se agrega
+            const query4 = 'INSERT IGNORE INTO Brand (name) VALUES (?)';
+            const values4 = [brand];
+
+            const result4 = await db.execute(query4, values4);
+
+            if(!result4){
+                return {err: true, message: 'Error al registrar la marca'}
+            }
+
+            // Obtenemos el id de la brand que acabamos de agregar
+            const query5 = 'SELECT idBrand FROM Brand WHERE name = ?';
+            const [result5] = await db.execute(query5, [brand]);
+
+            if(!result5){
+                return {err: true, message: 'Error al obtener el id de la marca'}
+            }
+
+            // Agregamos a la tabla Series el nombre de la brand y vinculamos el id de la brand con el id de la serie
+            const query6 = 'INSERT INTO Series (name, Brand_idBrand) VALUES (?, ?)';
+            const values6 = [brand, result5[0].idBrand];
+
+            const result6 = await db.execute(query6, values6);
+
+            if(!result6){
+                return {err: true, message: 'Error al registrar la serie'}
+            }
+            
+        }
 
         const result = await db.execute(query, values);
 

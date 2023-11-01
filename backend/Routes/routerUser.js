@@ -10,6 +10,15 @@ router.post('/login', controller.login);
 //New Employee
 router.post('/registrarEmpleado', controller.createEmployee);
 
+// Update Employee
+router.post('/actualizarEmpleado', controller.updateEmployee);
+
+// Delete Employee
+router.post('/eliminarEmpleado', controller.deleteEmployee);
+
+// Get All Employees
+router.get('/obtenerEmpleados', controller.getAllEmployees);
+
 router.post('/generarCodigoAcceso', controller.generateAccessCode);
 router.post('/verificarCodigoAcceso', controller.loginByCode);
 
