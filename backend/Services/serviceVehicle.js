@@ -137,10 +137,6 @@ exports.getAllVehicles = async () => {
 exports.deleteVehicle = async (licensePlate) => {
     try{
         const query = 'DELETE FROM Vehicle WHERE licensePlate = ?';
-        const result = await db.execute(query, [licensePlate]);
-        if(!result){
-            return {err: true, message: 'Error al eliminar el vehiculo'}
-        }
 
         // Eliminamos las imagenes del vehiculo
         const query2 = 'DELETE FROM Image WHERE Vehicle_licensePlate = ?';
@@ -148,6 +144,11 @@ exports.deleteVehicle = async (licensePlate) => {
 
         if(!result2){
             return {err: true, message: 'Error al eliminar las imagenes del vehiculo'}
+        }
+
+        const result = await db.execute(query, [licensePlate]);
+        if(!result){
+            return {err: true, message: 'Error al eliminar el vehiculo'}
         }
 
         return {error: false, message: "Vehiculo eliminado exitosamente"};
