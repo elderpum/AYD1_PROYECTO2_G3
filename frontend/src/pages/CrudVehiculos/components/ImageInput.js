@@ -7,7 +7,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import AddToPhotosIcon from '@mui/icons-material/AddToPhotos';
 import ImageIcon from '@mui/icons-material/Image';
 
-export const ImageInput = ({ image, handleImageChange }) => {
+export const ImageInput = ({tipo, image, handleImageChange }) => {
 
     let theme = createTheme({});
     theme = createTheme(theme, {
@@ -62,7 +62,7 @@ export const ImageInput = ({ image, handleImageChange }) => {
                             component="span"
                             startIcon={<AddToPhotosIcon />}
                         >
-                            Elegir Imagen
+                            {tipo === 'edit' ? 'Añadir Imagen' : 'Elegir Imagen'}
                         </Button>
                     </ThemeProvider>
                 </label>

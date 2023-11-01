@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
 
 import '../../../components/Titulo.css';
@@ -13,8 +13,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import SaveIcon from '@mui/icons-material/Save';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
-import ImageNotSupportedIcon from '@mui/icons-material/ImageNotSupported';
+//import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
+//import ImageNotSupportedIcon from '@mui/icons-material/ImageNotSupported';
 import Chip from '@mui/material/Chip';
 
 const Swal = require('sweetalert2')
@@ -23,8 +23,13 @@ export function Card({ obj }) {
     //const ip = "http://localhost:3001"; //"https://zd8mw8xl-3001.use.devtunnels.ms"
 
     const [open, setOpen] = useState(false);
-    const [newImage, setNewImage] = useState(null);
+    const [newImage, setNewImage] = useState('');
     const [newImageFile, setNewImageFile] = useState(null);
+    const [marca, setMarca] = useState([])
+
+    useEffect(() => {
+        setMarca(obj.serie)
+    }, [obj])
 
     const handleClose = () => {
         setOpen(false);
@@ -34,7 +39,7 @@ export function Card({ obj }) {
 
     const handleOpen = () => {
         setOpen(true);
-        setNewImage(null);
+        setNewImage(obj.images[0].link)
         setNewImageFile(null);
     };
 
@@ -46,7 +51,7 @@ export function Card({ obj }) {
             if (selectedImage) {
                 const reader = new FileReader();
                 reader.onloadend = () => {
-                    setNewImageFile(reader.result.split(',')[1].trim());
+                    setNewImageFile(reader.result.trim());
                 };
                 reader.readAsDataURL(selectedImage);
             }
@@ -99,7 +104,7 @@ export function Card({ obj }) {
             }
         })
     };
-
+    /*
     const handleAddImage = async () => {
         setOpen(false);
         const { value: file } = await Swal.fire({
@@ -127,12 +132,27 @@ export function Card({ obj }) {
 
     const handleDeleteImage = () => { 
     };
+    */
 
     const handleSave = (e) => {
         e.preventDefault();
-
+        /*
         var data = {
-            brand: e.target[0].value,
+            Series_idSeries: e.target[0].value, // validar en backend
+            brand: marca, // validar en backend
+            licensePlate: e.target[2].value,
+            model: e.target[4].value,
+            transmission: e.target[6].value,
+            seatings: e.target[8].value,
+            fuelType: e.target[10].value,
+            category: e.target[12].value,
+            rentalFee: e.target[14].value,
+            state: e.target[16].value,
+            newImages: [newVehiculoImageFile]
+        };
+        */
+        var data = {
+            Series_idSeries: e.target[0].value,
             licensePlate: e.target[2].value,
             model: e.target[4].value,
             transmission: e.target[6].value,
@@ -145,19 +165,103 @@ export function Card({ obj }) {
             deleteImages: []
         };
         console.log(data)
-        
-        if (!(/^[0-9]{0,4}$/.test(data.model) && data.model <= 2023)) {
-            alert("Modelo inválido para el vehículo")
+        //console.log(newImageFile)
+        if (!newImageFile) {
+            setOpen(false);
+            Swal.fire({
+                title: 'Error!',
+                text: 'Debe ingresar una imagen para el vehiculo',
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            }).then((result) => {
+                setOpen(true);
+            });
             return;
         }
 
-        if (!(/^-?\d*\.?\d+$/.test(data.rentalFee))) {
-            alert("Cuota inválida para el vehículo")
+        if (!(/^(P|C|M)-?\d{3}[A-Z]{3}$/.test(data.licensePlate))) {
+            setOpen(false);
+            Swal.fire({
+                title: 'Error!',
+                text: 'Placa inválida. Formato: P-123ABC o P123ABC',
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            }).then((result) => {
+                setOpen(true);
+            });
+            return;
+        }
+
+        if (!(/^[0-9]{0,4}$/.test(data.model) && data.model <= 2024 && data.model >= 1960)) {
+            setOpen(false);
+            Swal.fire({
+                title: 'Error!',
+                text: "Modelo inválido para el vehículo, debe ser un numero de año .",
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            }).then((result) => {
+                setOpen(true);
+            });
+            return;
+        }
+
+        if (!(/^(?!0\d)(\d+(\.\d{1,2})?)$/.test(data.rentalFee))) {
+            setOpen(false);
+            Swal.fire({
+                title: 'Error!',
+                text: "Cuota inválida para el vehículo",
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            }).then((result) => {
+                setOpen(true);
+            });
+            return;
+        }
+
+        if (data.rentalFee <= 0) {
+            setOpen(false);
+            Swal.fire({
+                title: 'Error!',
+                text: "Cuota inválida para el vehículo",
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            }).then((result) => {
+                setOpen(true);
+            });
             return;
         }
         
         handleClose();
         /** petición update vehiculo */
+        async function getInfo() {
+            fetch(`${ip}/api/vehiculo/actualizarVehiculo`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            })
+                .then((res) => res.json())
+                .catch((error) => console.error("Error:", error))
+                .then((res) => {
+                    if (res.err) {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: res.message,
+                            icon: 'error',
+                            confirmButtonText: 'Ok'
+                        })
+                    } else {
+                        Swal.fire({
+                            title: 'Exito!',
+                            text: "Vehiculo registrado exitosamente!",
+                            icon: 'success',
+                            confirmButtonText: 'Ok'
+                        })
+                    }
+                });
+        }
+        getInfo();
     };
 
     
@@ -210,25 +314,10 @@ export function Card({ obj }) {
                             vehiculo={obj}
                             newImage={newImage}
                             handleImageChange={handleImageChange}
+                            marca={marca}
+                            setMarca={setMarca}
                         />
-                        <Button
-                            startIcon={<AddPhotoAlternateIcon />}
-                            variant="outlined"
-                            color="success"
-                            onClick={handleAddImage}
-                            sx={{ marginTop: '2rem', marginBottom: '-2rem' }}
-                        >
-                            Agregar Imagen
-                        </Button>
-                        <Button
-                            startIcon={<ImageNotSupportedIcon />}
-                            variant="outlined"
-                            color="secondary"
-                            onClick={handleDeleteImage}
-                            sx={{ marginTop: '2rem', marginLeft: '1rem', marginBottom: '-2rem' }}
-                        >
-                            Eliminar Imagenes
-                        </Button>
+                        
                         <Button
                             startIcon={<CloseIcon />}
                             variant="outlined"
@@ -253,6 +342,28 @@ export function Card({ obj }) {
         </CardContainer>
     );
 }
+
+/*
+<Button
+    startIcon={<AddPhotoAlternateIcon />}
+    variant="outlined"
+    color="success"
+    onClick={handleAddImage}
+    sx={{ marginTop: '2rem', marginBottom: '-2rem' }}
+>
+    Agregar Imagen
+</Button>
+<Button
+    startIcon={<ImageNotSupportedIcon />}
+    variant="outlined"
+    color="secondary"
+    onClick={handleDeleteImage}
+    sx={{ marginTop: '2rem', marginLeft: '1rem', marginBottom: '-2rem' }}
+>
+    Eliminar Imagenes
+</Button>
+
+*/
 
 /*
 Utilizar Dialog para los formularios de edicion y eliminación
