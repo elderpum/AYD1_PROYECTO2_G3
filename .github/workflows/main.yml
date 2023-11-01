@@ -120,9 +120,8 @@ jobs:
             USER: ubuntu 
             HOST: ${{ secrets.AWS_EC2_HOST }}  
           run: |
-           chmod 400 $PRIVATE_KEY
+            echo "$PRIVATE_KEY" > ec2ayd1.pem
+            chmod 400 ec2ayd1.pem
            
-           ssh -o StrictHostKeyChecking=no -i $PRIVATE_KEY ${USER}@${HOST} <<EOF
-             docker-compose pull
-             docker-compose up -d  
-           EOF
+            ssh -i "ec2ayd1.pem" ubuntu@ec2-18-222-231-240.us-east-2.compute.amazonaws.com
+             sudo docker-compose up -d
