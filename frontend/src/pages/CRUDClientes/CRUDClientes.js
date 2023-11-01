@@ -12,6 +12,7 @@ import SaveIcon from "@mui/icons-material/Save";
 import { MdPersonAdd } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { ip } from "../../components/Ip";
 
 export function CRUDClientes() {
   const navigate = useNavigate();
@@ -45,7 +46,7 @@ export function CRUDClientes() {
     password: "",
   };
 
-  const ip = "http://localhost:3001";
+  // const ip = "http://localhost:3001";
 
   const verificacionToken = useCallback(
     (res) => {

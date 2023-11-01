@@ -15,6 +15,7 @@ import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import styled from "styled-components";
 import useDocumentTitle from "../hooks/useDocumentTitle";
+import { ip } from "../../components/Ip";
 
 export function Inventario(props) {
   const { setVehiculo } = useGeneralContext();
@@ -37,7 +38,7 @@ export function Inventario(props) {
     },
   ]);
 
-  const ip = `http://localhost:3001`;
+  // const ip = `http://localhost:3001`;
 
   useDocumentTitle("Inventario");
   
@@ -85,6 +86,7 @@ export function Inventario(props) {
   );
 
   useEffect(() => {
+    console.log("ipe: ", ip)
     const url = `${ip}/api/inventario/get`;
     const token = localStorage.getItem("auth");
     const data = { categoria: "", marca: "", page: 1 };
@@ -114,7 +116,7 @@ export function Inventario(props) {
         .catch((error) => console.error("Error:", error));
     };
     fetchData();
-  }, [ip, navigate, mostrarDevolucion, verificacionToken]);
+  }, [navigate, mostrarDevolucion, verificacionToken]);
 
   const mensajeDevolucion = (vehiculo) => {
     return `<div>
