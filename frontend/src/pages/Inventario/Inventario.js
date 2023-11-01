@@ -338,6 +338,7 @@ export function Inventario(props) {
                   >
                     <CardActionArea>
                       <CardMedia
+                        className="imagen-inventario"
                         id={`alquilar-${index}`}
                         onClick={() => alquiler(vehiculo)}
                         component="img"
