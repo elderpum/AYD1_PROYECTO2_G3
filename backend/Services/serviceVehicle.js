@@ -29,62 +29,35 @@ exports.newVehicle = async (data) => {
             data.category
         ];
 
-        const randomName = generarRandom(5);
-        const nameFile = randomName + '_' + data.licensePlate + '.jpg';
+        // Si data.newImages es null, no se agrega ninguna imagen
+        if (data.newImages != null) {
+            const randomName = generarRandom(5);
+            const nameFile = randomName + '_' + data.licensePlate + '.jpg';
 
-        const image = data.newImages;
+            const image = data.newImages;
 
-        const s3Response = await controllerS3.uploadFile(nameFile, image);
-        let imageLink = s3Response.link;
+            const s3Response = await controllerS3.uploadFile(nameFile, image);
+            let imageLink = s3Response.link;
+
+            const query2 = 'INSERT INTO Image (Vehicle_licensePlate, link) VALUES (?, ?)';
+
+            const values2 = [
+                data.licensePlate,
+                imageLink
+            ];
+
+            const result2 = await db.execute(query2, values2);
+
+            if(!result2){
+                return {err: true, message: 'Error al registrar la imagen'}
+            }
+            
+        }
 
         const result = await db.execute(query, values);
 
         if(!result){
             return {err: true, message: 'Error al registrar el vehiculo'}
-        }
-
-        const query2 = 'INSERT INTO Image (Vehicle_licensePlate, link) VALUES (?, ?)';
-
-        const values2 = [
-            data.licensePlate,
-            imageLink
-        ];
-
-        const result2 = await db.execute(query2, values2);
-
-        if(!result2){
-            return {err: true, message: 'Error al registrar la imagen'}
-        }
-
-        const brand = data.brand;
-        const serie = data.Series_idSeries;
-
-        // Agregamos la brand a la tabla Brand, pero si no esta repetida no se agrega
-        const query3 = 'INSERT IGNORE INTO Brand (name) VALUES (?)';
-        const values3 = [brand];
-
-        const result3 = await db.execute(query3, values3);
-
-        if(!result3){
-            return {err: true, message: 'Error al registrar la marca'}
-        }
-
-        // Obtenemos el id de la brand que acabamos de agregar
-        const query4 = 'SELECT idBrand FROM Brand WHERE name = ?';
-        const [result4] = await db.execute(query4, [brand]);
-
-        if(!result4){
-            return {err: true, message: 'Error al obtener el id de la marca'}
-        }
-
-        // Agregamos a la tabla Series el nombre de la brand y vinculamos el id de la brand con el id de la serie
-        const query5 = 'INSERT INTO Series (name, Brand_idBrand) VALUES (?, ?)';
-        const values5 = [brand, result4[0].idBrand];
-
-        const result5 = await db.execute(query5, values5);
-
-        if(!result5){
-            return {err: true, message: 'Error al registrar la serie'}
         }
 
         return {error: false, message: "Vehiculo registrado exitosamente"};
