@@ -3,7 +3,7 @@ const db = require('../Config/databaseConfig');
 exports.CreateNotification = async (userEmail, message, idRequest) => {
     try{
         const query = `
-            INSERT INTO Notification (User_email, message, state, date, Request_idRequest) VALUES (?, ?, ?, NOW(), ?);
+            INSERT INTO Notification (User_email, message, state, date_, Request_idRequest) VALUES (?, ?, ?, NOW(), ?);
             `
         const data = [
             userEmail,

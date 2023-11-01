@@ -20,42 +20,44 @@ import { UseFetchListaSolicitud } from './hooks/UseFetchListaSolicitud';
 
 
 
-export const Solicitud = () => {
+export const Solicitud = ({ credentials }) => {
 
     // Estado para abrir y cerrar el modal.
     const [open, setOpen] = useState(false);
 
 
+    // Lista de solicitudes.
     const [listaSolicitud, setListaSolicitud] = useState([]);
 
+
+    // Solicitud de un usuario.
+    const [solicitud, setSolicitud] = useState({});
 
 
     useEffect(() => {
 
         UseFetchListaSolicitud(listaSolicitud, setListaSolicitud);
 
-
     }, [listaSolicitud])
 
 
-
-
     // Funciones para abrir el modal.
-    const handleClickOpen = () => {
+    const handleClickOpen = (solicitud) => {
+        setSolicitud(solicitud);
         setOpen(true);
     };
 
 
     // Funciones para cerrar el modal.
-    const handleClose = () => {
+    const handleClose = (solicitud) => {
         setOpen(false);
     };
 
 
     // Funciones para aceptar solicitud.
-    const handleAccept = () => {
+    const handleAccept = (solicitud) => {
 
-        setAccepted(); // Funcion para aceptar la solicitud.
+        setAccepted(solicitud, setListaSolicitud); // Funcion para aceptar la solicitud.
     };
 
 
@@ -98,48 +100,68 @@ export const Solicitud = () => {
                             subheader={<li />}
                         >
 
-                            <ListItem
-                                alignItems="flex-start"
-                                secondaryAction={
-                                    <React.Fragment>
-                                        <IconButton onClick={handleAccept} aria-label="comment">
-                                            <CheckIcon />
-                                        </IconButton>
+                            {
+                                listaSolicitud.map((solicitud, index) => (
 
-                                        <IconButton onClick={handleClickOpen} aria-label="comment">
-                                            <ClearIcon />
-                                        </IconButton>
+                                    <React.Fragment key={index}>
+
+                                        <ListItem
+                                            alignItems="flex-start"
+                                            secondaryAction={
+                                                <React.Fragment>
+                                                    <IconButton onClick={() => handleAccept(solicitud)} aria-label="comment">
+                                                        <CheckIcon />
+                                                    </IconButton>
+
+                                                    <IconButton onClick={() => handleClickOpen(solicitud)} aria-label="comment">
+                                                        <ClearIcon />
+                                                    </IconButton>
+                                                </React.Fragment>
+                                            }
+                                        >
+
+                                            <ListItemAvatar>
+
+                                                <Avatar variant='square'>
+                                                    <DirectionsCarIcon />
+                                                </Avatar>
+
+                                            </ListItemAvatar>
+
+                                            <ListItemText
+                                                primary={solicitud.brandName + ' ' + solicitud.seriesName + ' ' + solicitud.model}
+                                                secondary={
+                                                    <React.Fragment>
+                                                        <Typography
+                                                            sx={{ display: 'inline' }}
+                                                            component="span"
+                                                            variant="body2"
+                                                            color="text.primary"
+                                                        >
+                                                            {solicitud.name + ' ' + solicitud.lastName}
+                                                        </Typography>
+
+                                                        <Typography
+                                                            sx={{ display: 'inline' }}
+                                                            component="span"
+                                                            variant="body2"
+                                                            color="text.primary"
+                                                        >
+                                                            {' -- fecha inicio: ' + solicitud.rentalStart.split('T')[0] + ' -- fecha finalización: ' + solicitud.rentalEnd.split('T')[0]}
+                                                        </Typography>
+
+                                                    </React.Fragment>
+                                                }
+                                            />
+
+                                        </ListItem>
+
+                                        <Divider variant="inset" component="li" />
+
                                     </React.Fragment>
-                                }
-                            >
 
-                                <ListItemAvatar>
-
-                                    <Avatar variant='square'>
-                                        <DirectionsCarIcon />
-                                    </Avatar>
-
-                                </ListItemAvatar>
-
-                                <ListItemText
-                                    primary={'Mazda 3 - año: 2019'}
-                                    secondary={
-                                        <React.Fragment>
-                                            <Typography
-                                                sx={{ display: 'inline' }}
-                                                component="span"
-                                                variant="body2"
-                                                color="text.primary"
-                                            >
-                                                Reservado por: Fernando Perez
-                                            </Typography>
-                                        </React.Fragment>
-                                    }
-                                />
-
-                            </ListItem>
-
-                            <Divider variant="inset" component="li" />
+                                ))
+                            }
 
                         </List>
 
@@ -149,7 +171,7 @@ export const Solicitud = () => {
 
             </Box>
 
-            <DialogCancel open={open} handleClose={handleClose} />
+            <DialogCancel open={open} handleClose={handleClose} solicitud={solicitud} setListaSolicitud={setListaSolicitud} />
 
         </BodyContent>
     )

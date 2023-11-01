@@ -9,7 +9,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { useForm } from '../hooks/useForm';
 import { setRejected } from './helpers/setRejected';
 
-export const DialogCancel = ({ open, handleClose }) => {
+export const DialogCancel = ({ open, handleClose, solicitud, setListaSolicitud }) => {
 
     // Estado para guardar los datos del formulario
     const { form, handleChange, handleReset } = useForm({
@@ -19,7 +19,7 @@ export const DialogCancel = ({ open, handleClose }) => {
 
     const handleSend = () => {
 
-        setRejected(form); // Funcion para rechazar la solicitud.
+        setRejected(form, solicitud, setListaSolicitud); // Funcion para rechazar la solicitud.
 
         handleReset();
 

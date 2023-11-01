@@ -42,31 +42,26 @@ exports.isAnEmployee = (req, res, next) => {
         });
     }
 
-    // try {
+    try {
 
-    console.log(process.env.JWT_SECRET_PW);
+        const decoded = jwt.verify(token, process.env.JWT_SECRET_PW);
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET_PW);
+        if (decoded.tipo !== 'employee') {
+            return res.status(401).json({
+                err: true,
+                message: 'Invalid token'
+            });
+        }
+        req.id = decoded.id;
+        req.type = decoded.tipo;
+        next();
 
-    console.log(decoded);
-
-    if (decoded.tipo !== 'employee') {
+    } catch (error) {
         return res.status(401).json({
             err: true,
             message: 'Invalid token'
         });
     }
-    req.id = decoded.id;
-    req.type = decoded.tipo;
-    next();
-
-
-    // } catch (error) {
-    //     return res.status(401).json({
-    //         err: true,
-    //         message: 'Invalid token'
-    //     });
-    // }
 
 }
 

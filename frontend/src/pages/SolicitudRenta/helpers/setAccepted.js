@@ -1,31 +1,40 @@
 const Swal = require('sweetalert2');
 
-export const setAccepted = async () => {
+export const setAccepted = async (solicitud, setListaSolicitud) => {
 
     const newMessage = {
-        message: "La solicitud de renta ha sido aceptada.",
-        email: 'ferchoserrano0@gmail.com',
+        idRequest: solicitud.idRequest,
+        state: 'accepted',
+        message: 'Se ha aceptado la solicitud de renta.',
+        userEmail: solicitud.User_email,
     }
 
-    const url = 'http://localhost:3001/api/usuario/registrarEmpleado';
+    const url = 'http://localhost:3001/api/solicitud/responder-solicitud';
+
+    const token = localStorage.getItem('auth');
 
     // Peticion al backend.
     const rep = await fetch(url, {
-        method: 'POST',
+        method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
-            // Authorization: `${token}`,
+            Authorization: `${token}`,
         },
         body: JSON.stringify(newMessage)
     });
 
+
     const data = await rep.json();
 
-    if (!data.error) {
+    const status = rep.status;
+
+    if (status === 200) {
+
+        setListaSolicitud([]);
 
         Swal.fire({
-            title: 'Mensaje enviado.',
-            text: 'Se ha enviado el mensaje.',
+            title: 'Solicitud Aceptado.',
+            text: 'Se ha aceptado la solicitud de renta.',
             icon: 'success',
             confirmButtonText: 'Ok'
         });
@@ -35,7 +44,7 @@ export const setAccepted = async () => {
 
         Swal.fire({
             title: 'Error!',
-            text: 'Error al enviar mensaje.',
+            text: `${data.message}`,
             icon: 'error',
             confirmButtonText: 'Ok'
         });

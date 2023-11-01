@@ -14,7 +14,7 @@ import 'animate.css'; // Stylesheet animate.
 import logo1 from '../../assets/logo1.png'; // Image.
 
 
-export const LoginAdmin = () => {
+export const LoginAdmin = ({ setTypeUser, setcredentials }) => {
 
     // Custom hook para el formulario.
     const { form, handleChange, handleReset } = useForm({
@@ -51,6 +51,13 @@ export const LoginAdmin = () => {
     const habdleSubmit = (e) => {
 
         e.preventDefault();
+
+        setTypeUser(3); // Tipo de usuario 1 = Empleado, 2 = Cliente, 3 = Admin.
+
+        setcredentials({ // Credenciales del usuario.
+            email: form.user,
+            password: form.password
+        });
 
         setAdmin(form, handleNavigatetoHome)
 
