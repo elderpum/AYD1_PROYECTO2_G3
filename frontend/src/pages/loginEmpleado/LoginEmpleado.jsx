@@ -19,7 +19,7 @@ import logo1 from '../../assets/logo1.png'; // Image.
 
 
 
-export const LoginEmpleado = ({ setIsAuth }) => {
+export const LoginEmpleado = ({ setIsAuth, setTypeUser, setcredentials }) => {
 
     // Custom hook para el formulario.
     const { form, handleChange, handleReset, setForm } = useForm({
@@ -76,6 +76,13 @@ export const LoginEmpleado = ({ setIsAuth }) => {
     const habdleSubmit = (e) => {
 
         e.preventDefault();
+
+        setTypeUser(1); // Guardar tipo de usuario.
+
+        setcredentials({ // Credenciales del usuario.
+            email: form.user,
+            password: form.password
+        });
 
         if (checked) {
 

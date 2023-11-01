@@ -1,10 +1,10 @@
 const service = require('../Services/serviceRequest');
 
 exports.GetRequestByUser = async (req, res) => {
-    try{
-        const {id} = req;
+    try {
+        const { id } = req;
         const result = await service.GetRequestByUser(id);
-        if(result.error){
+        if (result.error) {
             return res.status(500).json({
                 err: true,
                 message: result.message
@@ -14,7 +14,7 @@ exports.GetRequestByUser = async (req, res) => {
             err: false,
             data: result.result
         });
-    }catch(error){
+    } catch (error) {
         return res.status(500).json({
             err: true,
             message: error.message
@@ -23,9 +23,9 @@ exports.GetRequestByUser = async (req, res) => {
 }
 
 exports.GetNonProcessedRequest = async (req, res) => {
-    try{
+    try {
         const result = await service.GetNonProcessedRequest();
-        if(result.error){
+        if (result.error) {
             return res.status(500).json({
                 err: true,
                 message: result.message
@@ -35,7 +35,7 @@ exports.GetNonProcessedRequest = async (req, res) => {
             err: false,
             data: result.result
         });
-    }catch(error){
+    } catch (error) {
         return res.status(500).json({
             err: true,
             message: error.message
@@ -44,9 +44,10 @@ exports.GetNonProcessedRequest = async (req, res) => {
 }
 
 exports.GetRequestsToAdminView = async (req, res) => {
-    try{
+    try {
         const result = await service.GetRequestsToAdminView();
-        if(result.error){
+        if (result.error) {
+            console.log(result.message);
             return res.status(500).json({
                 err: true,
                 message: result.message
@@ -56,7 +57,9 @@ exports.GetRequestsToAdminView = async (req, res) => {
             err: false,
             data: result.result
         });
-    }catch(error){
+    } catch (error) {
+
+        console.log(error.message);
         return res.status(500).json({
             err: true,
             message: error.message
@@ -65,11 +68,11 @@ exports.GetRequestsToAdminView = async (req, res) => {
 }
 
 exports.RespondRequest = async (req, res) => {
-    try{
-        const {id} = req;
-        const {idRequest, state, message, userEmail} = req.body;
+    try {
+        const { id } = req;
+        const { idRequest, state, message, userEmail } = req.body;
         const result = await service.RespondRequest(idRequest, state, id, message, userEmail);
-        if(result.error){
+        if (result.error) {
             return res.status(500).json({
                 err: true,
                 message: result.message
@@ -79,7 +82,7 @@ exports.RespondRequest = async (req, res) => {
             err: false,
             data: result.result
         });
-    }catch(error){
+    } catch (error) {
         return res.status(500).json({
             err: true,
             message: error.message
@@ -88,9 +91,9 @@ exports.RespondRequest = async (req, res) => {
 }
 
 exports.GetProcessedRequests = async (req, res) => {
-    try{
+    try {
         const result = await service.GetProcessedRequest();
-        if(result.error){
+        if (result.error) {
             return res.status(500).json({
                 err: true,
                 message: result.message
@@ -100,7 +103,7 @@ exports.GetProcessedRequests = async (req, res) => {
             err: false,
             data: result.result
         });
-    }catch(error){
+    } catch (error) {
         return res.status(500).json({
             err: true,
             message: error.message

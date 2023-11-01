@@ -1,7 +1,8 @@
 
-export const getListaSolicitud = async () => {
 
-    const url = 'http://localhost:3001/api/solicitud/solicitudes-no-procesadas';
+export const getHistorialCliente = async () => {
+
+    const url = 'http://localhost:3001/api/solicitud/historial-cliente';
 
     const token = localStorage.getItem('auth');
 
@@ -14,17 +15,19 @@ export const getListaSolicitud = async () => {
         },
     });
 
+
     const data = await rep.json();
 
     const status = rep.status;
 
-    if (status === 401) {
+    if (status === 200) {
 
-        console.log('Error al obtener la lista de solicitud.');
-        return [];
+        return data.data;
+
+    } else {
+
+        return 'Error: no se puede obtener el historial de alquileres del cliente.'
+
     }
-
-    return data.data;
-
 
 }

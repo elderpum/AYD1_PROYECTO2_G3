@@ -98,7 +98,7 @@ exports.GetRequestsToAdminView = async () => {
             v.*,
             s.name as seriesName,
             b.name as brandName,
-            u2.email as employeeEmail
+            u2.email as employeeEmail,
             n.message as notificationMessage
         FROM
             User u

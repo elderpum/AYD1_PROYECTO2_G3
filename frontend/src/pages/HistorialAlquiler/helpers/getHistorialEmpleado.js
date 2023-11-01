@@ -1,7 +1,7 @@
 
-export const getListaSolicitud = async () => {
+export const getHistorialEmpleado = async () => {
 
-    const url = 'http://localhost:3001/api/solicitud/solicitudes-no-procesadas';
+    const url = 'http://localhost:3001/api/solicitud/historial-empleado';
 
     const token = localStorage.getItem('auth');
 
@@ -14,17 +14,19 @@ export const getListaSolicitud = async () => {
         },
     });
 
+
     const data = await rep.json();
 
     const status = rep.status;
 
-    if (status === 401) {
+    if (status === 200) {
 
-        console.log('Error al obtener la lista de solicitud.');
-        return [];
+        return data.data;
+
+    } else {
+
+        return 'Error: no se puede obtener el historial de alquileres del empleado.'
+
     }
-
-    return data.data;
-
 
 }
