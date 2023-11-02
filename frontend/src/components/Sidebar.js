@@ -7,19 +7,24 @@ import {
   MdHomeFilled,
   MdLogout,
   MdOutlineEventAvailable,
-  MdOutlineSettingsBackupRestore,
-  MdContentPasteSearch,
+  MdCarRental,
+  MdPeopleAlt,
 } from "react-icons/md";
-
-import { FaCarAlt } from "react-icons/fa";
+import { FaCarAlt, FaUserCog } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+
 import { CrudVehiculos } from "../pages/CrudVehiculos/CrudVehiculos";
 import { Alquilar } from "../pages/Alquilar/Alquilar";
 import { GestionarCosto } from "../pages/GestionarCosto/GestionarCosto";
 import { Inventario } from "../pages/Inventario/Inventario";
+import { Pago } from "../pages/Pago/Pago";
+import { CrudEmpleados } from "../pages/CrudEmpleados/CrudEmpleados";
+import { Solicitud } from '../pages/SolicitudRenta/Solicitud'
+import { Historial } from "../pages/HistorialAlquiler/Historial";
+import { CRUDClientes } from "../pages/CRUDClientes/CRUDClientes";
 
 // ---- BARRA LATERAL IZQUIERDA. ---- //
-export const Sidebar = () => {
+export const Sidebar = ({ typeUser, credentials }) => {
 
   // hook para saber que opcion esta seleccionada.
   const [index, setIndex] = useState(1);
@@ -58,22 +63,22 @@ export const Sidebar = () => {
           <ul className='ul_sidebar'>
 
 
-            <li className={`option d-flex align-items-center`} onClick={() => setIndex(1)}>
+            <li id="inventario" className={`option d-flex align-items-center`} onClick={() => setIndex(1)}>
               <MdHomeFilled />
               <span>Inicio</span>
             </li>
 
 
-            <li className={`option d-flex align-items-center`} onClick={() => setIndex(2)}>
-              <MdContentPasteSearch />
-              <span>Solicitudes de Reserva</span>
-            </li>
-
-
-            <li className={`option d-flex align-items-center`} onClick={() => setIndex(3)}>
-              <MdOutlineSettingsBackupRestore />
-              <span>Devolución</span>
-            </li>
+            {
+              typeUser === 1 // Es empleado
+                ?
+                <li className={`option d-flex align-items-center`} onClick={() => setIndex(20)}>
+                  <MdCarRental />
+                  <span>Aceptación de reservas</span>
+                </li>
+                :
+                null
+            }
 
 
             <li className={`option d-flex align-items-center`} onClick={() => setIndex(4)}>
@@ -82,10 +87,31 @@ export const Sidebar = () => {
             </li>
 
 
-            <li className={`option d-flex align-items-center`} onClick={() => setIndex(8)}>
-              <FaCarAlt />
-              <span>Administrar Vehiculos</span>
-            </li>
+            {
+              typeUser === 3 // Es administrador.
+                ?
+                <React.Fragment>
+                  <li className={`option d-flex align-items-center`} onClick={() => setIndex(8)}>
+                    <FaCarAlt />
+                    <span>Administrar Vehiculos</span>
+                  </li>
+
+
+                  <li className={`option d-flex align-items-center`} onClick={() => setIndex(10)}>
+                    <FaUserCog />
+                    <span>Administrar Empleados</span>
+                  </li>
+
+
+                  <li id="crud-clientes" className={`option d-flex align-items-center`} onClick={() => setIndex(9)}>
+                    <MdPeopleAlt />
+                    <span>Administrar Clientes</span>
+                  </li>
+
+                </React.Fragment>
+                :
+                null
+            }
 
             <li className="option d-flex align-items-center cerrar" onClick={cerrarSesion}>
               <MdLogout />
@@ -98,16 +124,16 @@ export const Sidebar = () => {
 
       </Container>
 
-      { /* Aqui van los componentes de las vistas */ }
+      {index === 1 && <Inventario setIndex={setIndex} />}
+      {index === 4 && <Historial typeUser={typeUser} />}
+      {index === 10 && <CrudEmpleados />}
+      {index === 20 && <Solicitud credentials={credentials} />}
 
-      { index === 1 && <Inventario setIndex={ setIndex }/> }
-      { /* {index === 2 && <COMPONENTE-DESEADO />} */ }
-      { /* {index === 3 && <COMPONENTE-DESEADO />} */ }
-      { /* {index === 4 && <COMPONENTE-DESEADO />} */ }
-      { /* {index === 5 && <COMPONENTE-DESEADO />} */ }
-      { index === 6 && <GestionarCosto setIndex={setIndex}/> }
-      { index === 7 && <Alquilar setIndex={setIndex}/> }
-      { index === 8 && <CrudVehiculos/> }
+      {index === 5 && <Pago setIndex={setIndex} />}
+      {index === 6 && <GestionarCosto setIndex={setIndex} />}
+      {index === 7 && <Alquilar setIndex={setIndex} />}
+      {index === 8 && <CrudVehiculos />}
+      {index === 9 && <CRUDClientes />}
 
     </ContainerVista>
 

@@ -1,4 +1,6 @@
+import { ip } from '../../../components/Ip';
 const Swal = require('sweetalert2');
+
 
 export const setLoginCliente = async (form, handleNavigatetoHome) => {
 
@@ -7,8 +9,8 @@ export const setLoginCliente = async (form, handleNavigatetoHome) => {
         password: form.password,
         type: 'client'
     }
-
-    const url = 'http://localhost:3001/api/usuario/login';
+    // console.log(newLoginClient)
+    const url = `${ip}/api/usuario/login`;
     // const token = localStorage.getItem("auth");
 
     // Peticion al backend.
@@ -22,14 +24,15 @@ export const setLoginCliente = async (form, handleNavigatetoHome) => {
     });
 
     const data = await rep.json();
+    // console.log(data)
 
     if (data.authExitoso) {
 
         const token = data.tokenAuth;
         localStorage.setItem("auth", token); // Guardar token en localstorage.
-
+        localStorage.setItem("email", newLoginClient.user);
         handleNavigatetoHome();
-        
+
     } else {
         Swal.fire({
             title: 'Error!',

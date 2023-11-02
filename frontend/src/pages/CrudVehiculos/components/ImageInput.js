@@ -1,13 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
-import placeholder from '../../../assets/placeholder.png'
 
 import { Button, Avatar } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import AddToPhotosIcon from '@mui/icons-material/AddToPhotos';
+import ImageIcon from '@mui/icons-material/Image';
 
-export const ImageInput = ({ image, handleImageChange }) => {
+export const ImageInput = ({tipo, image, handleImageChange }) => {
 
     let theme = createTheme({});
     theme = createTheme(theme, {
@@ -41,8 +41,9 @@ export const ImageInput = ({ image, handleImageChange }) => {
                         height: '200px',
                         overflow: 'hidden',
                         borderRadius: '15px',
-                    }} // Ajusta estos valores para cambiar el tamaño/>
-                />
+                    }}>
+                <ImageIcon/>
+                </Avatar>
             )}
             <form>
                 <input
@@ -61,7 +62,7 @@ export const ImageInput = ({ image, handleImageChange }) => {
                             component="span"
                             startIcon={<AddToPhotosIcon />}
                         >
-                            Elegir Imagen
+                            {tipo === 'edit' ? 'Añadir Imagen' : 'Elegir Imagen'}
                         </Button>
                     </ThemeProvider>
                 </label>

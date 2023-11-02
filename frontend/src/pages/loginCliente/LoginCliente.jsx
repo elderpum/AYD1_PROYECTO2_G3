@@ -19,7 +19,7 @@ import 'animate.css'; // Stylesheet animate.
 import logo1 from '../../assets/logo1.png'; // Image.
 
 
-export const LoginCliente = ({ setIsAuth }) => {
+export const LoginCliente = ({ setIsAuth, setTypeUser, setcredentials }) => {
 
     // Custom hook para el formulario.
     const { form, handleChange, handleReset, setForm } = useForm({
@@ -106,6 +106,13 @@ export const LoginCliente = ({ setIsAuth }) => {
     const habdleSubmit = (e) => {
 
         e.preventDefault();
+
+        setTypeUser(2); // Tipo de usuario.
+
+        setcredentials({ // Credenciales del usuario.
+            email: form.user,
+            password: form.password
+        }); 
 
         if (checked) {
 

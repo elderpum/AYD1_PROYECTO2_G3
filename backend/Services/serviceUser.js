@@ -118,6 +118,62 @@ exports.newEmployee = async (data) => {
     }
 }
 
+exports.updateEmployee = async (data) => {
+    try{
+        const query = 'UPDATE User SET name = ?, lastName = ?, address = ?, phone = ? WHERE email = ?';
+
+        const values =[
+            data.name, 
+            data.lastName, 
+            data.address, 
+            data.phone, 
+            data.email
+        ];
+
+        const result = await db.execute(query, values);
+
+        if(!result){
+            return {err: true, message: 'Error al actualizar al usuario'}
+        }
+
+        return {error: false, message: "Has sido actualizado exitosamente"};
+    }catch(error){
+        return {error:true, message: error.message};
+    }
+}
+
+exports.deleteEmployee = async (data) => {
+    try{
+        const query = 'DELETE FROM User WHERE email = ?';
+
+        const values =[data.email];
+
+        const result = await db.execute(query, values);
+
+        if(!result){
+            return {err: true, message: 'Error al eliminar al usuario'}
+        }
+
+        return {error: false, message: "Has sido eliminado exitosamente"};
+    }catch(error){
+        return {error:true, message: error.message};
+    }
+}
+
+exports.getAllEmployees = async () => {
+    try{
+        const [result] = await db.execute('SELECT * FROM User u WHERE u.type = "employee";');
+
+        if(result.length === 0){
+            return {error: true, message:"No hay ningun empleado registrado"}
+        }
+
+        return {error: false, message:"Empleados encontrados", data: result}
+    }catch (error){
+        return {error: true, message: error.message}  
+    }
+}
+
 exports.existUser = async (user) => {
     try{
         const [result] = await db.execute('SELECT * FROM User u WHERE u.email = ?;', [user])
@@ -135,6 +191,20 @@ exports.existUser = async (user) => {
 exports.getUserInfo = async (user) => {
     try{
         const [result] = await db.execute('SELECT * FROM User u WHERE u.email = ?;', [user])
+
+        if(result.length === 0){
+            return {error: true, message:"No hay ningun usuario registrado con ese correo"}
+        }
+
+        return {error: false, message:"El usuario existe", data: result[0]}
+    }catch (error){
+        return {error: true, message: error.message}  
+    }
+}
+
+exports.getUserInfoByUsername = async (user) => {
+    try{
+        const [result] = await db.execute('SELECT * FROM User u WHERE u.userName = ?;', [user])
 
         if(result.length === 0){
             return {error: true, message:"No hay ningun usuario registrado con ese correo"}

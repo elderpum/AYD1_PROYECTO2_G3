@@ -1,3 +1,4 @@
+import { ip } from '../../../components/Ip';
 const Swal = require('sweetalert2');
 
 export const setEmpleado = async (form, handleNavigatetoHome) => {
@@ -8,7 +9,7 @@ export const setEmpleado = async (form, handleNavigatetoHome) => {
         type: 'employee'
     }
 
-    const url = 'http://localhost:3001/api/usuario/login';
+    const url = `${ip}/api/usuario/login`;
 
     const rep = await fetch(url, {
         method: 'POST',

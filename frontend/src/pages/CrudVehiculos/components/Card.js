@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
 
 import '../../../components/Titulo.css';
@@ -7,20 +7,29 @@ import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a lo
 import { Carousel } from 'react-responsive-carousel';
 import { Button, IconButton, Dialog, DialogTitle } from '@mui/material';
 import { FormVehiculo } from './FormVehiculo';
+import { ip } from '../../../components/Ip';
 
 import CloseIcon from '@mui/icons-material/Close';
 import SaveIcon from '@mui/icons-material/Save';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
-import ImageNotSupportedIcon from '@mui/icons-material/ImageNotSupported';
+//import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
+//import ImageNotSupportedIcon from '@mui/icons-material/ImageNotSupported';
+import Chip from '@mui/material/Chip';
 
 const Swal = require('sweetalert2')
 
 export function Card({ obj }) {
+    //const ip = "http://localhost:3001"; //"https://zd8mw8xl-3001.use.devtunnels.ms"
+
     const [open, setOpen] = useState(false);
-    const [newImage, setNewImage] = useState(null);
+    const [newImage, setNewImage] = useState('');
     const [newImageFile, setNewImageFile] = useState(null);
+    const [marca, setMarca] = useState([])
+
+    useEffect(() => {
+        setMarca(obj.serie)
+    }, [obj])
 
     const handleClose = () => {
         setOpen(false);
@@ -30,7 +39,7 @@ export function Card({ obj }) {
 
     const handleOpen = () => {
         setOpen(true);
-        setNewImage(null);
+        setNewImage(obj.images[0].link)
         setNewImageFile(null);
     };
 
@@ -42,7 +51,7 @@ export function Card({ obj }) {
             if (selectedImage) {
                 const reader = new FileReader();
                 reader.onloadend = () => {
-                    setNewImageFile(reader.result.split(',')[1].trim());
+                    setNewImageFile(reader.result.trim());
                 };
                 reader.readAsDataURL(selectedImage);
             }
@@ -60,15 +69,42 @@ export function Card({ obj }) {
             confirmButtonText: 'Si, Eliminar!'
         }).then((result) => {
             if (result.isConfirmed) {
-                Swal.fire(
-                    'Elimiando!',
-                    'El vehículo se eliminó exitosamente.',
-                    'success'
-                )
+                /* peticion para eliminar */
+                const url = `${ip}/api/vehiculo/eliminarVehiculo`;
+                async function getInfo() {
+                    fetch(`${url}`, {
+                        method: "DELETE",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            licensePlate: obj.licensePlate 
+                        })
+                    })
+                    .then((res) => res.json())
+                    .catch((error) => console.error("Error:", error))
+                    .then((res) => {
+                        console.log(res);
+                        if (res.error) {
+                            Swal.fire(
+                                'Error!',
+                                'Hubo un error eliminando el vehiculo.',
+                                'error'
+                            )
+                        } else {
+                            Swal.fire(
+                                'Elimiando!',
+                                'El vehículo se eliminó exitosamente.',
+                                'success'
+                            )
+                        }
+                    });
+                }
+                getInfo();
             }
         })
     };
-
+    /*
     const handleAddImage = async () => {
         setOpen(false);
         const { value: file } = await Swal.fire({
@@ -94,65 +130,168 @@ export function Card({ obj }) {
         setOpen(true);
     };
 
-    const handleDeleteImage = () => {
-
+    const handleDeleteImage = () => { 
     };
+    */
 
     const handleSave = (e) => {
         e.preventDefault();
-                
-        /**
-            ● Modelo
-            ● Marca
-            ● Transmisión
-            ● Cantidad de asientos
-            ● Tipo de combustible (Gasolina o diesel o eléctrico)
-            ● Categoría (Sedan, Bus, Camioneta, Pickup, panel, camion)
-            ● Cuota de alquiler por día.
-            ● Estado, por defecto este estará como disponible.
+        /*
+        var data = {
+            Series_idSeries: e.target[0].value, // validar en backend
+            brand: marca, // validar en backend
+            licensePlate: e.target[2].value,
+            model: e.target[4].value,
+            transmission: e.target[6].value,
+            seatings: e.target[8].value,
+            fuelType: e.target[10].value,
+            category: e.target[12].value,
+            rentalFee: e.target[14].value,
+            state: e.target[16].value,
+            newImages: [newVehiculoImageFile]
+        };
         */
         var data = {
-            marca: e.target[0].value,
-            modelo: e.target[1].value,
-            transmision: e.target[2].value,
-            asientos: e.target[3].value,
-            combustible: e.target[4].value,
-            categoria: e.target[5].value,
-            cuota: e.target[6].value,
-            estado: e.target[7].value,
-            imagenes: [newImageFile]
+            Series_idSeries: e.target[0].value,
+            licensePlate: e.target[2].value,
+            model: e.target[4].value,
+            transmission: e.target[6].value,
+            seatings: e.target[8].value,
+            fuelType: e.target[10].value,
+            category: e.target[12].value,
+            rentalFee: e.target[14].value,
+            state: e.target[16].value,
+            addImages: [newImageFile],
+            deleteImages: []
         };
-
         console.log(data)
+        //console.log(newImageFile)
+        if (!newImageFile) {
+            setOpen(false);
+            Swal.fire({
+                title: 'Error!',
+                text: 'Debe ingresar una imagen para el vehiculo',
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            }).then((result) => {
+                setOpen(true);
+            });
+            return;
+        }
 
+        if (!(/^(P|C|M)-?\d{3}[A-Z]{3}$/.test(data.licensePlate))) {
+            setOpen(false);
+            Swal.fire({
+                title: 'Error!',
+                text: 'Placa inválida. Formato: P-123ABC o P123ABC',
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            }).then((result) => {
+                setOpen(true);
+            });
+            return;
+        }
+
+        if (!(/^[0-9]{0,4}$/.test(data.model) && data.model <= 2024 && data.model >= 1960)) {
+            setOpen(false);
+            Swal.fire({
+                title: 'Error!',
+                text: "Modelo inválido para el vehículo, debe ser un numero de año .",
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            }).then((result) => {
+                setOpen(true);
+            });
+            return;
+        }
+
+        if (!(/^(?!0\d)(\d+(\.\d{1,2})?)$/.test(data.rentalFee))) {
+            setOpen(false);
+            Swal.fire({
+                title: 'Error!',
+                text: "Cuota inválida para el vehículo",
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            }).then((result) => {
+                setOpen(true);
+            });
+            return;
+        }
+
+        if (data.rentalFee <= 0) {
+            setOpen(false);
+            Swal.fire({
+                title: 'Error!',
+                text: "Cuota inválida para el vehículo",
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            }).then((result) => {
+                setOpen(true);
+            });
+            return;
+        }
+        
         handleClose();
         /** petición update vehiculo */
+        async function getInfo() {
+            fetch(`${ip}/api/vehiculo/actualizarVehiculo`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            })
+                .then((res) => res.json())
+                .catch((error) => console.error("Error:", error))
+                .then((res) => {
+                    if (res.err) {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: res.message,
+                            icon: 'error',
+                            confirmButtonText: 'Ok'
+                        })
+                    } else {
+                        Swal.fire({
+                            title: 'Exito!',
+                            text: "Vehiculo registrado exitosamente!",
+                            icon: 'success',
+                            confirmButtonText: 'Ok'
+                        })
+                    }
+                });
+        }
+        getInfo();
     };
+
     
     var imagenes = [];
     for (let i=0;i<obj.images.length;i++) {
         imagenes.push(
             <div>
-                <img src={obj.images[i].img} alt='imagen' key={obj.images[i].id}/>
+                <img src={obj.images[i].link} alt='imagen' key={obj.images[i].idImage}/>
             </div>
         );
     }
     
+
     return (
         <CardContainer>
             <Carousel showArrows={true} showThumbs={false} width={"290px"} infiniteLoop={true}>
                 {imagenes}
             </Carousel>
-            <h5> {obj.brand} </h5>
+            <h5 style={{marginTop: '20px'}}> {obj.name} {obj.serie} </h5>
             <h6> Placa: {obj.licensePlate} </h6>
             <ContainerText>
                 <div style={{marginRight: 'auto'}}>
-                    <h6> Modelo: {obj.model} </h6>
-                    <h6> Cuota: Q {obj.rentalFee} </h6>
-                </div>
-                <div>
-                    <h6> Estado: {obj.state} </h6>
-                    <h6> Categoria: {obj.category} </h6>
+                    <h6> Modelo: <Chip label={obj.model} color="primary"  size="small" /> </h6>
+                    <h6> Cuota: <Chip label={"Q " + obj.rentalFee} color="success" size="small" /> </h6>
+                    <h6> Estado: <Chip label={obj.state} color="primary"  size="small" /> </h6>
+                    <h6> Categoria: <Chip label={obj.category} color="primary"  size="small" /> </h6>
+                    <h6> Transmisión: <Chip label={obj.transmission} color="primary"  size="small" /> </h6>
+                    <h6> Asientos: <Chip label={obj.seatings} color="primary"  size="small" /> </h6>
+                    <h6> Combustible: <Chip label={obj.fuelType} color="primary"  size="small" /> </h6>
+                    <h6> Categoria: <Chip label={obj.category} color="primary"  size="small" /> </h6>
                 </div>
             </ContainerText>
             <ButtonsContainer>
@@ -175,25 +314,10 @@ export function Card({ obj }) {
                             vehiculo={obj}
                             newImage={newImage}
                             handleImageChange={handleImageChange}
-                            />
-                        <Button
-                            startIcon={<AddPhotoAlternateIcon />}
-                            variant="outlined"
-                            color="success"
-                            onClick={handleAddImage}
-                            sx={{ marginTop: '2rem', marginBottom: '-2rem' }}
-                        >
-                            Agregar Imagen
-                        </Button>
-                        <Button
-                            startIcon={<ImageNotSupportedIcon />}
-                            variant="outlined"
-                            color="secondary"
-                            onClick={handleDeleteImage}
-                            sx={{ marginTop: '2rem', marginLeft: '1rem', marginBottom: '-2rem' }}
-                        >
-                            Eliminar Imagenes
-                        </Button>
+                            marca={marca}
+                            setMarca={setMarca}
+                        />
+                        
                         <Button
                             startIcon={<CloseIcon />}
                             variant="outlined"
@@ -220,6 +344,28 @@ export function Card({ obj }) {
 }
 
 /*
+<Button
+    startIcon={<AddPhotoAlternateIcon />}
+    variant="outlined"
+    color="success"
+    onClick={handleAddImage}
+    sx={{ marginTop: '2rem', marginBottom: '-2rem' }}
+>
+    Agregar Imagen
+</Button>
+<Button
+    startIcon={<ImageNotSupportedIcon />}
+    variant="outlined"
+    color="secondary"
+    onClick={handleDeleteImage}
+    sx={{ marginTop: '2rem', marginLeft: '1rem', marginBottom: '-2rem' }}
+>
+    Eliminar Imagenes
+</Button>
+
+*/
+
+/*
 Utilizar Dialog para los formularios de edicion y eliminación
 */
 
@@ -236,6 +382,7 @@ display: flex;
 padding: 30px 15px 20px 20px;
 flex-direction: column;
 margin-top: 15px;
+margin-bottom: 0;
 min-width: 300px;
 
 border-radius: 5px 5px 5px 5px;

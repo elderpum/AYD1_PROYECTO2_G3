@@ -1,4 +1,6 @@
+import { ip } from '../../../components/Ip';
 const Swal = require('sweetalert2');
+
 
 export const setCodeLogin = async (form, handleNavigatetoHome) => {
 
@@ -7,7 +9,7 @@ export const setCodeLogin = async (form, handleNavigatetoHome) => {
         code: parseInt(form.password),
     }
 
-    const url = 'http://localhost:3001/api/usuario/verificarCodigoAcceso';
+    const url = `${ip}/api/usuario/verificarCodigoAcceso`;
 
 
     // Peticion al backend.

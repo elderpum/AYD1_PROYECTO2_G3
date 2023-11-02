@@ -17,7 +17,6 @@ exports.login = async (req, res) => {
     try{
         const {user, password, type} = req.body;
         const result = await service.auth(user, password, type);
-
         if(!result.authExitoso){
             return res.json({authExitoso: result.authExitoso, message: result.message})
         }
@@ -37,6 +36,33 @@ exports.createEmployee = async (req, res) => {
         return res.status(400).json(result);
     }
     return res.status(201).json(result);
+}
+
+exports.updateEmployee = async (req, res) => {
+    const result = await service.updateEmployee(req.body);
+    if(result.error){
+        console.log(result.message);
+        return res.status(400).json(result);
+    }
+    return res.status(200).json(result);
+}
+
+exports.deleteEmployee = async (req, res) => {
+    const result = await service.deleteEmployee(req.body);
+    if(result.error){
+        console.log(result.message);
+        return res.status(400).json(result);
+    }
+    return res.status(200).json(result);
+}
+
+exports.getAllEmployees = async (req, res) => {
+    const result = await service.getAllEmployees();
+    if(result.error){
+        console.log(result.message);
+        return res.status(400).json(result);
+    }
+    return res.status(200).json(result);
 }
 
 function generateRandomCode() {
@@ -91,4 +117,16 @@ exports.loginByCode = async (req, res) => {
     }
 
     return res.status(401).json({authExitoso:false, message:"Código expirado"})
+}
+
+exports.getUserInfo = async (req, res) => {
+    const {email} = req.id;
+    const info = await service.getUserInfo(email)
+
+    if(info.error){
+        console.log(info.message);
+        return res.status(400).json(info);
+    }
+
+    return res.status(200).json(info);
 }
