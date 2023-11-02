@@ -21,6 +21,23 @@ export function Pago({ setIndex }) {
   const { getExpiryDateProps } = usePaymentInputs();
   useDocumentTitle("Pago");
 
+
+  const card1 = {
+    num: "1234123412341234",
+    cvc: "200",
+    nombre: "Mario Moran",
+    fecha: "10/25",
+    saldo: 50
+  }
+
+  const card2 = {
+    num: "9876987698769876",
+    cvc: "100",
+    nombre: "Fernando Serrano",
+    fecha: "10/25",
+    saldo: 50
+  }
+
   useEffect(() => {
     setTotal('354.00')
   }, [])
@@ -64,6 +81,24 @@ export function Pago({ setIndex }) {
       }),
     },
   });
+
+  const cobro = () => {
+    if (nombre === card1.nombre && tarjeta === card1.num && card1.cvc === CVC && card1.fecha === fechaVence) {
+      let result = card1.saldo - total;
+      if (result < 0) {
+        alert("Cobro rechazado, no tiene saldo en su cuenta.")
+      } else {
+        alert("Cobro realizado co exito.")
+      }
+    } else if (nombre === card2.nombre && tarjeta === card2.num && card2.cvc === CVC && card2.fecha === fechaVence) {
+      let result = card2.saldo - total;
+      if (result < 0) {
+        alert("Cobro rechazado, no tiene saldo en su cuenta.")
+      } else {
+        alert("Cobro realizado co exito.")
+      }
+    }
+  }
 
   return (
     <BodyContent>
@@ -144,7 +179,7 @@ export function Pago({ setIndex }) {
               <Grid item xs={4}>
                 <p className='total-price'> TOTAL: <h4 className='total-price'> Q {total} </h4> </p>
                 <p></p>
-                <Button variant="filled" size="small" sx={{ color: '#fff', backgroundColor: '#3DF28B' }}>
+                <Button variant="filled" size="small" sx={{ color: '#fff', backgroundColor: '#3DF28B' }} onClick={cobro}>
                   Pagar
                 </Button>
               </Grid>
