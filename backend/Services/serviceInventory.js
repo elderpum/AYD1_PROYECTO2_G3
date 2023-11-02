@@ -113,8 +113,17 @@ async function getInventory(data, id, type) {
 
         const [image] = await db.query(query, [result[0].licensePlate]);
 
+
         const date = new Date(result[0].rentalEnd);
-        fechaDev = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
+        const day = date.getDate().toString();
+
+        // Añadir un 0 inicial si es necesario  
+        const paddedDay = day.padStart(2, '0');
+
+        // Quedarse con los últimos 2 caracteres
+        const formattedDay = paddedDay.slice(-2);
+        fechaDev = `${date.getFullYear()}-${date.getMonth() + 1}-${formattedDay}`
+
         vehiculo = {
           imagen: image[0].link,
           modelo: result[0].model,
