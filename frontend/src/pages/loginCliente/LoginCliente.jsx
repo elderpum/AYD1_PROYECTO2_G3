@@ -141,7 +141,7 @@ export const LoginCliente = ({ setIsAuth, setTypeUser, setcredentials }) => {
                 <div className="content-form-login-client">
 
                     <div className="title-login-client">
-                        <h1 className="animate__animated animate__backInDown animate__delay-0.5s" > LOGIN  </h1>
+                        <h1 className="animate__animated animate__backInDown animate__delay-0.5s" > INICIAR SESION  </h1>
                     </div>
 
 
